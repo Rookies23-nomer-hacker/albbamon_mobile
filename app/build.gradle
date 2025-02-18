@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.examplealbbamon'
+    namespace 'com.example.albbamon'
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.examplealbbamon"
+        applicationId "com.example.albbamon"
         minSdk 28
         targetSdk 35
         versionCode 1
