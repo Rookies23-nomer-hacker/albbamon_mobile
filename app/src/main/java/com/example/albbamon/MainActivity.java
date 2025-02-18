@@ -1,4 +1,4 @@
-package com.examplealbbamon;
+package com.example.albbamon;
 
 import android.os.Bundle;
 

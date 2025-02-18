@@ -1,4 +1,4 @@
-package com.examplealbbamon;
+package com.example.albbamon;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.examplealbbamon", appContext.getPackageName());
+        assertEquals("com.example.albbamon", appContext.getPackageName());
     }
 }
