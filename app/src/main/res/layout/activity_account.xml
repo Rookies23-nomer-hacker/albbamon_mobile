@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,16 +9,43 @@
     tools:context=".account.account">
 
 
+    <!-- 홈 아이콘 -->
+    <TextView
+        android:id="@+id/banner_subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="잡코리아알바몬"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#0052FF"
+        app:layout_contraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintMarginTop="8dp"/>
+
+
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이미 회원이신가요?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.356"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.281" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원가입"
-        android:textSize="18sp"
+        android:text="로그인"
+        android:textColor="#dd3333"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.318"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.426" />
+        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.281" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
