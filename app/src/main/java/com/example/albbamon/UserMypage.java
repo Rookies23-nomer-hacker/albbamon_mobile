@@ -20,11 +20,14 @@ public class UserMypage extends AppCompatActivity {
 
         // Toolbar 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // UI 요소 초기화
         ImageView profileImg = findViewById(R.id.profile_img);
         TextView userName = findViewById(R.id.user_name);
         ImageView closeButton = findViewById(R.id.close_button);
+        TextView userInfo = findViewById(R.id.user_info);
+
 
         // TODO: 백엔드에서 가져올 사용자 데이터 (MySQL 연동 후 수정)
         String userFullName = null;  // DB에서 가져온 이름 (없으면 null)
@@ -46,9 +49,17 @@ public class UserMypage extends AppCompatActivity {
         // X 버튼 클릭 시 MainActivity로 이동
         closeButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserMypage.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
+
+        userInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(UserMypage.this, UserInfo.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
     }
 }
