@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ResumeWriteActivity"
+    android:background="@color/white">
+
+    <!-- 뒤로 가기 아이콘 -->
+    <ImageView
+        android:id="@+id/BackIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 상단 타이틀 -->
+    <TextView
+        android:id="@+id/header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이력서 수정"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/BackIcon"
+        app:layout_constraintTop_toTopOf="@id/BackIcon"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- ScrollView 추가 -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btnSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_text"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="40dp">
+
+
+            <!-- 프로필 정보 컨테이너 (가로 배치) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profileContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@android:color/white"
+                android:padding="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/header_text"
+                tools:ignore="NotSibling">
+
+                <!-- 프로필 이미지 -->
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="#D7D7D7"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baseline_person_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- 사용자 정보 (이름 + 나이) -->
+                <LinearLayout
+                    android:id="@+id/profileLinear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toEndOf="@id/profileImage"
+                    app:layout_constraintTop_toTopOf="@id/profileImage">
+
+                    <!-- 이름 -->
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이름"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvGenderAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="성별 · 18세 / 1900년생"
+                        android:textColor="#777777"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 학력사항 -->
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="주소 *"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profileContainer" />
+
+            <TextView
+                android:id="@+id/addressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="기본 주소"
+                app:layout_constraintStart_toEndOf="@id/address"
+                app:layout_constraintTop_toBottomOf="@id/profileContainer" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="휴대폰 *"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/address" />
+
+            <TextView
+                android:id="@+id/phoneText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                android:text="010-1234-1234"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/phone"
+                app:layout_constraintTop_toBottomOf="@id/address" />
+
+            <TextView
+                android:id="@+id/call"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="유선전화"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone" />
+
+            <TextView
+                android:id="@+id/callText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                android:text="02-1234-1234"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/call"
+                app:layout_constraintTop_toBottomOf="@id/phone" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="이메일"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/call" />
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                android:text="skinfosec@sk.com"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/email"
+                app:layout_constraintTop_toBottomOf="@id/call" />
+
+            <Button
+                android:id="@+id/userEdit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="#FFFFFF"
+                android:text="회원정보 수정"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/email"
+                app:strokeColor="#D7D7D7"
+                app:strokeWidth="2dp" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="30dp"
+                android:background="#D7D7D7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userEdit" />
+
+            <!-- 학력사항 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/eduLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToEducationPage"
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:id="@+id/tvEduTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="학력사항 *"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvEduContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="대학(4년제) 휴학"
+                    android:textSize="14sp"
+                    android:textColor="#777777"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvEduTitle"
+                    android:layout_marginTop="4dp"/>
+
+                <ImageView
+                    android:id="@+id/eduArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#D7D7D7"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvEduContent"
+                     />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <!-- 경력사항 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/jobLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToCareerPage"
+                app:layout_constraintTop_toBottomOf="@id/eduLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tvJobTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="경력사항 *"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvJobContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5년 2개월"
+                    android:textSize="14sp"
+                    android:textColor="#777777"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
+                    android:layout_marginTop="4dp"/>
+
+                <ImageView
+                    android:id="@+id/jobArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#D7D7D7"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvJobContent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <!-- 자기소개·스킬·강점 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/introLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToIntroPage"
+                app:layout_constraintTop_toBottomOf="@id/jobLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tvIntroTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자기소개·스킬·강점 *"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvIntroContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="성실해요 외 2 등"
+                    android:textSize="14sp"
+                    android:textColor="#777777"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvIntroTitle"
+                    android:layout_marginTop="4dp"/>
+
+                <ImageView
+                    android:id="@+id/introArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#D7D7D7"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvIntroContent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <!-- 포트폴리오 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/portfolioLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToPortfolioPage"
+                app:layout_constraintTop_toBottomOf="@id/introLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tvPortfolioTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="포트폴리오"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvPortfolioContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="포트폴리오를 첨부해 주세요."
+                    android:textSize="14sp"
+                    android:textColor="#777777"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvPortfolioTitle"
+                    android:layout_marginTop="4dp"/>
+
+                <ImageView
+                    android:id="@+id/portfolioArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#D7D7D7"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvPortfolioContent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 체크박스 영역 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/checkBoxContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@drawable/rounded_box"
+                app:layout_constraintTop_toBottomOf="@id/portfolioLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp">
+
+                <!-- 체크박스 -->
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="구인자로부터 알바제의를 받겠습니다."
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:clickable="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 추가적인 동의 영역 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/agreementContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@drawable/rounded_box"
+                app:layout_constraintTop_toBottomOf="@id/checkBoxContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="60dp">
+
+                <!-- 메인 동의 문구 -->
+                <TextView
+                    android:id="@+id/tvAgreementTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="개인정보 수집 및 이용안내(필수,선택)에 모두 동의합니다."
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textStyle="bold"/>
+
+                <!-- 체크박스 (필수 동의) -->
+                <CheckBox
+                    android:id="@+id/requiredCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(필수) 개인정보수집 및 이용 동의"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:clickable="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="24dp"/>
+
+                <!-- 체크박스 (선택 동의) -->
+                <CheckBox
+                    android:id="@+id/optionalCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(선택) 개인정보수집 및 이용 동의"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:clickable="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/requiredCheckBox"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="이력서 저장"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FD0200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
