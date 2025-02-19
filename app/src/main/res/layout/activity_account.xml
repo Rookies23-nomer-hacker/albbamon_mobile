@@ -1,51 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".account.account">
+    android:clickable="false"
+    android:focusable="false"
+    tools:context="com.example.albbamon.account">
 
-
-    <!-- 홈 아이콘 -->
-    <TextView
-        android:id="@+id/banner_subtext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="잡코리아알바몬"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#0052FF"
-        app:layout_contraintTop_toTopOf="parent"
+    <LinearLayout
+        android:id="@+id/linearLayoutTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginTop="8dp"/>
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutMiddle"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.1"
+        android:clickable="false"
+        android:focusable="false">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LinearLayout 1"
+            android:textColor="#000000"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
+    <!-- LinearLayout 2 -->
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이미 회원이신가요?"
+    <LinearLayout
+        android:id="@+id/linearLayoutMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.356"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.281" />
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutBottom"
+        app:layout_constraintVertical_bias="0.0"
+        android:clickable="false"
+        android:focusable="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로그인"
-        android:textColor="#dd3333"
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="세상 모든 알바는 하나로 통한다" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Albbamon" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="193dp"
+            android:layout_margin="16dp"
+            android:background="@color/black"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:clickable="false"
+            android:focusable="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:clickable="false"
+                android:focusable="false">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="개인 회원"
+                    android:textSize="20sp"/>
+
+                <Button
+                    android:id="@+id/buttonPer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_margin="30dp"
+                    android:text="통합 개인 회원가입"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="193dp"
+            android:layout_margin="16dp"
+            android:background="@color/black"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:clickable="false"
+            android:focusable="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:clickable="false"
+                android:focusable="false">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="기업 회원"
+                    android:textSize="20sp"/>
+
+                <Button
+                    android:id="@+id/buttonCom"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_margin="30dp"
+                    android:text="통합 기업 회원가입"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.281" />
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        android:clickable="false"
+        android:focusable="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LinearLayout 3"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

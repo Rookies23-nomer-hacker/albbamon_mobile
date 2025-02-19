@@ -13,9 +13,6 @@
         android:theme="@style/Theme.Albbamon"
         tools:targetApi="31">
         <activity
-            android:name=".account.account"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -24,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".comAccount"
+            android:exported="false" />
+        <activity
+            android:name=".perAccount"
+            android:exported="false" />
+        <activity
+            android:name=".account"
+            android:exported="true" />
     </application>
 
 </manifest>
