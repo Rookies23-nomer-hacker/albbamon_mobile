@@ -21,3 +21,4 @@ public class CommunityModel {
     public String getFile_name() { return file_name; }
     public String getCreateDate() { return createDate; }
 }
+
