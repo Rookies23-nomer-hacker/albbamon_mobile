@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.Resume;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.Toast;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.albbamon.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class ResumePortfolioActivity extends AppCompatActivity {

@@ -1,9 +1,11 @@
-package com.example.albbamon;
+package com.example.albbamon.Resume;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.albbamon.R;
 
 public class ResumeIntroActivity extends AppCompatActivity {
 

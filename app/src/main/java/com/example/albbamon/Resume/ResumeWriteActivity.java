@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.Resume;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.albbamon.R;
 
 public class ResumeWriteActivity extends AppCompatActivity {
 
