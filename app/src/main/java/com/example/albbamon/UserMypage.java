@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +27,8 @@ public class UserMypage extends AppCompatActivity {
         ImageView profileImg = findViewById(R.id.profile_img);
         TextView userName = findViewById(R.id.user_name);
         ImageView closeButton = findViewById(R.id.close_button);
-        TextView userInfo = findViewById(R.id.user_info);
+        LinearLayout userInfo = findViewById(R.id.user_info_section);
+        LinearLayout layoutApply = findViewById(R.id.layout_apply);
 
 
         // TODO: 백엔드에서 가져올 사용자 데이터 (MySQL 연동 후 수정)
@@ -56,6 +58,13 @@ public class UserMypage extends AppCompatActivity {
 
         userInfo.setOnClickListener(v -> {
             Intent intent = new Intent(UserMypage.this, UserInfo.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
+        layoutApply.setOnClickListener(v -> {
+            Intent intent = new Intent(UserMypage.this, ApplicationStatus.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
