@@ -53,7 +53,7 @@
                     android:src="@drawable/ic_search" />
             </RelativeLayout>
         </LinearLayout>
-        <!-- 탭 버튼 -->
+        <!-- 탭 버튼
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
         </LinearLayout>
-
+-->
 
 
 
