@@ -3,7 +3,6 @@ package com.example.albbamon;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -36,9 +35,6 @@ public class ResumeWriteActivity extends AppCompatActivity {
         callText = findViewById(R.id.callText);
         emailText = findViewById(R.id.emailText);
 
-        // (선택) 데이터를 동적으로 설정할 경우
-        setUserData();
-
         // 뒤로 가기 버튼 클릭 이벤트
         backIcon.setOnClickListener(v -> finish()); // 현재 액티비티 종료
 
@@ -57,32 +53,35 @@ public class ResumeWriteActivity extends AppCompatActivity {
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_UP));
     }
 
-    // 사용자 데이터를 동적으로 설정하는 함수
-    private void setUserData() {
-        addressText.setText("서울 동작구 상도동");
-        phoneText.setText("010-1234-5678");
-        callText.setText("02-1234-5678");
-        emailText.setText("user@example.com");
-    }
-
-    public void goToEducationPage(View view) {
-//        Intent intent = new Intent(this, EducationActivity.class);
-//        startActivity(intent);
-        Toast.makeText(ResumeWriteActivity.this, "학력사항 개발중", Toast.LENGTH_SHORT).show();
+    public void goToSchoolPage(View view) {
+        Intent intent = new Intent(this, ResumeSchoolActivity.class);
+        startActivity(intent);
+//        Toast.makeText(ResumeWriteActivity.this, "학력사항 개발중", Toast.LENGTH_SHORT).show();
         
     }
-    public void goToCareerPage(View view) {
-//        Intent intent = new Intent(this, CareerActivity.class);
-//        startActivity(intent);
-        Toast.makeText(ResumeWriteActivity.this, "경력사항 개발중", Toast.LENGTH_SHORT).show();
+    public void goToJobPage(View view) {
+        Intent intent = new Intent(this, ResumeJobActivity.class);
+        startActivity(intent);
+//        Toast.makeText(ResumeWriteActivity.this, "경력사항 개발중", Toast.LENGTH_SHORT).show();
+    }
+
+    public void goToOptionPage(View view) {
+        Intent intent = new Intent(this, ResumeOptionActivity.class);
+        startActivity(intent);
+//        Toast.makeText(ResumeWriteActivity.this, "희망근무조건 개발중", Toast.LENGTH_SHORT).show();
+
     }
 
     public void goToIntroPage(View view) {
-        Toast.makeText(ResumeWriteActivity.this, "자기소개 개발중", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ResumeIntroActivity.class);
+        startActivity(intent);
+//        Toast.makeText(ResumeWriteActivity.this, "자기소개 개발중", Toast.LENGTH_SHORT).show();
 
     }
     public void goToPortfolioPage(View view) {
-        Toast.makeText(ResumeWriteActivity.this, "포트폴리오 개발중", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ResumePortfolioActivity.class);
+        startActivity(intent);
+//        Toast.makeText(ResumeWriteActivity.this, "포트폴리오 개발중", Toast.LENGTH_SHORT).show();
 
     }
 }

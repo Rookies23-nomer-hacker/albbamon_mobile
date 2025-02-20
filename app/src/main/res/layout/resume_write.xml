@@ -90,7 +90,7 @@
 
                     <!-- 이름 -->
                     <TextView
-                        android:id="@+id/tvName"
+                        android:id="@+id/Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="이름"
@@ -98,7 +98,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvGenderAge"
+                        android:id="@+id/info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -109,7 +109,6 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- 학력사항 -->
             <TextView
                 android:id="@+id/address"
                 android:layout_width="70dp"
@@ -223,21 +222,21 @@
 
             <!-- 학력사항 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/eduLayout"
+                android:id="@+id/schoolLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:background="@android:color/white"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="goToEducationPage"
+                android:onClick="goToSchoolPage"
                 app:layout_constraintTop_toBottomOf="@id/divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="40dp">
 
                 <TextView
-                    android:id="@+id/tvEduTitle"
+                    android:id="@+id/schoolTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="학력사항 *"
@@ -248,18 +247,18 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tvEduContent"
+                    android:id="@+id/schoolContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="대학(4년제) 휴학"
                     android:textSize="14sp"
                     android:textColor="#777777"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvEduTitle"
+                    app:layout_constraintTop_toBottomOf="@id/schoolTitle"
                     android:layout_marginTop="4dp"/>
 
                 <ImageView
-                    android:id="@+id/eduArrow"
+                    android:id="@+id/schoolArrow"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/baseline_arrow_back_24"
@@ -275,7 +274,7 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvEduContent"
+                    app:layout_constraintTop_toBottomOf="@id/schoolContent"
                      />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -291,14 +290,14 @@
                 android:background="@android:color/white"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="goToCareerPage"
-                app:layout_constraintTop_toBottomOf="@id/eduLayout"
+                android:onClick="goToJobPage"
+                app:layout_constraintTop_toBottomOf="@id/schoolLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/tvJobTitle"
+                    android:id="@+id/jobTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="경력사항 *"
@@ -309,14 +308,14 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tvJobContent"
+                    android:id="@+id/jobContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5년 2개월"
                     android:textSize="14sp"
                     android:textColor="#777777"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
+                    app:layout_constraintTop_toBottomOf="@id/jobTitle"
                     android:layout_marginTop="4dp"/>
 
                 <ImageView
@@ -336,32 +335,31 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvJobContent" />
+                    app:layout_constraintTop_toBottomOf="@id/jobContent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-            <!-- 자기소개·스킬·강점 -->
+            <!-- 희망근무조건 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/introLayout"
+                android:id="@+id/optionLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:background="@android:color/white"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="goToIntroPage"
+                android:onClick="goToOptionPage"
                 app:layout_constraintTop_toBottomOf="@id/jobLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/tvIntroTitle"
+                    android:id="@+id/optionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="자기소개·스킬·강점 *"
+                    android:text="희망근무조건 *"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -369,18 +367,18 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tvIntroContent"
+                    android:id="@+id/optionContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="성실해요 외 2 등"
+                    android:text="5년 2개월"
                     android:textSize="14sp"
                     android:textColor="#777777"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvIntroTitle"
+                    app:layout_constraintTop_toBottomOf="@id/optionTitle"
                     android:layout_marginTop="4dp"/>
 
                 <ImageView
-                    android:id="@+id/introArrow"
+                    android:id="@+id/optionArrow"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/baseline_arrow_back_24"
@@ -396,7 +394,65 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvIntroContent" />
+                    app:layout_constraintTop_toBottomOf="@id/optionContent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 자기소개·스킬·강점 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/introLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToIntroPage"
+                app:layout_constraintTop_toBottomOf="@id/optionLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/introTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자기소개 *"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/introContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="성실해요 외 2 등"
+                    android:textSize="14sp"
+                    android:textColor="#777777"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/introTitle"
+                    android:layout_marginTop="4dp"/>
+
+                <ImageView
+                    android:id="@+id/introArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#D7D7D7"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/introContent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -418,7 +474,7 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/tvPortfolioTitle"
+                    android:id="@+id/portfolioTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="포트폴리오"
@@ -429,14 +485,14 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tvPortfolioContent"
+                    android:id="@+id/portfolioContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="포트폴리오를 첨부해 주세요."
                     android:textSize="14sp"
                     android:textColor="#777777"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvPortfolioTitle"
+                    app:layout_constraintTop_toBottomOf="@id/portfolioTitle"
                     android:layout_marginTop="4dp"/>
 
                 <ImageView
@@ -449,14 +505,14 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <View
-                    android:id="@+id/divider5"
+                    android:id="@+id/divider6"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#D7D7D7"
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvPortfolioContent" />
+                    app:layout_constraintTop_toBottomOf="@id/portfolioContent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -480,8 +536,8 @@
                     android:text="구인자로부터 알바제의를 받겠습니다."
                     android:textSize="14sp"
                     android:textColor="@color/black"
-                    android:buttonTint="@color/black"
-                    android:clickable="false"
+                    android:buttonTint="#FD0200"
+                    android:clickable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
@@ -504,7 +560,7 @@
 
                 <!-- 메인 동의 문구 -->
                 <TextView
-                    android:id="@+id/tvAgreementTitle"
+                    android:id="@+id/agreementTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="개인정보 수집 및 이용안내(필수,선택)에 모두 동의합니다."
@@ -522,8 +578,8 @@
                     android:text="(필수) 개인정보수집 및 이용 동의"
                     android:textSize="14sp"
                     android:textColor="@color/black"
-                    android:buttonTint="@color/black"
-                    android:clickable="false"
+                    android:buttonTint="#FD0200"
+                    android:clickable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="24dp"/>
@@ -536,8 +592,8 @@
                     android:text="(선택) 개인정보수집 및 이용 동의"
                     android:textSize="14sp"
                     android:textColor="@color/black"
-                    android:buttonTint="@color/black"
-                    android:clickable="false"
+                    android:buttonTint="#FD0200"
+                    android:clickable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/requiredCheckBox"/>
 
