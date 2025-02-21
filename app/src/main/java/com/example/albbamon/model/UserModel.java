@@ -27,7 +27,7 @@ public class UserModel {
     // userInfo 필드 정의
     public class UserInfo {
         @SerializedName("id")
-        private int id;
+        private long id;
 
         @SerializedName("name")
         private String name;
@@ -47,7 +47,7 @@ public class UserModel {
         @SerializedName("profileImg")
         private String profileImg;
 
-        public int getId() { return id; }
+        public long getId() { return id; }
         public String getName() { return name; }
         public String getEmail() { return email; }
         public String getPhone() { return phone; }
