@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 상단 안내 문구 -->
+        <TextView
+            android:id="@+id/tvGuideTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="알바몬을 이용하시는데\n불편함이 있으셨나요?"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 안내사항 리스트 -->
+        <TextView
+            android:id="@+id/tvGuideList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="탈퇴 안내 및 유의사항\n1) 탈퇴 아이디는 복구가 불가능합니다.\n2) 탈퇴하면, 잡코리아, 데브캣 등등...\n3) ..."
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 동의 체크박스 -->
+        <CheckBox
+            android:id="@+id/cbAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위 안내사항을 확인했으며 이에 동의합니다."
+            android:layout_marginBottom="12dp" />
+
+        <!-- 첫 번째 '탈퇴하기' 버튼 (체크 전까지 비활성화) -->
+        <Button
+            android:id="@+id/btnWithdrawal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="탈퇴하기"
+            android:layout_marginBottom="24dp"
+            android:enabled="false"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white" />
+
+        <!-- 두 번째 섹션 (다음 단계, 처음엔 숨김) -->
+        <LinearLayout
+            android:id="@+id/secondSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvSecondSectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="탈퇴 상세 진행"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/etUserId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디 입력"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/etUserPw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호 입력"
+                android:inputType="textPassword"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/etReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="탈퇴 사유(선택)"
+                android:layout_marginBottom="12dp"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/btnFinalWithdrawal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="최종 탈퇴하기"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+
+
