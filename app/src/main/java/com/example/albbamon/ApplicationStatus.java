@@ -12,7 +12,16 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApplicationStatus extends AppCompatActivity {
 
@@ -23,6 +32,9 @@ public class ApplicationStatus extends AppCompatActivity {
     private ViewSwitcher viewSwitcher;
     private LinearLayout tabOnlineContainer, tabOtherContainer;
     private LinearLayout contentOnline, contentOther;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private ViewPagerAdapter adapter;
 
 
     @Override
@@ -43,7 +55,6 @@ public class ApplicationStatus extends AppCompatActivity {
             finish();
         });
 
-
         // 검색 기능
         searchEditText = findViewById(R.id.searchEditText);
         searchIcon = findViewById(R.id.searchIcon);
@@ -57,54 +68,29 @@ public class ApplicationStatus extends AppCompatActivity {
             }
         });
 
-        // 탭 전환 요소 초기화
-        tabOnline = findViewById(R.id.tab_online);
-        tabOther = findViewById(R.id.tab_other);
-        indicatorOnline = findViewById(R.id.indicator_online);
-        indicatorOther = findViewById(R.id.indicator_other);
-        tabOnlineContainer = findViewById(R.id.tab_online_container);
-        tabOtherContainer = findViewById(R.id.tab_other_container);
-        contentOnline = findViewById(R.id.content_online);
-        contentOther = findViewById(R.id.content_other);
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+        // 🔹 탭 목록과 프래그먼트 동적 추가 가능
+        List<Fragment> fragments = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
 
-        // 초기 탭 설정 (온라인·문자·이메일 지원 활성화)
-        setActiveTab(true);
+        fragments.add(new OnlineSupportFragment());
+        titles.add("온라인·문자·이메일 지원");
 
-        // 온라인·문자·이메일 지원 탭 클릭
-        tabOnlineContainer.setOnClickListener(v -> {
-            if (viewSwitcher.getDisplayedChild() != 0) {
-                viewSwitcher.showPrevious();
+        fragments.add(new OtherSupportFragment());
+        titles.add("기타 지원");
+
+        // 🔹 어댑터 설정
+        adapter = new ViewPagerAdapter(this, fragments, titles);
+        viewPager.setAdapter(adapter);
+
+        // 🔹 TabLayout + ViewPager2 연결
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(adapter.getTabTitle(position));
             }
-            setActiveTab(true);
-        });
+        }).attach();
 
-        // 기타 지원 탭 클릭
-        tabOtherContainer.setOnClickListener(v -> {
-            if (viewSwitcher.getDisplayedChild() != 1) {
-                viewSwitcher.showNext();
-            }
-            setActiveTab(false);
-        });
-    }
-
-    // 선택된 탭 활성화
-    private void setActiveTab(boolean isOnline) {
-        if (isOnline) {
-            tabOnline.setTextColor(getResources().getColor(R.color.black));
-            tabOnline.setTypeface(null, Typeface.BOLD);
-            indicatorOnline.setBackgroundColor(getResources().getColor(R.color.appcolor));
-
-            tabOther.setTextColor(getResources().getColor(R.color.gray));
-            tabOther.setTypeface(null, Typeface.NORMAL);
-            indicatorOther.setBackgroundColor(getResources().getColor(R.color.gray));
-        } else {
-            tabOther.setTextColor(getResources().getColor(R.color.black));
-            tabOther.setTypeface(null, Typeface.BOLD);
-            indicatorOther.setBackgroundColor(getResources().getColor(R.color.appcolor));
-
-            tabOnline.setTextColor(getResources().getColor(R.color.gray));
-            tabOnline.setTypeface(null, Typeface.NORMAL);
-            indicatorOnline.setBackgroundColor(getResources().getColor(R.color.gray));
-        }
     }
 }

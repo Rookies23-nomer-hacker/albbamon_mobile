@@ -54,255 +54,36 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <!-- 탭 버튼 -->
         <LinearLayout
-            android:id="@+id/content_online"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginVertical="10dp"
 
-                <!-- 왼쪽 탭 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:id="@+id/tab_online_container">
-
-                    <TextView
-                        android:id="@+id/tab_online"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:text="온라인·문자·이메일 지원"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
-                        android:textColor="@color/gray"/>
-                    <!-- Indicator -->
-                    <View
-                        android:id="@+id/indicator_online"
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:background="@color/gray"/>
-                </LinearLayout>
-
-                <!-- 오른쪽 탭 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:id="@+id/tab_other_container">
-
-                    <TextView
-                        android:id="@+id/tab_other"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:text="기타 지원"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
-                        android:textColor="@color/gray"/>
-
-                    <!-- Indicator -->
-                    <View
-                        android:id="@+id/indicator_other"
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:background="@color/gray"/>
-                </LinearLayout>
-
-            </LinearLayout>
+                android:backgroundTint="@color/white"
+                app:tabIndicatorColor="@color/appcolor"
+                app:tabIndicatorHeight="4dp"
+                app:tabMode="fixed"
+                app:tabIndicatorFullWidth="true"
+                app:tabRippleColor="@null"
+                app:tabTextColor="@color/gray"
+                app:tabSelectedTextColor="@color/black"
+                app:tabPaddingBottom="8dp"/>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </LinearLayout>
-
-        <!-- 온라인 지원 UI 영역 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:weightSum="5">
-
-            <!-- 이력서 관리 -->
-            <LinearLayout
-                android:id="@+id/all"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:textSize="18sp"
-                    android:textColor="@color/appcolor"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:text="전체"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <!-- 세로 구분선 -->
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40dp"
-                android:background="#DDDDDD"/>
-
-            <!-- 지원완료 -->
-            <LinearLayout
-                android:id="@+id/applycomplete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:textSize="18sp"
-                    android:textColor="@color/appcolor"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:text="지원완료"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <!-- 세로 구분선 -->
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40dp"
-                android:background="#DDDDDD"/>
-
-
-            <!-- 지원현황 -->
-            <LinearLayout
-                android:id="@+id/layout_apply"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:id="@+id/interview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="18sp"
-                    android:textColor="@color/appcolor"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/layout_apply_txt"
-                    android:text="면접"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <!-- 세로 구분선 -->
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40dp"
-                android:background="#DDDDDD"/>
-
-            <!-- 스크랩 -->
-            <LinearLayout
-                android:id="@+id/pass"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3"
-                    android:textSize="18sp"
-                    android:textColor="@color/appcolor"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:text="합격"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <!-- 세로 구분선 -->
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40dp"
-                android:background="#DDDDDD"/>
-
-            <!-- 최근본알바 -->
-            <LinearLayout
-                android:id="@+id/layout_recent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:id="@+id/txt_recent_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="18sp"
-                    android:textColor="@color/appcolor"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:text="불합격/취소"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <!-- 기타 UI 영역 -->
-        <LinearLayout
-            android:id="@+id/content_other"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:visibility="gone"> <!-- 기본으로 숨김 -->
-
-        </LinearLayout>
-
     </LinearLayout>
 </ScrollView>
+
+
+
