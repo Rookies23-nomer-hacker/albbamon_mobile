@@ -242,14 +242,12 @@
                 android:textSize="18dp" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_toggle"
+                android:id="@+id/switch_resume_visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:checked="false"
+                android:layout_marginEnd="10dp"
                 app:thumbTint="@color/white"
-                app:trackTint="@color/appcolor"
-                android:text=""/>
+                app:trackTint="@color/switch_track_color"/>
 
 
 
@@ -378,21 +376,22 @@
             android:layout_marginBottom="40dp"
             android:layout_marginHorizontal="10dp">
 
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_logout"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_margin="10dp"
-                android:layout_marginStart="100dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="10dp"
                 android:padding="10dp"
                 android:paddingBottom="60dp"
                 android:text="로그아웃"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp"
-                app:strokeColor="#929292"
+                app:cornerRadius="8dp"
+                app:strokeColor="#DDDDDD"
                 app:strokeWidth="1dp" />
         </FrameLayout>
 

@@ -19,5 +19,14 @@ public class UserInfo extends AppCompatActivity{
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("회원정보");
 
+        ImageView backButton = findViewById(R.id.back);
+        // 뒤로가기 버튼 클릭 시 MainActivity로 이동
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserInfo.this, UserMypage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
     }
 }
