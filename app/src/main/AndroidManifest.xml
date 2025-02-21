@@ -28,9 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity"/>
+
+        <!-- 메일/문자수신 설정 Activity (추가) -->
+        <activity android:name=".MailSettingsActivity"/>
 
     </application>
 
 </manifest>
+
 
