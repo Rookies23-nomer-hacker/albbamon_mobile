@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 권한은 반드시 <application> 태그 바깥에 위치합니다. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,18 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
-        tools:targetApi="31" >
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
 
         <!-- 다른 Activity -->
         <activity
             android:name=".activity_oh"
             android:exported="false" />
 
-        <!-- 메인 Activity: 키보드 동작 설정 -->
+        <!-- 메인 Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,13 +34,16 @@
         </activity>
 
         <!-- 회원 탈퇴 Activity -->
-        <activity android:name=".MemberWithdrawalActivity"/>
+        <activity android:name=".MemberWithdrawalActivity" />
 
-        <!-- 메일/문자수신 설정 Activity (추가) -->
-        <activity android:name=".MailSettingsActivity"/>
+        <!-- 메일/문자수신 설정 Activity -->
+        <activity android:name=".MailSettingsActivity" />
 
     </application>
 
 </manifest>
+
+
+
 
 

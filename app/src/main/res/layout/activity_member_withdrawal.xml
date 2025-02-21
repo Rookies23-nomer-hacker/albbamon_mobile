@@ -20,7 +20,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="알바몬을 이용하시는데&#10;불편함이 있으셨나요?"
+            android:text="알빠몬을 이용하시는데&#10;불편함이 있으셨나요?"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#000000"
@@ -63,7 +63,7 @@
             android:background="#EEEEEE"
             android:layout_marginBottom="4dp" />
 
-        <!-- 두 번째 항목: 알바몬 뉴스레터와 소식메일을 받고싶지 않다면? -->
+        <!-- 두 번째 항목: 알빠몬 뉴스레터와 소식메일을 받고싶지 않다면? -->
         <LinearLayout
             android:id="@+id/item2"
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="알바몬 뉴스레터와 소식메일을 받고싶지 않다면?"
+                android:text="알빠몬 뉴스레터와 소식메일을 받고싶지 않다면?"
                 android:textSize="15sp"
                 android:textColor="#000000" />
 
@@ -217,7 +217,7 @@
                 android:id="@+id/tvUserId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="KA_23174140"
+                android:text="tvUserId.setText"
                 android:padding="12dp"
                 android:background="@android:drawable/editbox_background"
                 android:layout_marginBottom="12dp" />

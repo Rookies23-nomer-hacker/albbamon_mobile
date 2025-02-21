@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedFAB" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="RoundedFAB_100" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">100%</item>
+    </style>
+</resources>
