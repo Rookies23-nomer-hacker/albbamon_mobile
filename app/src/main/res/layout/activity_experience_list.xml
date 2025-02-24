@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="50dp"
     android:layout_marginBottom="50dp"
-    tools:context=".ExperienceList">
+    tools:context=".Experience.ExperienceList">
 
     <!-- 기존 레이아웃 유지 -->
     <LinearLayout
@@ -28,7 +28,8 @@
                 android:layout_weight="1"
                 android:paddingLeft="30px"
                 android:text="알바 경험담"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/searchButton"
@@ -79,7 +80,9 @@
         <ListView
             android:id="@+id/ex_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
     <!-- Floating Action Button -->

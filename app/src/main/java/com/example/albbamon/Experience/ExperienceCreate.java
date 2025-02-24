@@ -1,6 +1,7 @@
-package com.example.albbamon;
+package com.example.albbamon.Experience;
 
 import android.os.Bundle;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,8 +9,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class ExperienceCreate extends AppCompatActivity {
+import com.example.albbamon.R;
 
+public class ExperienceCreate extends AppCompatActivity {
+    EditText edit_title; EditText edit_content; EditTedit ee
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

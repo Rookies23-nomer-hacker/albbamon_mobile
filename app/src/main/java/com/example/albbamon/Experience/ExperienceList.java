@@ -1,24 +1,24 @@
-package com.example.albbamon;
+package com.example.albbamon.Experience;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.R;
+import com.example.albbamon.adapter.CommunityAdapter;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.model.CommunityModel;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.example.albbamon.network.RetrofitClient;
+
 import retrofit2.Callback;
 
 import java.util.ArrayList;
@@ -29,12 +29,12 @@ import retrofit2.Response;
 
 public class ExperienceList extends AppCompatActivity {
     ListView list_view;
-    ArrayList<String> items = new ArrayList<String>();
     ExtendedFloatingActionButton efab_write_btn;
     FloatingActionButton fab_up_btn;
     FloatingActionButton fab_write_btn;
     boolean isExtraVisible = false;
-
+    List<CommunityModel> communityList = new ArrayList<>();
+    TextView total_bbs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,26 +45,26 @@ public class ExperienceList extends AppCompatActivity {
         efab_write_btn = (ExtendedFloatingActionButton)findViewById(R.id.ex_write_btn);
         fab_up_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_top);
         fab_write_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_write);
-
-
-//        for(int i=0; i < 100; i++){
-//            items.add("Item : " + Integer.toString(i));
-//        }
+        total_bbs = (TextView) findViewById(R.id.totalRec_textView);
 
 
 
+        //ListView 데이터 가져와서 보여주기
         fetchCommunity();
 
 
+        list_view.setOnItemClickListener((parent, view, position, id) -> {
+            // 클릭한 아이템 가져오기
+            CommunityModel selectedPost = communityList.get(position);
 
+            // 데이터 확인 (디버깅용)
+            Log.d("ListViewClick", "선택된 아이템: " + selectedPost.getTitle());
 
-
-
-
-
-
-
-
+            // 새 액티비티로 이동 (선택한 게시글 정보를 넘겨줌)
+            Intent intent = new Intent(ExperienceList.this, ExperienceView.class);
+            intent.putExtra("postId", selectedPost.getPostId()); // 게시글 ID 전달
+            startActivity(intent);
+        });
 
         //스크롤 액션에 따른 btn설정
         list_view.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -123,30 +123,24 @@ public class ExperienceList extends AppCompatActivity {
 
     private void fetchCommunity() {
         CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+
         Call<List<CommunityModel>> call = apiService.getPosts();
 
-        call.enqueue(new Callback<List<CommunityModel>>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<CommunityModel>> call, Response<List<CommunityModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<CommunityModel> bbss = response.body();
+                    List<CommunityModel> bbs = response.body();
 
-                    runOnUiThread(() -> { // UI 업데이트가 있다면 runOnUiThread() 사용
-                        for (CommunityModel bbs : bbss) {
-//                            Integer postId = (bbs.getTitle() != null) ? bbs.getPostId() : 0;
-                            String userId = (bbs.getUserId() != null) ? bbs.getUserId() : "알 수 없음";
-                            String title = (bbs.getTitle() != null) ? bbs.getTitle() : "제목 없음";
-                            String createDate = (bbs.getTitle() != null) ? bbs.getCreateDate() : "알 수 없음";
+                    runOnUiThread(() -> {
+                        runOnUiThread(() -> {
+                            communityList.clear();  // 기존 데이터 삭제 (중복 방지)
+                            communityList.addAll(bbs);  // 🔥 communityList에 데이터 추가
+                        });
 
-//                            items.add("번호 : " + postId.toString());
-//                            items.add("제목 : " + title);
-//                            items.add("작성자 : " + userId);
-//                            items.add("작성일 : " + createDate);
-                            Log.d("API", "ID: " + userId + ", 제목: " + title);
-                        }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ExperienceList.this, android.R.layout.simple_list_item_1,items) ;
+                        CommunityAdapter adapter = new CommunityAdapter(ExperienceList.this, communityList);
                         list_view.setAdapter(adapter);
+                        total_bbs.setText("총 " + communityList.size() + "건");
                     });
                 } else {
                     Log.e("API_ERROR", "서버 응답 실패: " + response.code());
