@@ -11,6 +11,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -39,6 +40,6 @@ public interface UserAPI {
     @POST("/api/user/sign-in")
     Call<ResponseBody> signIn(@Body LoginUserModel login);
 
-    @GET("/api/user/withdraw")
-    Call<SuccessResponse> deleteUser(@Query("userId") long userId);
+    @DELETE("/api/user/{userId}")
+    Call<ResponseBody> deleteUser(@Header("Cookie") String sessionCookie, @Path("userId") long userId);
 }

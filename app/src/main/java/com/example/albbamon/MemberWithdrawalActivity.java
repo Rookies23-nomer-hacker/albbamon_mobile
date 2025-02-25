@@ -20,6 +20,8 @@ import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.network.SuccessResponse;
 import com.example.albbamon.api.UserAPI;
+import com.example.albbamon.repository.UserRepository;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,44 +67,57 @@ public class MemberWithdrawalActivity extends AppCompatActivity {
         });
 
         // 사용자 정보 API 호출하여 업데이트
-        UserAPI userAPI = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
-        Call<UserModel> call = userAPI.getUserInfo();
-        call.enqueue(new Callback<UserModel>() {
+        UserRepository userRepository = new UserRepository(this);
+        userRepository.fetchUserInfo(this, new UserRepository.UserCallback() {
             @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    UserModel userModel = response.body();
-                    UserData userData = userModel.getData(); // UserData 가져오기
-
-                    if (userData != null && userData.getUserInfo() != null) {
-                        UserInfo userInfo = userData.getUserInfo(); // UserInfo 가져오기
-
-                        String name = userInfo.getName() != null ? userInfo.getName() : "사용자 정보 없음";
-                        numericUserId = userInfo.getId(); // getId() 접근
-
-                        tvUserId.setText(name);
-                        Log.d("UserMypage", "회원 정보 업데이트 성공: " + name + ", id: " + numericUserId);
-                    } else {
-                        Log.e("UserMypage", "유저 데이터가 null입니다.");
-                    }
-                } else {
-                    Log.e("UserMypage", "응답 실패: " + response.code());
-                    try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-                        Log.e("UserMypage", "오류 메시지: " + errorBody);
-                    } catch (Exception e) {
-                        Log.e("UserMypage", "오류 처리 실패", e);
-                    }
-                }
+            public void onSuccess(UserInfo userInfo) {
+                numericUserId = userInfo.getId();
+                tvUserId.setText(userInfo.getName() != null ? userInfo.getName() : "사용자 정보 없음");
+                Log.d("MemberWithdrawal", "회원 정보 불러오기 성공: ID=" + numericUserId);
             }
 
             @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-                Log.e("UserMypage", "API 호출 오류", t);
+            public void onFailure(String errorMessage) {
+                Log.e("MemberWithdrawal", "회원 정보 불러오기 실패: " + errorMessage);
             }
         });
 
-
+//        UserAPI userAPI = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
+//        Call<UserModel> call = userAPI.getUserInfo();
+//        call.enqueue(new Callback<UserModel>() {
+//            @Override
+//            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    UserModel userModel = response.body();
+//                    UserData userData = userModel.getData(); // UserData 가져오기
+//
+//                    if (userData != null && userData.getUserInfo() != null) {
+//                        UserInfo userInfo = userData.getUserInfo(); // UserInfo 가져오기
+//
+//                        String name = userInfo.getName() != null ? userInfo.getName() : "사용자 정보 없음";
+//                        numericUserId = userInfo.getId(); // getId() 접근
+//
+//                        tvUserId.setText(name);
+//                        Log.d("UserMypage", "회원 정보 업데이트 성공: " + name + ", id: " + numericUserId);
+//                    } else {
+//                        Log.e("UserMypage", "유저 데이터가 null입니다.");
+//                    }
+//                } else {
+//                    Log.e("UserMypage", "응답 실패: " + response.code());
+//                    try {
+//                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
+//                        Log.e("UserMypage", "오류 메시지: " + errorBody);
+//                    } catch (Exception e) {
+//                        Log.e("UserMypage", "오류 처리 실패", e);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<UserModel> call, Throwable t) {
+//                Log.e("UserMypage", "API 호출 오류", t);
+//            }
+//        });
 
         // 초기 상태: 탈퇴 버튼 비활성, 두 번째 섹션 숨김
         btnWithdraw.setEnabled(false);
@@ -135,26 +150,43 @@ public class MemberWithdrawalActivity extends AppCompatActivity {
             }
 
             // 회원 탈퇴 API 호출
-            Call<SuccessResponse> callDel = userAPI.deleteUser(numericUserId);
-            callDel.enqueue(new Callback<SuccessResponse>() {
+            userRepository.deleteUser(this, numericUserId, new UserRepository.DeleteUserCallback() {
                 @Override
-                public void onResponse(Call<SuccessResponse> call, Response<SuccessResponse> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show();
-                        Log.e("회원탈퇴API", "회원 탈퇴 성공");
-                        finish();
-                    } else {
-                        Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 실패: " + response.message(), Toast.LENGTH_SHORT).show();
-                        Log.e("회원탈퇴API", "서버 응답 실패: " + response.code());
-                    }
+                public void onSuccess(String message) {
+                    Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show();
+                    Log.d("회원탈퇴", "회원 탈퇴 성공");
+                    finish(); // 탈퇴 후 액티비티 종료
                 }
+
                 @Override
-                public void onFailure(Call<SuccessResponse> call, Throwable t) {
-                    Toast.makeText(MemberWithdrawalActivity.this, "오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("회원탈퇴API", "Error: " + t.getMessage());
-                    t.printStackTrace();
+                public void onFailure(String errorMessage) {
+                    Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 실패: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    Log.e("회원탈퇴", "서버 응답 실패: " + errorMessage);
                 }
             });
+
+
+//            // 회원 탈퇴 API 호출
+//            Call<SuccessResponse> callDel = userAPI.deleteUser(numericUserId);
+//            callDel.enqueue(new Callback<SuccessResponse>() {
+//                @Override
+//                public void onResponse(Call<SuccessResponse> call, Response<SuccessResponse> response) {
+//                    if (response.isSuccessful()) {
+//                        Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show();
+//                        Log.e("회원탈퇴API", "회원 탈퇴 성공");
+//                        finish();
+//                    } else {
+//                        Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 실패: " + response.message(), Toast.LENGTH_SHORT).show();
+//                        Log.e("회원탈퇴API", "서버 응답 실패: " + response.code());
+//                    }
+//                }
+//                @Override
+//                public void onFailure(Call<SuccessResponse> call, Throwable t) {
+//                    Toast.makeText(MemberWithdrawalActivity.this, "오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Log.e("회원탈퇴API", "Error: " + t.getMessage());
+//                    t.printStackTrace();
+//                }
+//            });
         });
 
         // 안내문 HTML 파싱 및 설정

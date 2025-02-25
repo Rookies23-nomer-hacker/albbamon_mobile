@@ -13,6 +13,7 @@ import com.example.albbamon.network.RetrofitClient;
 
 import javax.security.auth.callback.PasswordCallback;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,6 +95,42 @@ public class UserRepository {
         });
     }
 
+    // ✅ 회원 탈퇴 API 호출 메서드 추가
+    public void deleteUser(Context context, long userId, DeleteUserCallback callback) {
+        // ✅ SharedPreferences에서 세션 쿠키 가져오기
+        SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        String sessionCookie = prefs.getString("cookie", "");
+
+        if (sessionCookie.isEmpty()) {
+            callback.onFailure("세션 쿠키가 없습니다. 로그인이 필요합니다.");
+            return;
+        }
+
+        // ✅ API 호출 (세션 쿠키 포함)
+        Call<ResponseBody> call = userAPI.deleteUser(sessionCookie, userId);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess("회원 탈퇴 성공");
+                } else {
+                    callback.onFailure("회원 탈퇴 실패: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callback.onFailure("회원 탈퇴 API 호출 실패: " + t.getMessage());
+            }
+        });
+    }
+
+    // ✅ 회원 탈퇴 콜백 인터페이스
+    public interface DeleteUserCallback {
+        void onSuccess(String message);
+        void onFailure(String errorMessage);
+    }
 
     // API 응답 전달 인터페이스
     public interface UserCallback {
