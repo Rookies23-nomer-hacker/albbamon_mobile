@@ -34,7 +34,7 @@ public class UserMypage extends AppCompatActivity {
 
         // UserRepository 초기화
         UserRepository userRepository;
-        userRepository = new UserRepository();
+        userRepository = new UserRepository(this);
 
         // ✅ fetchUserInfo() 호출하여 사용자 정보 가져오기
         userRepository.fetchUserInfo(new UserRepository.UserCallback() {
