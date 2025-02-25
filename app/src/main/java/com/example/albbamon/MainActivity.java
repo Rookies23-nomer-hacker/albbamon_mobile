@@ -26,24 +26,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // 버튼 초기화
+        Button btnPer = findViewById(R.id.goAccount);
         Button btnOpenMypage = findViewById(R.id.btn_open_mypage);
         Button btnOpenen = findViewById(R.id.btn_open_a);
 
+        btnPer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                startActivity(intent);
+            }
+        });
 
         // 버튼 클릭 시 UserMypage 이동
         btnOpenMypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UserMypage.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnPer = findViewById(R.id.goAccount);
-        btnPer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignIn.class);
                 startActivity(intent);
             }
         });
