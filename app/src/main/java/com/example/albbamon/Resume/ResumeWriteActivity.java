@@ -17,7 +17,7 @@ import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.model.ResumeRequestDto;
-import com.example.albbamon.model.ResumeUserModel;
+import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
 
 import retrofit2.Call;
@@ -84,11 +84,11 @@ public class ResumeWriteActivity extends AppCompatActivity {
      * 사용자 정보 가져오는 함수입니다.
      */
     private void fetchUserInfo() {
-        userAPI.getUserInfo().enqueue(new Callback<ResumeUserModel>() {
+        userAPI.getUserInfo().enqueue(new Callback<UserModel>() {
             @Override
-            public void onResponse(Call<ResumeUserModel> call, Response<ResumeUserModel> response) {
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ResumeUserModel user = response.body();
+                    UserModel user = response.body();
 
                     // ✅ 전체 JSON 응답을 로그로 출력
                     Log.d("API_SUCCESS", "전체 응답: " + response.body().toString());
@@ -110,7 +110,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResumeUserModel> call, Throwable t) {
+            public void onFailure(Call<UserModel> call, Throwable t) {
                 Log.e("API_ERROR", "API 호출 실패", t);
             }
         });

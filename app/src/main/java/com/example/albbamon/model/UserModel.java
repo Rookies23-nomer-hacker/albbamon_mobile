@@ -2,7 +2,7 @@ package com.example.albbamon.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResumeUserModel {
+public class UserModel {
 
     @SerializedName("id")
     private int id;
@@ -27,10 +27,10 @@ public class ResumeUserModel {
 
     // ✅ JSON이 "data.userInfo" 안에 있는 경우 추가
     @SerializedName("userInfo")
-    private ResumeUserModel userInfo;
+    private UserModel userInfo;
 
     @SerializedName("data")
-    private ResumeUserModel data;
+    private UserModel data;
 
     // ✅ 올바른 데이터를 가져오기 위한 Getter 수정
     public int getId() { return (data != null && data.userInfo != null) ? data.userInfo.id : id; }
