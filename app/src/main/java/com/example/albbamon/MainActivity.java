@@ -55,5 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.btn_open_inquiry).setOnClickListener( v -> {
+            Intent intent = new Intent(this, InquiryActivity.class);
+            startActivity(intent);
+        });
+
     }
 }
