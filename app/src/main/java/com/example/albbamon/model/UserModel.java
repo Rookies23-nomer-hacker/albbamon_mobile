@@ -16,7 +16,7 @@ public class UserModel {
     public String getMessage() { return message; }
     public UserData getData() { return data; }
 
-    // 내부 클래스 추가 (data 필드 처리)
+    // 내부 클래스: data 필드 처리
     public class UserData {
         @SerializedName("userInfo")
         private UserInfo userInfo;
@@ -24,7 +24,7 @@ public class UserModel {
         public UserInfo getUserInfo() { return userInfo; }
     }
 
-    // userInfo 필드 정의
+    // 내부 클래스: userInfo 필드 정의
     public class UserInfo {
         @SerializedName("id")
         private int id;

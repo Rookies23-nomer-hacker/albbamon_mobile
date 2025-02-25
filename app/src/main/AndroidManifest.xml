@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 권한은 반드시 <application> 태그 바깥에 위치합니다. -->
+    <!-- 인터넷 사용 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -24,7 +24,7 @@
 
         <!-- 메인 Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".InquiryActivity"
             android:exported="true"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
@@ -39,11 +39,30 @@
         <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" />
 
+        <!-- 아이디 찾기 Activity들 -->
+        <activity
+            android:name=".FindIdPersonalActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".FindIdBusinessActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            tools:ignore="MissingClass" />
+
+        <!-- 개인회원 비밀번호 찾기 -->
+        <activity
+            android:name=".FindPwPersonalActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 기업회원 비밀번호 찾기 -->
+        <activity
+            android:name=".FindPwBusinessActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 채용공고 상세 화면 Activity -->
+        <activity
+            android:name=".JobDetailActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
-
-
-
-
-

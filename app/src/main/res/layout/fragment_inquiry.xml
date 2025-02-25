@@ -204,12 +204,19 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:id="@+id/btn_go_to_withdrawal"
+            android:id="@+id/btn_go_to_find_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이디 찾기로 이동"
+            android:text="아이디 찾기" />
+
+        <Button
+            android:id="@+id/btn_go_to_find_pw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 찾기"
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 </ScrollView>
 

@@ -37,15 +37,15 @@ public class InquiryFragment extends Fragment {
     private Spinner spinnerMainCategory, spinnerSubCategory;
     private EditText etInquiryContent, etInquiryEmail, etInquiryPhone;
     private CheckBox cbAgreePrivacy, cbNotifyReply;
-    private Button btnSubmitInquiry, btnBack, btnGoToWithdrawal; // 회원 탈퇴 페이지 이동 버튼
+    private Button btnSubmitInquiry, btnBack, btnGoToWithdrawal;
+    private Button btnGoToFindId;  // 아이디 찾기 버튼
+    private Button btnGoToFindPw;  // **비밀번호 찾기 버튼 (새로 추가)**
+
     private TextView tvAttachedFile;  // 파일 이름을 표시할 TextView
 
-    // 첨부 파일 URI (파일 선택 후 저장)
-    private Uri attachedFileUri;
-    // 대분류별 상세 분류 매핑
-    private Map<String, List<String>> subCategoriesMap;
-    // 파일 선택 API 런처
-    private ActivityResultLauncher<String> filePickerLauncher;
+    private Uri attachedFileUri; // 첨부 파일 URI
+    private Map<String, List<String>> subCategoriesMap; // 대분류별 상세 분류 매핑
+    private ActivityResultLauncher<String> filePickerLauncher; // 파일 선택 API 런처
 
     public InquiryFragment() {
         // Required empty public constructor
@@ -54,7 +54,7 @@ public class InquiryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // filePickerLauncher 등록은 onCreateView()에서 수행합니다.
+        // filePickerLauncher 등록은 onCreateView()에서 수행
     }
 
     @Nullable
@@ -75,26 +75,41 @@ public class InquiryFragment extends Fragment {
         cbNotifyReply = view.findViewById(R.id.cb_notify_reply);
         btnSubmitInquiry = view.findViewById(R.id.btn_submit_inquiry);
         tvAttachedFile = view.findViewById(R.id.tv_attached_file);
-        btnBack = view.findViewById(R.id.btn_back); // 뒤로가기 버튼
-
-        // 회원 탈퇴 페이지로 이동하는 버튼 (XML에 추가한 버튼)
+        btnBack = view.findViewById(R.id.btn_back);
         btnGoToWithdrawal = view.findViewById(R.id.btn_go_to_withdrawal);
 
-        btnGoToWithdrawal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // MemberWithdrawalActivity로 이동 (같은 패키지 내에 있으므로 import 생략 가능)
-                Intent intent = new Intent(getActivity(), MemberWithdrawalActivity.class);
+        // 아이디 찾기 버튼
+        btnGoToFindId = view.findViewById(R.id.btn_go_to_find_id);
+        btnGoToFindId.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "아이디 찾기 버튼 클릭됨", Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                Intent intent = new Intent(getActivity(), FindIdPersonalActivity.class);
                 startActivity(intent);
             }
         });
 
-        // 뒤로가기 버튼 클릭 시 동작: FragmentManager popBackStack() 호출
+        // **비밀번호 찾기 버튼 연결 (XML에 btn_go_to_find_pw가 있어야 함)**
+        btnGoToFindPw = view.findViewById(R.id.btn_go_to_find_pw);
+        btnGoToFindPw.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "비밀번호 찾기 버튼 클릭됨", Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                Intent intent = new Intent(getActivity(), FindPwPersonalActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 회원 탈퇴 버튼
+        btnGoToWithdrawal.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MemberWithdrawalActivity.class);
+            startActivity(intent);
+        });
+
+        // 뒤로가기 버튼
         btnBack.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        // 파일 선택 API 런처 등록 (뷰 초기화 후)
+        // 파일 선택 API 런처 등록
         filePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
             if (uri != null) {
                 attachedFileUri = uri;
@@ -104,7 +119,7 @@ public class InquiryFragment extends Fragment {
             }
         });
 
-        // 첨부파일 아이콘 클릭 이벤트 설정
+        // 첨부파일 아이콘 클릭 이벤트
         FrameLayout attachmentBox = view.findViewById(R.id.attachment_box);
         attachmentBox.setOnClickListener(v -> filePickerLauncher.launch("*/*"));
 
@@ -127,9 +142,6 @@ public class InquiryFragment extends Fragment {
         }
     }
 
-    /**
-     * URI에서 파일 이름을 추출 (간단한 방식)
-     */
     private String getFileName(Uri uri) {
         String lastSegment = uri.getLastPathSegment();
         return lastSegment != null ? lastSegment : "알 수 없음";
@@ -190,7 +202,6 @@ public class InquiryFragment extends Fragment {
                 return;
             }
             Toast.makeText(requireContext(), "문의가 전송되었습니다.", Toast.LENGTH_SHORT).show();
-            // 문의 전송 후 추가 동작을 여기에 추가할 수 있습니다.
         });
     }
 
@@ -204,6 +215,3 @@ public class InquiryFragment extends Fragment {
         Toast.makeText(requireContext(), "파일이 성공적으로 업로드되었습니다.", Toast.LENGTH_SHORT).show();
     }
 }
-
-
-

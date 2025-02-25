@@ -9,7 +9,7 @@ public class RetrofitClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
 //                    .baseUrl("http://58.127.241.84:60085") // 여기에 API 서버 주소 입력
-                    .baseUrl("http://10.0.2.2:8083")
+                    .baseUrl("http://10.0.2.2:60085")
                     .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
                     .build();
         }
