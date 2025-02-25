@@ -18,7 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.albbamon.Resume.ResumeWriteActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class activity_oh extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,6 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
         tools:targetApi="31">
+
+        <!-- 다른 Activity -->
+        <activity
+            android:name=".activity_oh"
+            android:exported="false" />
+
+        <!-- 메인 Activity -->
         <activity
             android:name=".SignIn"
             android:exported="false" />
@@ -29,7 +36,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -55,6 +61,16 @@
         <activity android:name=".JobPostingActivity"/>
         <activity
             android:name=".EditUserInfoActivity" />
+        <activity
+            android:name=".InquiryActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 회원 탈퇴 Activity -->
+        <activity android:name=".MemberWithdrawalActivity" />
+
+        <!-- 메일/문자수신 설정 Activity -->
+        <activity android:name=".MailSettingsActivity" />
 
     </application>
 

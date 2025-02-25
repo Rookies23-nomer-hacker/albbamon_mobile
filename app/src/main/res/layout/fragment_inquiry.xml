@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 상단 제목 -->
+        <TextView
+            android:id="@+id/tv_inquiry_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="문의유형"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 문의유형: 두 개의 Spinner를 가로로 배치 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Spinner
+                android:id="@+id/spinner_main_category"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/spinner_background" />
+
+            <Spinner
+                android:id="@+id/spinner_sub_category"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background"/>
+        </LinearLayout>
+
+        <!-- 문의내용 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="문의내용"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/et_inquiry_content"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="문의 내용을 입력하세요"
+            android:gravity="top"
+            android:background="@android:drawable/editbox_background"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:inputType="textMultiLine"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <!-- 첨부파일 영역: 아이콘만으로 파일 첨부 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical">
+
+            <!-- 파일 첨부 아이콘 -->
+            <FrameLayout
+                android:id="@+id/attachment_box"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/attachment_box"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/iv_attach_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_plus_circle"
+                    android:contentDescription="첨부파일 아이콘" />
+            </FrameLayout>
+
+            <!-- 첨부파일 안내 문구 -->
+            <TextView
+                android:id="@+id/tv_attachment_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:text="• 최대 5MB까지 첨부 가능합니다. (png, jpeg, jpg, gif, bmp)"
+                android:textSize="12sp"
+                android:textColor="#888888" />
+        </LinearLayout>
+
+        <!-- 첨부된 파일 이름을 표시할 TextView -->
+        <TextView
+            android:id="@+id/tv_attached_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="첨부된 파일: 없음"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 이메일 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이메일"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/et_inquiry_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이메일 주소를 입력하세요"
+            android:background="@android:drawable/editbox_background"
+            android:textSize="24sp"
+            android:padding="8dp"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 전화번호(선택) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전화번호 (선택)"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/et_inquiry_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="전화번호를 입력하세요 (선택)"
+            android:background="@android:drawable/editbox_background"
+            android:textSize="24sp"
+            android:padding="8dp"
+            android:inputType="phone"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 개인정보 수집 동의 체크박스 -->
+        <CheckBox
+            android:id="@+id/cb_agree_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개인정보수집 및 이용안내 동의"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_privacy_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="문의에 대한 처리 및 답변을 위해 이메일, 계정정보,전화번호(선택)&#10;,첨부파일(선택),IP주소, 브라우저 및 OS정보가 수집되며,&#10;수집된 정보는 3년간 보관합니다. 이에 동의하지 않을 경우&#10; 문의/제안/신고 등록이 불가하며,선택 항목은 입력 하지 않더라도&#10; 서비스 이용에 제한을 두지 않습니다."
+            android:textSize="13sp"
+            android:textColor="#888888"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 답변 알림 체크박스 -->
+        <CheckBox
+            android:id="@+id/cb_notify_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="고객센터 문의 답변 알림받기"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 보내기 버튼 -->
+        <Button
+            android:id="@+id/btn_submit_inquiry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="보내기"
+            android:backgroundTint="#FF501B"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="뒤로가기"
+            android:layout_marginBottom="16dp"/>
+        <Button
+            android:id="@+id/btn_go_to_withdrawal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원 탈퇴 페이지로 이동"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/btn_go_to_withdrawal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디 찾기로 이동"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</ScrollView>
+
+
+
+
