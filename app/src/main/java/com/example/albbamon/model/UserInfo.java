@@ -31,4 +31,4 @@ public class UserInfo {
     public String getCeoNum() { return ceoNum; }
     public String getCompany() { return company; }
     public String getProfileImg() { return profileImg; }
-}
+ }

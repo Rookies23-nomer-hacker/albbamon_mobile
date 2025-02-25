@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.albbamon.Resume.ResumeWriteActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -21,12 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
         // 버튼 초기화
         Button btnOpenMypage = findViewById(R.id.btn_open_mypage);
+        Button btnOpenen = findViewById(R.id.btn_open_a);
+
 
         // 버튼 클릭 시 UserMypage 이동
         btnOpenMypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UserMypage.class);
+                startActivity(intent);
+            }
+        });
+        btnOpenen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ResumeWriteActivity.class);
                 startActivity(intent);
             }
         });
