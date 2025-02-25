@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.albbamon.R;
 
 public class UserInfoActivity extends AppCompatActivity{
 
@@ -31,7 +33,7 @@ public class UserInfoActivity extends AppCompatActivity{
         });
 
         EditUserInfoActivity.setOnClickListener(v -> {
-            Intent intent = new Intent(UserInfoActivity.this, EditUserInfoActivity.class);
+            Intent intent = new Intent(UserInfoActivity.this, com.example.albbamon.mypage.EditUserInfoActivity.class);
             intent.putExtra("fragment", "edit_user_info"); // EditUserInfo Fragment 표시
             startActivity(intent);
         });

@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import com.example.albbamon.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class ResumeManagement extends AppCompatActivity {

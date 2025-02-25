@@ -48,10 +48,10 @@
         <activity
             android:name=".account"
             android:exported="false" />
-        <activity android:name=".UserMypage" />
-        <activity android:name=".UserInfoActivity" />
-        <activity android:name=".ApplicationStatus" />
-        <activity android:name=".ResumeManagement" />
+        <activity android:name=".mypage.UserMypage" />
+        <activity android:name=".mypage.UserInfoActivity" />
+        <activity android:name=".mypage.ApplicationStatus" />
+        <activity android:name=".mypage.ResumeManagement" />
         <activity android:name=".Resume.ResumeSchoolActivity" />
         <activity android:name=".Resume.ResumeJobActivity"/>
         <activity android:name=".Resume.ResumeWriteActivity"/>
@@ -60,7 +60,7 @@
         <activity android:name=".Resume.ResumePortfolioActivity"/>
         <activity android:name=".JobPostingActivity"/>
         <activity
-            android:name=".EditUserInfoActivity" />
+            android:name=".mypage.EditUserInfoActivity" />
         <activity
             android:name=".InquiryActivity"
             android:exported="true"

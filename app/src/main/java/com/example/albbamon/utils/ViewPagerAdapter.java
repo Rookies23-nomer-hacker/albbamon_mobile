@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.utils;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

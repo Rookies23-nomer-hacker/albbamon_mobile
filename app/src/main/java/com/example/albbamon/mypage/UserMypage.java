@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.albbamon.MainActivity;
+import com.example.albbamon.R;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.repository.UserRepository;
 

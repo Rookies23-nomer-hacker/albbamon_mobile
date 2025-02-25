@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.mypage;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class AllSupportFragment extends Fragment {
+import com.example.albbamon.R;
+
+public class OtherSupportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.all_support_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_other_support, container, false);
     }
 }
+
