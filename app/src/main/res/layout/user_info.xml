@@ -237,7 +237,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="메일·문자수신 설정"
+                android:text="해외 로그인 차단"
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
 
@@ -249,8 +249,6 @@
                 app:thumbTint="@color/white"
                 app:trackTint="@color/switch_track_color"/>
 
-
-
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -260,6 +258,18 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <!-- 고객센터 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="고객센터"
+            android:textSize="15sp"
+            android:textColor="#929292"/>
+
 
         <LinearLayout
             android:id="@+id/a"

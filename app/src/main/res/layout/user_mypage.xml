@@ -26,7 +26,6 @@
 
                 <!-- 마이페이지 제목 (왼쪽 정렬) -->
                 <TextView
-                    android:id="@+id/toolbar_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

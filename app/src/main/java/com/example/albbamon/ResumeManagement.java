@@ -24,14 +24,14 @@ public class ResumeManagement extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resume_management);
 
-        containerLayout = findViewById(R.id.container_layout); // 추가할 위치
+        containerLayout = findViewById(R.id.container_layout);
 
         // 툴바 제목 및 뒤로가기 버튼
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("지원현황");
 
         ImageView backButton = findViewById(R.id.back);
-        //backButton.setOnClickListener(v -> finish()); // 현재 Activity 종료
+
         // 뒤로가기 버튼 클릭 시 MainActivity로 이동
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(ResumeManagement.this, UserMypage.class);

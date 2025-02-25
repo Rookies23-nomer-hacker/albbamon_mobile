@@ -25,10 +25,8 @@ import java.util.List;
 
 public class ApplicationStatus extends AppCompatActivity {
 
-    private TextView tabOnline, tabOther, toolbarTitle;
     private View indicatorOnline, indicatorOther;
     private EditText searchEditText;
-    private ImageView searchIcon, backButton;
     private ViewSwitcher viewSwitcher;
     private LinearLayout tabOnlineContainer, tabOtherContainer;
     private LinearLayout contentOnline, contentOther;
@@ -43,10 +41,10 @@ public class ApplicationStatus extends AppCompatActivity {
         setContentView(R.layout.application_status);
 
         // 툴바 제목 및 뒤로가기 버튼
-        toolbarTitle = findViewById(R.id.toolbar_title);
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("지원현황");
 
-        backButton = findViewById(R.id.back);
+        ImageView backButton = findViewById(R.id.back);
         // 뒤로가기 버튼 클릭 시 MainActivity로 이동
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(ApplicationStatus.this, UserMypage.class);
@@ -57,7 +55,7 @@ public class ApplicationStatus extends AppCompatActivity {
 
         // 검색 기능
         searchEditText = findViewById(R.id.searchEditText);
-        searchIcon = findViewById(R.id.searchIcon);
+        ImageView searchIcon = findViewById(R.id.searchIcon);
         searchIcon.setOnClickListener(v -> {
             String query = searchEditText.getText().toString().trim();
             if (!TextUtils.isEmpty(query)) {

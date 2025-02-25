@@ -2,6 +2,7 @@ package com.example.albbamon.model;
 
 import com.google.gson.annotations.SerializedName;
 
+//서버에서 응답받은 JSON 데이터를 매핑
 public class UserModel {
     @SerializedName("status")
     private int status;
