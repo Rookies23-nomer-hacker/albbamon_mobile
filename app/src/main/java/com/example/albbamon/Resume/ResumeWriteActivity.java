@@ -14,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albbamon.R;
+import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.api.UserAPI;
+import com.example.albbamon.model.ResumeRequestDto;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
 
@@ -25,10 +27,14 @@ import retrofit2.Retrofit;
 
 public class ResumeWriteActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_SCHOOL = 1001;
+    private static final int REQUEST_CODE_JOB = 1002;
     private ImageView backIcon;
     private Button btnSave, btnEditProfile;
-    private TextView nameText, addressText, phoneText, emailText;
+    private TextView nameText, phoneText, emailText;
+    private TextView schoolContent, jobContent;
     private UserAPI userAPI;
+    private ResumeAPI resumeAPI;
     private ScrollView scrollView;
 
     @Override
@@ -44,9 +50,11 @@ public class ResumeWriteActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
 
         nameText = findViewById(R.id.Name);
-        addressText = findViewById(R.id.addressText);
         phoneText = findViewById(R.id.phoneText);
         emailText = findViewById(R.id.emailText);
+
+        schoolContent = findViewById(R.id.schoolContent);
+        jobContent = findViewById(R.id.jobContent);
 
         // 뒤로 가기 버튼 클릭 이벤트
         backIcon.setOnClickListener(v -> finish()); // 현재 액티비티 종료
@@ -54,6 +62,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
         // Retrofit 클라이언트 생성
         Retrofit retrofit = RetrofitClient.getRetrofitInstance();
         userAPI = retrofit.create(UserAPI.class);
+        resumeAPI = retrofit.create(ResumeAPI.class);
 
         // 사용자 정보 가져오기
         fetchUserInfo();
@@ -65,14 +74,15 @@ public class ResumeWriteActivity extends AppCompatActivity {
         });
 
         // 이력서 저장 버튼 클릭 이벤트
-        btnSave.setOnClickListener(v -> {
-            Toast.makeText(ResumeWriteActivity.this, "이력서가 저장되었습니다!", Toast.LENGTH_SHORT).show();
-        });
+        btnSave.setOnClickListener(v -> saveResume());
 
         // ScrollView를 맨 위로 이동
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_UP));
     }
 
+    /**
+     * 사용자 정보 가져오는 함수입니다.
+     */
     private void fetchUserInfo() {
         userAPI.getUserInfo().enqueue(new Callback<UserModel>() {
             @Override
@@ -106,19 +116,32 @@ public class ResumeWriteActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * 학력 정보 이동 함수
+     */
     public void goToSchoolPage(View view) {
         Intent intent = new Intent(this, ResumeSchoolActivity.class);
-        startActivity(intent);
+        // ✅ 현재 schoolContent 값을 Intent에 담아 전달
+        String currentSchoolInfo = schoolContent.getText().toString();
+        intent.putExtra("currentSchoolInfo", currentSchoolInfo);
+        startActivityForResult(intent, REQUEST_CODE_SCHOOL);
 //        Toast.makeText(ResumeWriteActivity.this, "학력사항 개발중", Toast.LENGTH_SHORT).show();
-        
     }
+
+    /**
+     * 경력정보 이동 함수
+     */
     public void goToJobPage(View view) {
         Intent intent = new Intent(this, ResumeJobActivity.class);
-        startActivity(intent);
+        String currentJobInfo = jobContent.getText().toString();
+        intent.putExtra("currentJobInfo", currentJobInfo);
+        startActivityForResult(intent, REQUEST_CODE_JOB);
 //        Toast.makeText(ResumeWriteActivity.this, "경력사항 개발중", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * 희망근무조건 이동 함수
+     */
     public void goToOptionPage(View view) {
         Intent intent = new Intent(this, ResumeOptionActivity.class);
         startActivity(intent);
@@ -126,17 +149,63 @@ public class ResumeWriteActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 자기소개 이동 함수
+     */
     public void goToIntroPage(View view) {
         Intent intent = new Intent(this, ResumeIntroActivity.class);
         startActivity(intent);
 //        Toast.makeText(ResumeWriteActivity.this, "자기소개 개발중", Toast.LENGTH_SHORT).show();
 
     }
+
+    /**
+     * 포트폴리오 이동 함수
+     */
     public void goToPortfolioPage(View view) {
         Intent intent = new Intent(this, ResumePortfolioActivity.class);
         startActivity(intent);
 //        Toast.makeText(ResumeWriteActivity.this, "포트폴리오 개발중", Toast.LENGTH_SHORT).show();
 
     }
+
+    // ✅ 학력/경력 페이지에서 결과를 받아 UI 업데이트
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_SCHOOL) {
+                String schoolInfo = data.getStringExtra("schoolContent");
+                schoolContent.setText(schoolInfo);
+            } else if (requestCode == REQUEST_CODE_JOB) {
+                String jobInfo = data.getStringExtra("jobContent");
+                jobContent.setText(jobInfo);
+            }
+        }
+    }
+
+    private void saveResume() {
+        // ✅ ResumeDataManager에서 데이터 가져오기
+        ResumeRequestDto resumeData = ResumeDataManager.getInstance().toResumeRequestDto();
+
+        resumeAPI.createResume(resumeData).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("API_ERROR", "응답 코드: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", "이력서 저장 실패", t);
+            }
+        });
+    }
+
 
 }

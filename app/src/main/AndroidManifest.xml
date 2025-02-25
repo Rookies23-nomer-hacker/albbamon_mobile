@@ -4,8 +4,11 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,9 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
-        tools:targetApi="31">
+        tools:targetApi="31"
+
+        >
         <activity
-            android:name=".ResumeWriteActivity"
+            android:name=".Resume.ResumeWriteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ResumeSchoolActivity" />
-        <activity android:name=".ResumeJobActivity"/>
-        <activity android:name=".ResumeOptionActivity"/>
-        <activity android:name=".ResumeIntroActivity"/>
-        <activity android:name=".ResumePortfolioActivity"/>
+        <activity android:name=".Resume.ResumeSchoolActivity" />
+        <activity android:name=".Resume.ResumeJobActivity"/>
+        <activity android:name=".Resume.ResumeOptionActivity"/>
+        <activity android:name=".Resume.ResumeIntroActivity"/>
+        <activity android:name=".Resume.ResumePortfolioActivity"/>
+        <activity android:name=".JobPostingActivity"/>
 
 
     </application>
