@@ -23,7 +23,27 @@ public class account extends AppCompatActivity {
             return insets;
         });
 
+// 개인 회원가입 버튼 클릭 시 inputPerAccount 화면으로 이동
+        Button btnPer = findViewById(R.id.buttonPer);
+        btnPer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), perAccount.class);
+                intent.putExtra("isCompany", false);
+                startActivity(intent);
+            }
+        });
 
+// 기업 회원가입 버튼 클릭 시 inputComAccount 화면으로 이동
+        Button btnCom = findViewById(R.id.buttonCom);
+        btnCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), comAccount.class);
+                intent.putExtra("isCompany", true);
+                startActivity(intent);
+            }
+        });
 
 
     }
