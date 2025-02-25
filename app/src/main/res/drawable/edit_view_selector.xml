@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 기본 상태일 때 적용 -->
+    <item android:state_focused="false" android:drawable="@drawable/edit_view_round"/>
+
+    <!-- 포커스 상태일 때 적용 -->
+    <item android:drawable="@drawable/edit_view_focus"/>
+</selector>
