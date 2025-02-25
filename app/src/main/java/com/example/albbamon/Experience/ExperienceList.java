@@ -135,9 +135,8 @@ public class ExperienceList extends AppCompatActivity {
                     runOnUiThread(() -> {
                         runOnUiThread(() -> {
                             communityList.clear();  // 기존 데이터 삭제 (중복 방지)
-                            communityList.addAll(bbs);  // 🔥 communityList에 데이터 추가
+                            communityList.addAll(bbs);  // communityList에 데이터 추가
                         });
-
                         CommunityAdapter adapter = new CommunityAdapter(ExperienceList.this, communityList);
                         list_view.setAdapter(adapter);
                         total_bbs.setText("총 " + communityList.size() + "건");
