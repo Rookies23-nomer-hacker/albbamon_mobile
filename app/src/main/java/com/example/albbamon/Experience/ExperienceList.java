@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class ExperienceList extends AppCompatActivity {
     boolean isExtraVisible = false;
     List<CommunityModel> communityList = new ArrayList<>();
     TextView total_bbs;
+    ImageButton searchButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +48,12 @@ public class ExperienceList extends AppCompatActivity {
         fab_up_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_top);
         fab_write_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_write);
         total_bbs = (TextView) findViewById(R.id.totalRec_textView);
-
+        searchButton = findViewById(R.id.searchButton);
 
 
         //ListView 데이터 가져와서 보여주기
         fetchCommunity();
+
 
 
         list_view.setOnItemClickListener((parent, view, position, id) -> {
@@ -103,6 +106,7 @@ public class ExperienceList extends AppCompatActivity {
             }
         });
 
+
         setClickListeners();
     }
 
@@ -110,10 +114,15 @@ public class ExperienceList extends AppCompatActivity {
         fab_up_btn.setOnClickListener(v -> onScrollTopClick(v));
         efab_write_btn.setOnClickListener(v -> onWriteClick(v));
         fab_write_btn.setOnClickListener(v -> onWriteClick(v));
+        searchButton.setOnClickListener(v -> onSearchClick(v));
     }
 
     private void onWriteClick(View v) {
         Intent intent = new Intent(getApplicationContext(), ExperienceCreate.class);
+        startActivity(intent);
+    }
+    private void onSearchClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), ExperienceSearch.class);
         startActivity(intent);
     }
 
