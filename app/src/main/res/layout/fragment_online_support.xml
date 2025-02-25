@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 상단 5개 탭 (전체, 지원완료, 면접, 합격, 불합격/취소) -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/subTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+
+        app:tabMode="fixed"
+
+        app:tabRippleColor="@null"
+        app:tabTextColor="@color/gray"
+        app:tabSelectedTextColor="@color/black"
+        android:background="@color/white"/>
+
+    <!-- ViewPager2 (탭과 연결) -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/subViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

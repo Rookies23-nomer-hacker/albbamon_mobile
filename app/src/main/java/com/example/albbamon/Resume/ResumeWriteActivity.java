@@ -20,6 +20,13 @@ import com.example.albbamon.model.ResumeRequestDto;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
 
+import com.bumptech.glide.Glide;
+import com.example.albbamon.model.UserData;
+import com.example.albbamon.model.UserInfo;
+import com.example.albbamon.model.UserInfo;
+import com.example.albbamon.repository.UserRepository;
+
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,26 +95,35 @@ public class ResumeWriteActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    UserModel user = response.body();
+                    UserModel userModel = response.body();
+
+                    // ✅ UserData 가져오기
+                    UserData userData = userModel.getData();
+                    UserInfo userInfo = (userData != null) ? userData.getUserInfo() : null;
 
                     // ✅ 전체 JSON 응답을 로그로 출력
                     Log.d("API_SUCCESS", "전체 응답: " + response.body().toString());
 
-                    // ✅ API 응답 데이터 로그 출력
-                    Log.d("API_SUCCESS", "사용자 정보: "
-                            + (user.getName() != null ? user.getName() : "null") + ", "
-                            + (user.getEmail() != null ? user.getEmail() : "null") + ", "
-                            + (user.getPhone() != null ? user.getPhone() : "null"));
+                    if (userInfo != null) {
+                        // ✅ API 응답 데이터 로그 출력
+                        Log.d("API_SUCCESS", "사용자 정보: "
+                                + (userInfo.getName() != null ? userInfo.getName() : "null") + ", "
+                                + (userInfo.getEmail() != null ? userInfo.getEmail() : "null") + ", "
+                                + (userInfo.getPhone() != null ? userInfo.getPhone() : "null"));
 
-                    // UI 업데이트
-                    nameText.setText(user.getName() != null ? user.getName() : "이름 없음");
-                    phoneText.setText(user.getPhone() != null ? user.getPhone() : "전화번호 없음");
-                    emailText.setText(user.getEmail() != null ? user.getEmail() : "이메일 없음");
+                        // ✅ UI 업데이트
+                        nameText.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+                        phoneText.setText(userInfo.getPhone() != null ? userInfo.getPhone() : "전화번호 없음");
+                        emailText.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
+                    } else {
+                        Log.e("API_ERROR", "사용자 정보가 없습니다.");
+                    }
 
                 } else {
                     Log.e("API_ERROR", "사용자 정보 가져오기 실패: " + response.code() + " - " + response.message());
                 }
             }
+
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
