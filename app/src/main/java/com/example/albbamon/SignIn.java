@@ -1,6 +1,7 @@
 package com.example.albbamon;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +71,7 @@ public class SignIn extends AppCompatActivity {
         // 입력값 로그 출력
         Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
 
-        UserApi apiService = RetrofitClient.getRetrofitInstance().create(UserApi.class);
+        UserApi apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserApi.class);
         UserModel.Login login = new UserModel.Login(email, password);
 
         // 서버에서 단순 문자열을 반환하므로 ResponseBody 사용
@@ -82,17 +83,32 @@ public class SignIn extends AppCompatActivity {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                // 응답 상태 코드 로그
                 Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        // 서버 응답을 문자열로 변환
                         String responseBodyString = response.body().string().trim();
                         Log.d("API_RESPONSE", "서버 응답 원본: " + responseBodyString);
 
-                        // 숫자로 변환 (서버가 "123" 같은 문자열 반환 시)
                         long userId = Long.parseLong(responseBodyString);
+
+                        // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
+                        String setCookieHeader = response.headers().get("Set-Cookie");
+
+                        if (setCookieHeader != null) {
+                            Log.d("SESSION", "서버에서 받은 세션 쿠키: " + setCookieHeader);
+
+                            // ✅ SharedPreferences에 세션 쿠키 저장
+                            SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("cookie", setCookieHeader); // ✅ 세션 쿠키 저장
+                            editor.putLong("userId", userId); // ✅ userId 저장
+                            editor.apply();
+
+                            Log.d("SESSION", "세션 쿠키 저장 완료");
+                        } else {
+                            Log.e("SESSION", "서버에서 Set-Cookie 헤더를 반환하지 않음.");
+                        }
 
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
                         Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
@@ -100,31 +116,17 @@ public class SignIn extends AppCompatActivity {
 
                     } catch (Exception e) {
                         Log.e("API_ERROR", "서버 응답 처리 실패", e);
-                        Toast.makeText(SignIn.this, "서버 응답을 처리할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // 로그인 실패 시 응답 바디 확인
-                    String errorBody = "";
-                    try {
-                        if (response.errorBody() != null) {
-                            errorBody = response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        Log.e("API_ERROR", "에러 바디 읽기 실패", e);
-                    }
-
-                    Log.e("API_ERROR", "로그인 실패 - 코드: " + response.code() + ", 메시지: " + response.message());
-                    Log.e("API_ERROR", "서버 응답 바디: " + errorBody);
-
-                    Toast.makeText(SignIn.this, "로그인 실패: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e("API_ERROR", "로그인 실패 - 코드: " + response.code());
+                    Toast.makeText(SignIn.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                // 네트워크 오류 로그 출력
                 Log.e("API_ERROR", "네트워크 오류 발생: " + t.getMessage(), t);
-                Toast.makeText(SignIn.this, "네트워크 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignIn.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
             }
         });
     }

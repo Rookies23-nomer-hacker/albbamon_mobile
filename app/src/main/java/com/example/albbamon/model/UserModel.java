@@ -61,6 +61,7 @@ public class UserModel {
 
     }
     public static class Login{
+
         @SerializedName("email")
         private String email;
         @SerializedName("password")
@@ -73,6 +74,7 @@ public class UserModel {
         public Login(String email, String password) {
             this.email = email;
             this.password = password;
+
         }
 
     }

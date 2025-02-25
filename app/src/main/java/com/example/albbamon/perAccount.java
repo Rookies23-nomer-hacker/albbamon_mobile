@@ -183,7 +183,7 @@ public class perAccount extends AppCompatActivity {
 
 
 
-        SignUpAPI apiService = RetrofitClient.getRetrofitInstance().create(SignUpAPI.class);
+        SignUpAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(SignUpAPI.class);
         Log.d("API_REQUEST", "email: " + email + ", passwd: " + password + ", phone: " + phone + ", name: " + name);
 
         Call<SignUpModel> call = apiService.createUser(new SignUpModel(email, password, phone, name));
