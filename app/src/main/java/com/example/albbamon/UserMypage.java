@@ -32,12 +32,12 @@ public class UserMypage extends AppCompatActivity {
         LinearLayout layoutApply = findViewById(R.id.layout_apply);
         LinearLayout resumeManagement = findViewById(R.id.layout_resume);
 
+
         // UserRepository 초기화
-        UserRepository userRepository;
-        userRepository = new UserRepository(this);
+        UserRepository userRepository = new UserRepository(this);
 
         // ✅ fetchUserInfo() 호출하여 사용자 정보 가져오기
-        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
+        userRepository.fetchUserInfo(this, new UserRepository.UserCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 // ✅ 사용자 정보 출력

@@ -44,6 +44,9 @@ public class ResumeWriteActivity extends AppCompatActivity {
     private ResumeAPI resumeAPI;
     private ScrollView scrollView;
 
+    private UserRepository userRepository;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +69,30 @@ public class ResumeWriteActivity extends AppCompatActivity {
         // 뒤로 가기 버튼 클릭 이벤트
         backIcon.setOnClickListener(v -> finish()); // 현재 액티비티 종료
 
-        // Retrofit 클라이언트 생성
-        Retrofit retrofit = RetrofitClient.getRetrofitInstanceWithSession(this);
-        userAPI = retrofit.create(UserAPI.class);
-        resumeAPI = retrofit.create(ResumeAPI.class);
+//        // Retrofit 클라이언트 생성
+//        Retrofit retrofit = RetrofitClient.getRetrofitInstanceWithSession(this);
+//        userAPI = retrofit.create(UserAPI.class);
+//        resumeAPI = retrofit.create(ResumeAPI.class);
+//        // 사용자 정보 가져오기
+//        fetchUserInfo();
 
-        // 사용자 정보 가져오기
-        fetchUserInfo();
+        // UserRepository 초기화
+        userRepository = new UserRepository(this);
+
+        // fetchUserInfo() 호출하여 사용자 정보 가져오기
+        userRepository.fetchUserInfo(this, new UserRepository.UserCallback() {
+            @Override
+            public void onSuccess(UserInfo userInfo) {
+                nameText.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+                phoneText.setText(userInfo.getPhone() != null ? userInfo.getPhone() : "전화번호 없음");
+                emailText.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("ResumeWriteActivity", "사용자 정보 가져오기 실패: " + errorMessage);
+            }
+        });
 
         // 회원정보 수정 버튼 클릭 이벤트
         btnEditProfile.setOnClickListener(v -> {
@@ -89,7 +109,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
 
     /**
      * 사용자 정보 가져오는 함수입니다.
-     */
+
     private void fetchUserInfo() {
         userAPI.getUserInfo().enqueue(new Callback<UserModel>() {
             @Override
@@ -131,7 +151,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
     /**
      * 학력 정보 이동 함수
      */
