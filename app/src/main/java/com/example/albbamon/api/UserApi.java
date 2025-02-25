@@ -1,7 +1,7 @@
 package com.example.albbamon.api;
 
-
-import com.example.albbamon.model.SignUpModel;
+import com.example.albbamon.dto.request.ChangePwRequestDto;
+import com.example.albbamon.dto.response.UserChangePwResponseDto;
 import com.example.albbamon.model.UserModel;
 
 import java.util.Map;
@@ -12,19 +12,22 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
+import com.example.albbamon.model.LoginUserModel;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+
 public interface UserApi {
 
-//    // 모든 사용자 정보 가져오기
-//    @GET("/api/user")
-//
-//    Call<UserModel> getUserInfo();
-//
-//    @GET("/api/user/withdraw")
-//    Call<SuccessResponse> deleteUser(@Query("userId") long userId);
+    @GET("/api/user")
+    Call<UserModel> getUserInfo();
 
-//    @POST("/sign-in")
-@POST("/api/user/sign-in")
-Call<ResponseBody> signIn(@Body UserModel.Login login);
+    @POST("/api/user/change-pw")
+    Call<UserChangePwResponseDto> changePassword(@Body ChangePwRequestDto requestDto);
 
+    @POST("/api/user/sign-in")
+    Call<ResponseBody> signIn(@Body LoginUserModel login);
 
 }
