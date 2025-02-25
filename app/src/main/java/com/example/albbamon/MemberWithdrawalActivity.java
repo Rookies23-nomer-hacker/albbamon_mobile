@@ -13,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.albbamon.model.UserData;
+import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.network.SuccessResponse;
@@ -62,20 +65,26 @@ public class MemberWithdrawalActivity extends AppCompatActivity {
         });
 
         // 사용자 정보 API 호출하여 업데이트
-        UserAPI userAPI = RetrofitClient.getRetrofitInstance().create(UserAPI.class);
+        UserAPI userAPI = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
         Call<UserModel> call = userAPI.getUserInfo();
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    UserModel.UserInfo userInfo = response.body().getData().getUserInfo();
-                    String name = userInfo.getName();
-                    numericUserId = userInfo.getId();
-                    if (name == null || name.isEmpty()) {
-                        name = "사용자 정보 없음";
+                    UserModel userModel = response.body();
+                    UserData userData = userModel.getData(); // UserData 가져오기
+
+                    if (userData != null && userData.getUserInfo() != null) {
+                        UserInfo userInfo = userData.getUserInfo(); // UserInfo 가져오기
+
+                        String name = userInfo.getName() != null ? userInfo.getName() : "사용자 정보 없음";
+                        numericUserId = userInfo.getId(); // getId() 접근
+
+                        tvUserId.setText(name);
+                        Log.d("UserMypage", "회원 정보 업데이트 성공: " + name + ", id: " + numericUserId);
+                    } else {
+                        Log.e("UserMypage", "유저 데이터가 null입니다.");
                     }
-                    tvUserId.setText(name);
-                    Log.d("UserMypage", "회원 정보 업데이트 성공: " + name + ", id: " + numericUserId);
                 } else {
                     Log.e("UserMypage", "응답 실패: " + response.code());
                     try {
@@ -86,11 +95,14 @@ public class MemberWithdrawalActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
                 Log.e("UserMypage", "API 호출 오류", t);
             }
         });
+
+
 
         // 초기 상태: 탈퇴 버튼 비활성, 두 번째 섹션 숨김
         btnWithdraw.setEnabled(false);

@@ -9,6 +9,17 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/btn_open_inquiry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="수환님 열기"
+        app:layout_constraintBottom_toTopOf="@+id/goAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/goAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
