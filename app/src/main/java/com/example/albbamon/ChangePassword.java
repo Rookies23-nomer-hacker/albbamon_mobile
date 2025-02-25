@@ -43,7 +43,7 @@ public class ChangePassword extends Fragment {
         changePwButton = view.findViewById(R.id.btn_change_pw);
 
         // UserRepository 초기화
-        userRepository = new UserRepository();
+        userRepository = new UserRepository(requireContext());
 
         // ✅ fetchUserInfo() 호출하여 사용자 정보 가져오기
         userRepository.fetchUserInfo(new UserRepository.UserCallback() {

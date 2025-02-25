@@ -67,7 +67,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
         backIcon.setOnClickListener(v -> finish()); // 현재 액티비티 종료
 
         // Retrofit 클라이언트 생성
-        Retrofit retrofit = RetrofitClient.getRetrofitInstance();
+        Retrofit retrofit = RetrofitClient.getRetrofitInstanceWithSession(this);
         userAPI = retrofit.create(UserAPI.class);
         resumeAPI = retrofit.create(ResumeAPI.class);
 

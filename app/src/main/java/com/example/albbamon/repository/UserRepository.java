@@ -1,5 +1,6 @@
 package com.example.albbamon.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.albbamon.api.UserAPI;
@@ -19,8 +20,8 @@ public class UserRepository {
     private final UserAPI userAPI;
 
     // 생성자에서 Retrofit 인스턴스를 가져옴
-    public UserRepository() {
-        this.userAPI = RetrofitClient.getRetrofitInstance().create(UserAPI.class);
+    public UserRepository(Context context) {
+        this.userAPI = RetrofitClient.getRetrofitInstanceWithSession(context).create(UserAPI.class);
     }
 
     // 유저 정보를 가져오는 함수
