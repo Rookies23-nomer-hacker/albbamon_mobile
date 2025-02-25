@@ -1,64 +1,58 @@
 package com.example.albbamon;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditUserInfo#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+import com.example.albbamon.model.UserInfo;
+import com.example.albbamon.repository.UserRepository;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class EditUserInfo extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public EditUserInfo() {
-        // Required empty public constructor
+        // 기본 생성자
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditUserInfo.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditUserInfo newInstance(String param1, String param2) {
-        EditUserInfo fragment = new EditUserInfo();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_edit_user_info, container, false);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_user_info, container, false);
+        EditText userEmail = view.findViewById(R.id.et_email); // 여기서 findViewById 사용
+
+        // UserRepository 초기화
+        UserRepository userRepository;
+        userRepository = new UserRepository();
+
+        // ✅ fetchUserInfo() 호출하여 사용자 정보 가져오기
+        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
+            @Override
+            public void onSuccess(UserInfo userInfo) {
+                // ✅ 사용자 정보 출력
+                userEmail.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
+
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("UserMypage", errorMessage);
+            }
+        });
+
+        return view;
     }
 }

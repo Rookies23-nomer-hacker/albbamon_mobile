@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserMypage" />
-        <activity android:name=".UserInfo" />
+        <activity android:name=".UserInfoActivity" />
         <activity android:name=".ApplicationStatus" />
         <activity android:name=".ResumeManagement" />
     </application>

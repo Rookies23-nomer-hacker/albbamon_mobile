@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -29,12 +28,13 @@ public class EditUserInfoActivity extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EditUserInfoActivity.this, UserInfo.class);
+            Intent intent = new Intent(EditUserInfoActivity.this, UserInfoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
 
+        // 2개의 탭
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
 

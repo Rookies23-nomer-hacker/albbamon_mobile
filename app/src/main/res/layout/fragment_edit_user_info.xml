@@ -33,10 +33,10 @@
 
     <!-- 아이디 라벨 -->
     <TextView
-        android:id="@+id/id_label"
+        android:id="@+id/email_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="아이디"
+        android:text="이메일"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_marginTop="16dp"
@@ -45,11 +45,11 @@
 
     <!-- 아이디 입력 필드 (비활성화) -->
     <EditText
-        android:id="@+id/et_id"
+        android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/light_gray"
-        android:text="skc05049"
+        android:text="이메일이 존재하지 않습니다."
         android:textColor="@color/gray"
         android:textSize="14sp"
         android:paddingHorizontal="12dp"
@@ -57,7 +57,7 @@
         android:cursorVisible="false"
         android:longClickable="false"
         android:singleLine="true"
-        app:layout_constraintTop_toBottomOf="@id/id_label"
+        app:layout_constraintTop_toBottomOf="@id/email_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp" />
@@ -71,7 +71,7 @@
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/et_id"
+        app:layout_constraintTop_toBottomOf="@id/et_email"
         app:layout_constraintStart_toStartOf="parent"/>
 
 
