@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class InquiryViewPagerAdapter extends FragmentStateAdapter {
 
-    public ViewPagerAdapter(@NonNull InquiryActivity fragmentActivity) {
+    public InquiryViewPagerAdapter(@NonNull InquiryActivity fragmentActivity) {
         super(fragmentActivity);
     }
 

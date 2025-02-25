@@ -18,7 +18,7 @@ public class InquiryActivity extends AppCompatActivity {
         ViewPager2 viewPager = findViewById(R.id.viewPager);
 
         // 뷰페이저 어댑터 설정
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        InquiryViewPagerAdapter adapter = new InquiryViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
         // 탭 레이아웃과 뷰페이저 연결
