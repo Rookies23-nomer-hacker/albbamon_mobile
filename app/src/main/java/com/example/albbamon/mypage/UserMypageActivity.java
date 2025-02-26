@@ -39,7 +39,7 @@ public class UserMypageActivity extends AppCompatActivity {
         UserRepository userRepository = new UserRepository(this);
 
         // ✅ fetchUserInfo() 호출하여 사용자 정보 가져오기
-        userRepository.fetchUserInfo(this, new UserRepository.UserCallback() {
+        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 // ✅ 사용자 정보 출력

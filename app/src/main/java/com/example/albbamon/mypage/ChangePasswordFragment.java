@@ -57,7 +57,7 @@ public class ChangePasswordFragment extends Fragment {
 
     // 로그인된 사용자 정보 가져오기
     private void fetchUserInfo() {
-        userRepository.fetchUserInfo(requireContext(), new UserRepository.UserCallback() {
+        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 userEmail.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");

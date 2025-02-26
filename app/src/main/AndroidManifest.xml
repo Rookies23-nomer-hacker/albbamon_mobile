@@ -8,10 +8,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-
     <application
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="false"
@@ -25,6 +21,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
         tools:targetApi="31">
+        <activity
+            android:name=".Experience.ExperienceSearch"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceUpdate"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceView"
+            android:exported="false" />
+        <activity
+            android:name=".network.ExperienceView"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceCreate"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceList"
+            android:exported="false" />
+        <activity
+            android:name=".SignIn"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InquiryActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+        </activity>
+
         <activity
             android:name=".mypage.ProfileEditActivity"
             android:exported="false" />
@@ -41,7 +70,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -81,6 +109,26 @@
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:parentActivityName=".MainActivity"/>
+        <!-- 아이디 찾기 Activity들 -->
+        <activity
+            android:name=".FindIdPersonalActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".FindIdBusinessActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            tools:ignore="MissingClass" />
+
+        <!-- 개인회원 비밀번호 찾기 -->
+        <activity
+            android:name=".FindPwPersonalActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 기업회원 비밀번호 찾기 -->
+        <activity
+            android:name=".FindPwBusinessActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+
     </application>
 
 </manifest>

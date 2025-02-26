@@ -1,7 +1,5 @@
 package com.example.albbamon;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -10,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.albbamon.Experience.ExperienceList;
+
 
 import com.example.albbamon.Resume.ResumePortfolioActivity;
 import com.example.albbamon.Resume.ResumeWriteActivity;
@@ -99,6 +100,7 @@ public class MenuActivity extends AppCompatActivity {
                 menuList.add(new MenuModel("이력서작성", R.drawable.sample_job));
                 menuList.add(new MenuModel("지원현황", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("포트폴리오관리", R.drawable.sample_job));
+                menuList.add(new MenuModel("공고관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("공고등록", R.drawable.sample_job));
                 break;
             case 2: // 인재정보
