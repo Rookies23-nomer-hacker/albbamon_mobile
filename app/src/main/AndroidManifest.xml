@@ -66,6 +66,8 @@
         <activity android:name=".Resume.ResumePortfolioActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" />
+        <activity android:name=".UserMypageActivity" />
+
         <activity
             android:name=".InquiryActivity"
             android:exported="true"

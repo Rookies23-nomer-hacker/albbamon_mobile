@@ -1,6 +1,7 @@
 package com.example.albbamon;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.model.CommunityModel;
+import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -71,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this, AUTO_SCROLL_DELAY);
         }
     };
+
+    private boolean isUserLoggedIn() {
+        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+        long userId = prefs.getLong("userId", -1); // 기본값 -1 (로그인 안 된 상태)
+        return userId != -1; // userId가 있으면 true (로그인 상태), 없으면 false (로그아웃 상태)
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         menuButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MenuActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            overridePendingTransition(R.anim.slide_in_right, 0);
         });
 
 
@@ -193,6 +201,30 @@ public class MainActivity extends AppCompatActivity {
                 fetchCommunityPosts();
             }
         });
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_profile) {
+                if (isUserLoggedIn()) {
+                    // ✅ 로그인 상태면 마이페이지로 이동
+                    Intent intent = new Intent(MainActivity.this, UserMypageActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_left, 0);
+                } else {
+                    // ✅ 로그인 안 되어 있으면 로그인 화면으로 이동
+                    Intent intent = new Intent(MainActivity.this, SignIn.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_left, 0);
+                }
+                return true;
+            }
+
+            return false;
+        });
+
+
+
     }
 
     @Override
