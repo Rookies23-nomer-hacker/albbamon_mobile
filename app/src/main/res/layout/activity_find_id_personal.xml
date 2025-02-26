@@ -154,6 +154,7 @@
                 android:layout_marginBottom="16dp"/>
         </LinearLayout>
 
+        <!-- 이메일로 찾기 (초기 GONE) -->
         <LinearLayout
             android:id="@+id/layoutBizEmail"
             android:layout_width="match_parent"
@@ -196,7 +197,6 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp"/>
         </LinearLayout>
-
 
         <!-- 고객센터 안내 영역 -->
         <LinearLayout
@@ -247,7 +247,7 @@
             android:layout_marginBottom="16dp"
             android:background="#F9F9F9">
 
-            <!-- 안내 문구: "입력하신 정보와 일치하는 1개의 아이디가 있습니다." -->
+            <!-- 안내 문구 -->
             <TextView
                 android:id="@+id/tvFindResultMessage"
                 android:layout_width="wrap_content"
@@ -302,6 +302,5 @@
                     android:textColor="@android:color/white"/>
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>
