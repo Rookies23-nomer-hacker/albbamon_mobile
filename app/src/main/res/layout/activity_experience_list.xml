@@ -67,7 +67,7 @@
                 android:text="총 400건" />
 
             <Spinner
-                android:id="@+id/searchType_sp"
+                android:id="@+id/array_sp"
                 android:layout_width="143dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

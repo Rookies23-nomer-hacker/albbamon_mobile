@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
+
+
 public class ExperienceList extends AppCompatActivity {
     ListView list_view;
     ExtendedFloatingActionButton efab_write_btn;
@@ -35,6 +38,8 @@ public class ExperienceList extends AppCompatActivity {
     boolean isExtraVisible = false;
     List<CommunityModel> communityList = new ArrayList<>();
     TextView total_bbs;
+    ImageButton searchButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +51,19 @@ public class ExperienceList extends AppCompatActivity {
         fab_up_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_top);
         fab_write_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_write);
         total_bbs = (TextView) findViewById(R.id.totalRec_textView);
+        searchButton = findViewById(R.id.searchButton);
+
+
+        String keyword = getIntent().getStringExtra("keyword");
+        if (keyword == null){
+            //ListView 데이터 가져와서 보여주기
+            postList();
+        }else{
+            postSearchList(keyword);
+        }
 
 
 
-        //ListView 데이터 가져와서 보여주기
-        fetchCommunity();
 
 
         list_view.setOnItemClickListener((parent, view, position, id) -> {
@@ -103,6 +116,7 @@ public class ExperienceList extends AppCompatActivity {
             }
         });
 
+
         setClickListeners();
     }
 
@@ -110,10 +124,15 @@ public class ExperienceList extends AppCompatActivity {
         fab_up_btn.setOnClickListener(v -> onScrollTopClick(v));
         efab_write_btn.setOnClickListener(v -> onWriteClick(v));
         fab_write_btn.setOnClickListener(v -> onWriteClick(v));
+        searchButton.setOnClickListener(v -> onSearchClick(v));
     }
 
     private void onWriteClick(View v) {
         Intent intent = new Intent(getApplicationContext(), ExperienceCreate.class);
+        startActivity(intent);
+    }
+    private void onSearchClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), ExperienceSearch.class);
         startActivity(intent);
     }
 
@@ -121,7 +140,7 @@ public class ExperienceList extends AppCompatActivity {
         list_view.smoothScrollToPosition(0); // 리스트뷰 맨 위로 이동
     }
 
-    private void fetchCommunity() {
+    private void postList() {
         CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
 
         Call<List<CommunityModel>> call = apiService.getPosts();
@@ -132,6 +151,36 @@ public class ExperienceList extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<CommunityModel> bbs = response.body();
 
+                    runOnUiThread(() -> {
+                        runOnUiThread(() -> {
+                            communityList.clear();  // 기존 데이터 삭제 (중복 방지)
+                            communityList.addAll(bbs);  // communityList에 데이터 추가
+                        });
+                        CommunityAdapter adapter = new CommunityAdapter(ExperienceList.this, communityList);
+                        list_view.setAdapter(adapter);
+                        total_bbs.setText("총 " + communityList.size() + "건");
+                    });
+                } else {
+                    Log.e("API_ERROR", "서버 응답 실패: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommunityModel>> call, Throwable t) {
+                Log.e("API_ERROR", "Error: " + t.getMessage());
+                t.printStackTrace(); // 전체 오류 로그 출력
+            }
+        });
+    }
+    private void postSearchList(String keyword) {
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        Call<List<CommunityModel>> call = apiService.getSearchlist(keyword);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<CommunityModel>> call, Response<List<CommunityModel>> response) {
+                Log.e("keyword", "응답 코드: " + response.code()); // 서버 응답 코드 출력
+                if (response.isSuccessful() && response.body() != null) {
+                    List<CommunityModel> bbs = response.body();
                     runOnUiThread(() -> {
                         runOnUiThread(() -> {
                             communityList.clear();  // 기존 데이터 삭제 (중복 방지)
