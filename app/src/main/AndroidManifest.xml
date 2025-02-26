@@ -21,12 +21,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Experience.ExperienceSearch"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceUpdate"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceView"
+            android:exported="false" />
+        <activity
+            android:name=".network.ExperienceView"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceCreate"
+            android:exported="false" />
+        <activity
+            android:name=".Experience.ExperienceList"
+            android:exported="false" />
         <activity
             android:name=".SignIn"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

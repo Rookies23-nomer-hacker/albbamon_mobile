@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
+    android:layout_marginBottom="50dp"
+    tools:context=".Experience.ExperienceList">
+
+    <!-- 기존 레이아웃 유지 -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/back_img_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:paddingLeft="30px"
+                    android:paddingTop="10px"
+                    app:srcCompat="@drawable/ic_arrow_left" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="344dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:paddingLeft="30px"
+                    android:text="알바 경험담"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/menu_img_btn"
+                    android:layout_width="49dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:paddingRight="20px"
+                    app:srcCompat="@drawable/ic_menu2" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:paddingLeft="30px"
+                android:paddingTop="30px"
+                android:paddingBottom="30px"
+                android:text="제목"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/name_text"
+                    android:layout_width="82dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="30px"
+                    android:text="작성자"
+                    android:textColor="#FF501B" />
+
+                <FrameLayout
+                    android:layout_width="292dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/divider3"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/date_text"
+                        android:layout_width="271dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:paddingLeft="50px"
+                        android:text="2025.02.02 19:51"
+                        android:textColor="#A0A0A0" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5px"
+                android:layout_marginBottom="30px"
+                android:background="?android:attr/listDivider" />
+
+            <ImageView
+                android:id="@+id/img_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/content_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:text="작성된 내용" />
+
+
+            <FrameLayout
+                android:layout_width="350dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:background="@android:color/white"
+                android:elevation="4dp"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="파워링크"
+                            android:textColor="#999999"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/rounded_background"
+                            android:padding="4dp"
+                            android:text="광고"
+                            android:textColor="#999999"
+                            android:textSize="12sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="23dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tv_register_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="등록안내"
+                            android:textColor="#999999"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_ad_title_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="백옥피부 만들기 '훼리틴'"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_ad_desc_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="연예인들이 선택한 '화이트태닝' 하얀피부톤 셀프 재생 잔주름 탄력바디 콜라겐 24시"
+                                android:textColor="#666666"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_ad_image1"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginStart="8dp"
+
+                            android:scaleType="centerCrop" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_ad_title_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="백옥피부 만들기 '훼리틴'"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_ad_desc_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="연예인들이 선택한 '화이트태닝' 하얀피부톤 셀프 재생 잔주름 탄력바디 콜라겐 24시"
+                                android:textColor="#666666"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_ad_image2"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginStart="8dp"
+
+                            android:scaleType="centerCrop" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

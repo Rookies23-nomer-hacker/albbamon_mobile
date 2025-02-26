@@ -27,15 +27,15 @@ public class UserRepository {
     }
 
     // 유저 정보 가져오는 함수 (세션 포함)
-    public void fetchUserInfo(Context context, UserCallback callback) {
-        SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        String sessionCookie = prefs.getString("cookie", "");
+    public void fetchUserInfo(UserCallback callback) {
+        // 이미 getRetrofitInstanceWithSession에서 세션 쿠키가 요청 헤더에 포함되어 있으므로,
+        // 여기서 다시 쿠키를 처리할 필요는 없습니다.
 
-        if (sessionCookie.isEmpty()) {
-            callback.onFailure("[DEBUG] 세션 쿠키가 없습니다. 로그인이 필요합니다.");
-            return;
-        }
 
+        Log.d("UserRepository", "🚀 [API 요청] fetchUserInfo");
+
+
+        // API 요청
         Call<UserModel> call = userAPI.getUserInfo();
         call.enqueue(new Callback<UserModel>() {
             @Override

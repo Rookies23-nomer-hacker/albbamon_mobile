@@ -21,15 +21,15 @@ public interface UserAPI {
     @GET("/api/mobile/user")
     Call<UserModel> getUserInfo();
 
-    @POST("/api/user/change-pw")
+    @POST("/api/mobile/user/change-pw")
     Call<UserChangePwResponseDto> changePassword(@Body ChangePwRequestDto requestDto);
 
     @POST("/api/user/sign-in")
     Call<ResponseBody> signIn(@Body LoginUserModel login);
 
-    @DELETE("/api/user/{userId}")
+    @DELETE("/api/mobile/user/{userId}")
     Call<ResponseBody> deleteUser(@Header("Cookie") String sessionCookie, @Path("userId") long userId);
 
-//    @GET("/api/user/withdraw")
+//    @GET("/api/mobile/user/withdraw")
 //    Call<SuccessResponse> deleteUser(@Query("userId") long userId);
 }
