@@ -105,6 +105,8 @@ public class SignIn extends AppCompatActivity {
 
                         long userId = Long.parseLong(responseBodyString);
 
+                        Log.d("API_RESPONSE", "서버 쿠키: " + response.headers());
+
                         // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
                         String setCookieHeader = response.headers().get("Set-Cookie");
 
