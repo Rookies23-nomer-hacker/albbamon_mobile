@@ -27,23 +27,23 @@ public class UserRepository {
     }
 
     // 유저 정보 가져오는 함수 (세션 포함)
-    // 유저 정보 가져오는 함수 (세션 포함)
     public void fetchUserInfo(UserCallback callback) {
         // 이미 getRetrofitInstanceWithSession에서 세션 쿠키가 요청 헤더에 포함되어 있으므로,
         // 여기서 다시 쿠키를 처리할 필요는 없습니다.
 
+
         Log.d("UserRepository", "🚀 [API 요청] fetchUserInfo");
+
 
         // API 요청
         Call<UserModel> call = userAPI.getUserInfo();
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
-
                 if (response.isSuccessful() && response.body() != null) {
-                    if (response.body().getData() != null && response.body().getData().getUserInfo() != null) {
-                        callback.onSuccess(response.body().getData().getUserInfo());
+                    UserModel userModel = response.body();
+                    if (userModel.getData() != null && userModel.getData().getUserInfo() != null) {
+                        callback.onSuccess(userModel.getData().getUserInfo());
                     } else {
                         callback.onFailure("[DEBUG] userInfo가 null입니다.");
                     }
@@ -58,6 +58,7 @@ public class UserRepository {
             }
         });
     }
+
 
     // 비밀번호 변경 API 호출 메서드 추가
     public void changePassword(Context context, Long userId, String oldPw, String newPw, PasswordCallback callback) {
