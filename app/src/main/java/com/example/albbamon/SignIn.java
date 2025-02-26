@@ -125,7 +125,7 @@ public class SignIn extends AppCompatActivity {
 
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
                         Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SignIn.this, UserMypageActivity.class);
+                        Intent intent = new Intent(SignIn.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
                         startActivity(intent);
                         finish();
@@ -134,8 +134,14 @@ public class SignIn extends AppCompatActivity {
                         Log.e("API_ERROR", "서버 응답 처리 실패", e);
                     }
                 } else {
-                    Log.e("API_ERROR", "로그인 실패 - 코드: " + response.code());
-                    Toast.makeText(SignIn.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                    try {
+                        // 🚀 서버에서 반환하는 에러 메시지 확인
+                        String errorBody = response.errorBody().string();
+                        Log.e("API_ERROR", "로그인 실패 - 응답 본문: " + errorBody);
+                        Toast.makeText(SignIn.this, "로그인 실패: " + errorBody, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "에러 본문 읽기 실패", e);
+                    }
                 }
             }
 
