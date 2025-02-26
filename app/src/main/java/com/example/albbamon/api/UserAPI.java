@@ -33,13 +33,9 @@ public interface UserAPI {
     @POST("/api/user/sign-in")
     Call<ResponseBody> signIn(@Body LoginUserModel login);
 
-    @DELETE("/api/mobile/user/{userId}")
-    Call<ResponseBody> deleteUser(@Header("Cookie") String sessionCookie, @Path("userId") long userId);
-
-//    @GET("/api/user/withdraw")
-//    Call<SuccessResponse> deleteUser(@Query("userId") long userId);
     @GET("/api/mobile/user/withdraw")
-    Call<SuccessResponse> deleteUser(@Query("userId") long userId);
+    Call<SuccessResponse> deleteUser();
+
 
     // 아이디 찾기 API 예시 (GET 요청)
     @GET("/api/user/find-id")

@@ -10,6 +10,7 @@ import com.example.albbamon.dto.response.UserChangePwResponseDto;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
+import com.example.albbamon.network.SuccessResponse;
 
 import javax.security.auth.callback.PasswordCallback;
 
@@ -94,22 +95,14 @@ public class UserRepository {
 
 
     // ✅ 회원 탈퇴 API 호출 메서드 추가
-    public void deleteUser(Context context, long userId, DeleteUserCallback callback) {
-        // ✅ SharedPreferences에서 세션 쿠키 가져오기
-        SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        String sessionCookie = prefs.getString("cookie", "");
+    public void deleteUser(DeleteUserCallback callback) {
+        Log.d("UserRepository", "🚀 [API 요청] 회원 탈퇴");
 
-        if (sessionCookie.isEmpty()) {
-            callback.onFailure("세션 쿠키가 없습니다. 로그인이 필요합니다.");
-            return;
-        }
+        Call<SuccessResponse> call = userAPI.deleteUser();
 
-        // API 호출 (세션 쿠키 포함)
-        Call<ResponseBody> call = userAPI.deleteUser(sessionCookie, userId);
-
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<SuccessResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<SuccessResponse> call, Response<SuccessResponse> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess("회원 탈퇴 성공");
                 } else {
@@ -118,11 +111,12 @@ public class UserRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<SuccessResponse> call, Throwable t) {
                 callback.onFailure("회원 탈퇴 API 호출 실패: " + t.getMessage());
             }
         });
     }
+
 
     // 회원 탈퇴 콜백 인터페이스
     public interface DeleteUserCallback {
