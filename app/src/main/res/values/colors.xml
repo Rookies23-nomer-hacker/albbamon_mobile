@@ -5,4 +5,5 @@
     <color name="appcolor">#FF501B</color>
     <color name="gray">#6A6A6A</color>
     <color name="light_gray">#F6F6F6</color>
+    <color name="hint_text_color">#BDBDBD</color> <!-- 더 연한 회색 -->
 </resources>
