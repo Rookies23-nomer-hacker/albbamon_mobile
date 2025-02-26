@@ -32,7 +32,7 @@ public class EditUserInfoFragment extends Fragment {
         UserRepository userRepository = new UserRepository(requireContext());
 
         // fetchUserInfo() 호출하여 사용자 정보 가져오기 (Context를 첫 번째 인자로 전달)
-        userRepository.fetchUserInfo(requireContext(), new UserRepository.UserCallback() {
+        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 userEmail.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");

@@ -68,7 +68,7 @@ public class MemberWithdrawalActivity extends AppCompatActivity {
 
         // 사용자 정보 API 호출하여 업데이트
         UserRepository userRepository = new UserRepository(this);
-        userRepository.fetchUserInfo(this, new UserRepository.UserCallback() {
+        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 numericUserId = userInfo.getId();
