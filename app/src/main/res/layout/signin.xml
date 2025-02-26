@@ -56,70 +56,147 @@
         app:layout_constraintVertical_bias="0.0"
         android:clickable="false"
         android:focusable="false">
-        <LinearLayout
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logo"
-                android:scaleType="fitCenter"
-                android:layout_centerInParent="true"/>
+        <!-- 로고 이미지 -->
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:contentDescription="앱 로고"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="20dp"/>
 
-        </LinearLayout>
+        <!-- 아이디 입력 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="10dp"
+            android:elevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
 
-        <LinearLayout
-            android:id="@+id/inputAccount"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/iconemail"
+                    android:contentDescription="아이디 아이콘"/>
+
+                <EditText
+                    android:id="@+id/emailInput"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="아이디"
+                    android:background="@null"
+                    android:paddingStart="8dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- 비밀번호 입력 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="10dp"
+            android:elevation="2dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/iconpassword"
+                    android:contentDescription="비밀번호 아이콘"/>
+
+                <EditText
+                    android:id="@+id/passwordInput"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="비밀번호"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:paddingStart="8dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- 로그인 버튼 -->
+        <Button
+            android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <EditText
-                android:id="@+id/emailInput"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/edit_view_selector"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
-            <EditText
-                android:id="@+id/passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/edit_view_selector"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:inputType="textPassword"/>
-            <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/edit_view_selector"
-                android:text="로그인"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+            android:text="로그인"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#FF501B"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:cornerRadius="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"/>
 
-        </LinearLayout>
-
+        <!-- 아이디 찾기 / 비밀번호 찾기 / 회원가입 -->
         <LinearLayout
-            android:id="@+id/findSignUp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/findId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아이디 찾기"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="비밀번호 찾기"/>
-            <Button
-                android:id="@+id/signUpBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="회원가입"/>
+                android:text="아이디 찾기"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:paddingEnd="10dp"
+                android:layout_marginEnd="10dp"
+                />
 
 
+
+            <TextView
+                android:id="@+id/findPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 찾기"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:paddingEnd="10dp"/>
+
+
+            <TextView
+                android:id="@+id/signUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원가입"
+                android:textColor="#FF501B"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"/>
         </LinearLayout>
 
     </LinearLayout>

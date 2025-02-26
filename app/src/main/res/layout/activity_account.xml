@@ -105,8 +105,7 @@
                     android:layout_marginTop="16dp"
                     android:text="개인 회원가입"
                     android:textColor="@android:color/white"
-                    android:backgroundTint="#FF501B"
-                    android:cornerRadius="20dp"/>
+                    android:backgroundTint="#FF501B" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -147,7 +146,7 @@
                     android:text="기업 회원가입"
                     android:textColor="@android:color/white"
                     android:backgroundTint="#000000"
-                    android:cornerRadius="20dp"/>
+                    />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
