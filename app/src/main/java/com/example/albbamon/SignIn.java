@@ -82,7 +82,7 @@ public class SignIn extends AppCompatActivity {
         }
 
         // 입력값 로그 출력
-        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
+//        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
 
         UserAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
         LoginUserModel login = new LoginUserModel(email, password);
@@ -97,6 +97,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
+
 
                 if (response.isSuccessful() && response.body() != null) {
                     try {
@@ -127,7 +128,9 @@ public class SignIn extends AppCompatActivity {
 
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
                         Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
+
                         Intent intent = new Intent(SignIn.this, UserMypageActivity.class); //MainActivity
+
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
                         startActivity(intent);
                         finish();
