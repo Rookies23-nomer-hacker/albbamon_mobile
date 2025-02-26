@@ -28,7 +28,6 @@ public class UserRepository {
 
     // 유저 정보 가져오는 함수 (세션 포함)
     public void fetchUserInfo(Context context, UserCallback callback) {
-        // ✅ SharedPreferences에서 세션 쿠키 가져오기
         SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         String sessionCookie = prefs.getString("cookie", "");
 
@@ -37,16 +36,14 @@ public class UserRepository {
             return;
         }
 
-        // ✅ API 요청
-        Call<UserModel> call = userAPI.getUserInfo(sessionCookie);
+        Call<UserModel> call = userAPI.getUserInfo();
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
-
                 if (response.isSuccessful() && response.body() != null) {
-                    if (response.body().getData() != null && response.body().getData().getUserInfo() != null) {
-                        callback.onSuccess(response.body().getData().getUserInfo());
+                    UserModel userModel = response.body();
+                    if (userModel.getData() != null && userModel.getData().getUserInfo() != null) {
+                        callback.onSuccess(userModel.getData().getUserInfo());
                     } else {
                         callback.onFailure("[DEBUG] userInfo가 null입니다.");
                     }
@@ -61,6 +58,7 @@ public class UserRepository {
             }
         });
     }
+
 
     // 비밀번호 변경 API 호출 메서드 추가
     public void changePassword(Context context, Long userId, String oldPw, String newPw, PasswordCallback callback) {
