@@ -74,7 +74,7 @@ public class ExperienceView extends AppCompatActivity {
     }
 
     private void fetchCommunity() {
-        CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
 
         Call<ResponseWrapper<CommunityModel>> call = apiService.getPostById(postId); // API 호출
 

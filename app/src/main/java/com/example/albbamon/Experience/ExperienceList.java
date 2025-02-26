@@ -141,7 +141,7 @@ public class ExperienceList extends AppCompatActivity {
     }
 
     private void postList() {
-        CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
 
         Call<List<CommunityModel>> call = apiService.getPosts();
 
@@ -173,7 +173,7 @@ public class ExperienceList extends AppCompatActivity {
         });
     }
     private void postSearchList(String keyword) {
-        CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
         Call<List<CommunityModel>> call = apiService.getSearchlist(keyword);
         call.enqueue(new Callback<>() {
             @Override
