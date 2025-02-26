@@ -1,6 +1,7 @@
 package com.example.albbamon.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class CommunityAdapter extends ArrayAdapter<CommunityModel> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_community, parent, false);
         }
-
+        Log.e("keyword", "검색 제목: " + R.id.item_title);
         // View 참조
         TextView titleView = convertView.findViewById(R.id.item_title);
         TextView contentView = convertView.findViewById(R.id.item_content);
