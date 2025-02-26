@@ -1,6 +1,6 @@
 package com.example.albbamon.api;
 
-import com.example.albbamon.model.ResumeRequestDto;
+import com.example.albbamon.dto.request.ResumeRequestDto;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

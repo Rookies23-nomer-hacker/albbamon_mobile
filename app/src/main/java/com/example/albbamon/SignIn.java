@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,7 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.model.LoginUserModel;
-import com.example.albbamon.model.UserModel;
+import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.gson.Gson;
 
@@ -43,12 +45,22 @@ public class SignIn extends AppCompatActivity {
             return insets;
         });
 
+        ImageView backButton = findViewById(R.id.backButton);
+
+        // 🔹 뒤로가기 버튼 클릭 이벤트 추가
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // 현재 액티비티 종료 (이전 화면으로 돌아감)
+            }
+        });
+
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
 
         // 회원가입 버튼 클릭 시 account 화면으로 이동
-        Button btnPer = findViewById(R.id.signUpBtn);
-        btnPer.setOnClickListener(view -> {
+        TextView textView = findViewById(R.id.signUp);
+        textView.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), account.class);
             startActivity(intent);
         });
@@ -93,6 +105,8 @@ public class SignIn extends AppCompatActivity {
 
                         long userId = Long.parseLong(responseBodyString);
 
+                        Log.d("API_RESPONSE", "서버 쿠키: " + response.headers());
+
                         // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
                         String setCookieHeader = response.headers().get("Set-Cookie");
 
@@ -113,14 +127,23 @@ public class SignIn extends AppCompatActivity {
 
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
                         Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignIn.this, UserMypageActivity.class); //MainActivity
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
+                        startActivity(intent);
                         finish();
 
                     } catch (Exception e) {
                         Log.e("API_ERROR", "서버 응답 처리 실패", e);
                     }
                 } else {
-                    Log.e("API_ERROR", "로그인 실패 - 코드: " + response.code());
-                    Toast.makeText(SignIn.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                    try {
+                        // 🚀 서버에서 반환하는 에러 메시지 확인
+                        String errorBody = response.errorBody().string();
+                        Log.e("API_ERROR", "로그인 실패 - 응답 본문: " + errorBody);
+                        Toast.makeText(SignIn.this, "로그인 실패: " + errorBody, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "에러 본문 읽기 실패", e);
+                    }
                 }
             }
 

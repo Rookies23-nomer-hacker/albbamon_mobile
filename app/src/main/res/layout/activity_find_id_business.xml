@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 상단 탭 영역: 개인회원 / 기업회원 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btnPersonal"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="개인회원"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#000000"
+                android:elevation="1dp" />
+
+            <Button
+                android:id="@+id/btnBusiness"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="기업회원"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#000000"
+                android:elevation="1dp" />
+        </LinearLayout>
+
+        <!-- 탭 인디케이터: 개인회원(회색), 기업회원(빨간색) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <View
+                android:id="@+id/viewIndicatorPersonal"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD" />
+
+            <View
+                android:id="@+id/viewIndicatorBusiness"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_red_light" />
+        </LinearLayout>
+
+        <!-- RadioGroup: 사업자등록번호 / 이메일 / 본인인증으로 찾기 -->
+        <RadioGroup
+            android:id="@+id/radioGroupFindMethodBiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/radioBizNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사업자등록번호로 찾기"
+                android:checked="true"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBizEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일로 찾기"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBizCert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="본인인증으로 찾기"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp"/>
+        </RadioGroup>
+
+        <!-- 사업자등록번호로 찾기 입력란 (기본 VISIBLE) -->
+        <LinearLayout
+            android:id="@+id/layoutBizNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLabelBizName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가입자명"
+                android:textSize="14sp"
+                android:layout_marginBottom="4dp"/>
+
+            <EditText
+                android:id="@+id/etBizName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="가입자명을 입력하세요"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/tvLabelBizNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사업자번호"
+                android:textSize="14sp"
+                android:layout_marginBottom="4dp"/>
+
+            <EditText
+                android:id="@+id/etBizNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="사업자등록번호를 입력하세요"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:inputType="number"
+                tools:ignore="ExtraText" />
+        </LinearLayout>
+
+        <!-- 이메일로 찾기 입력란 레이아웃 (초기 GONE) -->
+        <LinearLayout
+            android:id="@+id/layoutBizEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvBizLabelEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일"
+                android:textSize="14sp"
+                android:layout_marginBottom="4dp"/>
+
+            <EditText
+                android:id="@+id/etBizEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이메일 (예: example@biz.com)"
+                android:inputType="textEmailAddress"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+
+        <!-- 본인인증으로 찾기 입력란 레이아웃 (초기 GONE) -->
+        <LinearLayout
+            android:id="@+id/layoutBizCert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvBizCertGuide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="본인 인증(기업회원)을 진행해 주세요."
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+            <!-- 인증 관련 추가 뷰 배치 가능 -->
+        </LinearLayout>
+
+        <!-- 고객센터 안내 영역 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#F0F0F0"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvGuideTitleBiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디/비밀번호 찾기 안내"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvGuideContentBiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="아이디/비밀번호 찾기 관련하여 문의사항이 있으시면 고객센터로 문의해 주세요.
+고객센터: 1588-9351 / helpdesk@albbamon.com
+상담시간: [월~금] 9:00~19:00 (점심 12:00~13:00)"
+                android:textSize="12sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
+
+        <!-- 다음 버튼 -->
+        <Button
+            android:id="@+id/btnBizNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="다음"
+            android:backgroundTint="#FF5F1F"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 아이디 찾기 결과 레이아웃 (초기 GONE) -->
+        <LinearLayout
+            android:id="@+id/layoutFindResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#F9F9F9">
+
+            <TextView
+                android:id="@+id/tvFindResultMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="입력하신 정보와 일치하는 1개의 아이디가 있습니다."
+                android:textSize="14sp"
+                android:textColor="#000000"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvFindResultGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보 보호를 위해 일부 정보는 마스킹 처리됩니다.
+회원 가입 시 본인인증을 한 경우, 추가 본인인증을 통해 전체 아이디를 확인하실 수 있습니다."
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- 실제 찾은 아이디(이메일) 표시할 부분 -->
+            <TextView
+                android:id="@+id/tvFoundId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test2@bizmail.com"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- 로그인/비밀번호 찾기 버튼 영역 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnFindResultLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="로그인"
+                    android:backgroundTint="#FF5F1F"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="8dp"/>
+
+                <Button
+                    android:id="@+id/btnFindResultPw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="비밀번호 찾기"
+                    android:backgroundTint="#FF5F1F"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
