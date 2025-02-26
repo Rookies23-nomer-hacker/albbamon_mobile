@@ -12,6 +12,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RetrofitClient {
     private static final String TAG = "RetrofitClient";
@@ -23,7 +25,6 @@ public class RetrofitClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:60085/")
-//                    .baseUrl("http://58.127.241.84:60085") // 여기에 API 서버 주소 입력
                     .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
                     .build();
         }
@@ -36,7 +37,6 @@ public class RetrofitClient {
             OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
             retrofitWithoutSession = new Retrofit.Builder()
-//                    .baseUrl("http://58.127.241.84:60085") // API 서버 주소
                     .baseUrl("http://10.0.2.2:60085/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
@@ -53,20 +53,22 @@ public class RetrofitClient {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request original = chain.request();
+                            String requestUrl = original.url().toString();
 
                             // ✅ SharedPreferences에서 `JSESSIONID` 가져오기
                             SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
                             String jsessionId = prefs.getString("cookie", ""); // `cookie` 키에 저장됨
 
-                            Log.d(TAG, "저장된 JSESSIONID: " + jsessionId);
+                            Log.d(TAG, "✅ 요청 URL: " + requestUrl);
+                            Log.d(TAG, "✅ 저장된 JSESSIONID: " + jsessionId);
 
                             // ✅ 요청 헤더에 `JSESSIONID` 추가 (세션 유지)
                             Request.Builder requestBuilder = original.newBuilder();
                             if (!jsessionId.isEmpty()) {
                                 requestBuilder.header("Cookie", "JSESSIONID=" + jsessionId);
-                                Log.d("SESSION", "요청 헤더에 JSESSIONID 추가: " + jsessionId);
+                                Log.d("SESSION", "✅ 요청 헤더에 JSESSIONID 추가됨: " + jsessionId);
                             } else {
-                                Log.d(TAG, "JSESSIONID 없음. 인증되지 않은 요청");
+                                Log.d(TAG, "❌ JSESSIONID 없음. 인증되지 않은 요청");
                             }
 
                             Request request = requestBuilder
@@ -77,12 +79,29 @@ public class RetrofitClient {
 
                             // ✅ 응답에서 `Set-Cookie` 확인 (로그인 성공 시 쿠키를 받아올 가능성 있음)
                             String responseCookies = response.header("Set-Cookie");
-                            if (responseCookies != null && responseCookies.contains("JSESSIONID")) {
-                                String newSessionId = responseCookies.split(";")[0].split("=")[1]; // `JSESSIONID` 값 추출
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("cookie", newSessionId); // ✅ 새로운 `JSESSIONID` 저장
-                                editor.apply();
-                                Log.d(TAG, "SharedPreferences에 새로운 JSESSIONID 저장됨: " + newSessionId);
+
+                            if (responseCookies == null) {
+                                Log.d(TAG, "❌ 서버에서 `Set-Cookie` 헤더를 반환하지 않음");
+                            } else {
+                                Log.d(TAG, "🚀 서버에서 받은 Set-Cookie 값: " + responseCookies);
+
+                                if (responseCookies.contains("JSESSIONID")) {
+                                    // ✅ 정규식을 사용하여 정확하게 JSESSIONID 값만 추출
+                                    Pattern pattern = Pattern.compile("JSESSIONID=([^;]*)");
+                                    Matcher matcher = pattern.matcher(responseCookies);
+
+                                    if (matcher.find()) {
+                                        String newSessionId = matcher.group(1); // 첫 번째 그룹(값) 가져오기
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.putString("cookie", newSessionId);
+                                        editor.apply();
+                                        Log.d(TAG, "✅ 새로운 JSESSIONID 저장됨: " + newSessionId);
+                                    } else {
+                                        Log.d(TAG, "❌ JSESSIONID 값을 찾을 수 없음.");
+                                    }
+                                } else {
+                                    Log.d(TAG, "❌ `Set-Cookie`에 JSESSIONID가 포함되지 않음.");
+                                }
                             }
 
                             return response;
@@ -91,7 +110,6 @@ public class RetrofitClient {
                     .build();
 
             retrofitWithSession = new Retrofit.Builder()
-//                    .baseUrl("http://58.127.241.84:60085")
                     .baseUrl("http://10.0.2.2:60085/") // API 서버 주소
                     .client(okHttpClient) // ✅ JSESSIONID 포함
                     .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
