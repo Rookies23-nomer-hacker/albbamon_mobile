@@ -147,7 +147,7 @@ public class MenuActivity extends AppCompatActivity {
                     intent = new Intent(MenuActivity.this, JobPostingActivity.class);
                     break;
                 case "알바경험담":
-                    intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
+                    intent = new Intent(MenuActivity.this, ExperienceList.class);
                     break;
                 // 여기에 다른 메뉴도 추가 가능
             }

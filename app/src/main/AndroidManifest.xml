@@ -31,9 +31,6 @@
             android:name=".Experience.ExperienceView"
             android:exported="false" />
         <activity
-            android:name=".network.ExperienceView"
-            android:exported="false" />
-        <activity
             android:name=".Experience.ExperienceCreate"
             android:exported="false" />
         <activity
@@ -61,9 +58,6 @@
         <activity
             android:name=".activity_oh"
             android:exported="false" /> <!-- 메인 Activity -->
-        <activity
-            android:name=".SignIn"
-            android:exported="false" />
         <!-- 🚀 MainActivity를 다시 추가 -->
         <activity
             android:name=".MainActivity"
@@ -95,11 +89,7 @@
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" />
         <activity android:name=".UserMypageActivity" />
-
-        <activity
-            android:name=".InquiryActivity"
-            android:exported="true"
-            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- 회원 탈퇴 Activity -->
+        <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" />
 

@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
         // 샘플 데이터 추가
         for (int i = 1; i <= 10; i++) {
-            allJobsSpecial.add(new JobModel("서빙 알바 " + i, "서브웨이", "시급 11,000원", R.drawable.sample_job));
-            allJobsPoint.add(new JobModel("편의점 알바 " + i, "GS25", "시급 10,500원", R.drawable.sample_job));
-            allJobsBrands.add(new JobModel("브랜드 알바 " + i, "스타벅스", "시급 12,000원", R.drawable.sample_job));
+            allJobsSpecial.add(new JobModel("서빙 알바 " + i,  "시급 11,000원", R.drawable.sample_job));
+            allJobsPoint.add(new JobModel("편의점 알바 " + i, "시급 10,500원", R.drawable.sample_job));
+            allJobsBrands.add(new JobModel("브랜드 알바 " + i, "시급 12,000원", R.drawable.sample_job));
         }
 
         // 최대 5개만 보여주는 리스트 생성
