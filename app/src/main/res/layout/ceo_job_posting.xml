@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="16dp"
+    tools:context=".JobPostingActivity">
+
+    <!-- 뒤로 가기 아이콘 -->
+    <ImageView
+        android:id="@+id/BackIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 상단 타이틀 -->
+    <TextView
+        android:id="@+id/header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알바공고 쓰기"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/BackIcon"
+        app:layout_constraintTop_toTopOf="@id/BackIcon"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- ScrollView 시작 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/btnSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_text">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <!-- 공지 배너 -->
+            <TextView
+                android:id="@+id/tvNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="지금 알바공고 작성하면 여름 휴가 패키지 자동 응모!"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:background="#F6F6F6"
+                android:padding="12dp"/>
+
+            <!-- 사진 업로드 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사진 (선택)"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"/>
+
+            <ImageView
+                android:id="@+id/ivSelectedPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:background="@color/gray"
+                android:contentDescription="선택한 사진 미리보기"/>
+
+            <Button
+                android:id="@+id/btnUploadPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="사진 업로드"
+                android:textColor="@color/black"
+                android:backgroundTint="#FFFFFF"
+                android:padding="10dp"
+                app:strokeColor="#D7D7D7"
+                app:strokeWidth="2dp"/>
+
+            <!-- 제목 입력 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제목"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="공고 제목을 입력하세요."
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_border"/>
+
+            <!-- 하는 일 선택 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="공고 내용"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:hint="공고 상세 내용을 입력하세요."
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:textSize="14sp"
+                android:maxLines="6"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모집마감일"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"/>
+
+            <!-- 선택한 날짜 출력 -->
+            <TextView
+                android:id="@+id/tvSelectedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="날짜를 선택하세요."
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:backgroundTint="#FFFFFF"
+                android:gravity="center"
+                android:layout_marginTop="10dp"/>
+
+            <!-- 날짜 선택 버튼 -->
+            <Button
+                android:id="@+id/btnPickDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="날짜 선택"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                app:strokeColor="#D7D7D7"
+                app:strokeWidth="2dp"/>
+
+
+            <!-- 임금 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="임금"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinnerWageType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_border"
+                    android:padding="0dp"/>
+
+                <EditText
+                    android:id="@+id/etWageAmount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="금액 입력"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_border"
+                    android:layout_marginStart="10dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="저장"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FD0200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 상단 탭 영역: 개인회원 / 기업회원 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnPersonal"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="개인회원"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#000000"
+                android:elevation="1dp" />
+
+            <Button
+                android:id="@+id/btnCompany"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="기업회원"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#000000"
+                android:elevation="1dp" />
+        </LinearLayout>
+
+        <!-- 라디오 그룹: 연락처로 찾기 / 이메일로 찾기 / 본인인증으로 찾기 -->
+        <RadioGroup
+            android:id="@+id/radioGroupFindMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="연락처로 찾기"
+                android:checked="true"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/radioEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일로 찾기"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/radioCert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="본인인증으로 찾기"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp"/>
+        </RadioGroup>
+
+        <!-- 연락처로 찾기용 입력란: 이름 / 휴대폰 -->
+        <!-- 필요에 따라 radioContact가 선택되었을 때만 보이도록 코드에서 제어할 수 있음 -->
+        <TextView
+            android:id="@+id/tvLabelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름을 입력하세요"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tvLabelPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="휴대폰"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="휴대폰 번호"
+                android:inputType="phone"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"
+                android:layout_marginRight="8dp"/>
+
+            <EditText
+                android:id="@+id/etPhoneAuth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="번호입력"
+                android:background="@android:drawable/editbox_background"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <!-- 본인인증/이메일 찾기 시에만 보이는 뷰들은
+             Visibility를 GONE으로 해두고, 선택된 라디오버튼에 따라 보이도록 조정 가능 -->
+
+        <!-- 고객센터 안내 (안내문) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#F0F0F0"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvGuideTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디 비밀번호 찾기 안내"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvGuideContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="아이디/비밀번호 찾기 관련하여 문의사항이 있으시면 고객센터로 문의해 주세요.\n\n고객센터: 1588-9351 / helpdesk@albbamon.com\n상담시간: 9:00~19:00 (점심 12:00~13:00)"
+                android:textSize="12sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
+
+        <!-- 다음 버튼 -->
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="다음"
+            android:backgroundTint="#FF5F1F"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
+</ScrollView>

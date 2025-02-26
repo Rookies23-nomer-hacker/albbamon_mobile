@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="CustomSearchViewTheme" parent="Theme.AppCompat.Light">
         <item name="android:textColorHint">@color/hint_text_color</item>
@@ -7,5 +8,12 @@
     <style name="HintTextStyle">
         <item name="android:textColorHint">@color/hint_text_color</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="RoundedFAB" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="RoundedFAB_100" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">100%</item>
     </style>
 </resources>

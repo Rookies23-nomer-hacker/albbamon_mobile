@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- 인터넷 및 네트워크 상태 확인 권한 추가 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -14,20 +20,58 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
         tools:targetApi="31">
-
+        <activity
+            android:name=".mypage.ProfileEditActivity"
+            android:exported="false" />
+        <!-- 다른 Activity -->
+        <activity
+            android:name=".activity_oh"
+            android:exported="false" /> <!-- 메인 Activity -->
+        <activity
+            android:name=".SignIn"
+            android:exported="false" />
         <!-- 🚀 MainActivity를 다시 추가 -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".comAccount"
+            android:exported="false" />
+        <activity
+            android:name=".perAccount"
+            android:exported="false" />
+        <activity
+            android:name=".account"
+            android:exported="false" />
+        <activity android:name=".mypage.UserMypageActivity" />
+        <activity android:name=".mypage.UserInfoActivity" />
+        <activity android:name=".mypage.ApplicationStatusActivity" />
+        <activity android:name=".mypage.ResumeManagementActivity" />
+        <activity android:name=".Resume.ResumeSchoolActivity" />
+        <activity android:name=".Resume.ResumeJobActivity" />
+        <activity android:name=".Resume.ResumeWriteActivity" />
+        <activity android:name=".Resume.ResumeOptionActivity" />
+        <activity android:name=".Resume.ResumeIntroActivity" />
+        <activity android:name=".Resume.ResumePortfolioActivity" />
+        <activity android:name=".JobPostingActivity" />
+        <activity android:name=".mypage.EditUserInfoActivity" />
+        <activity
+            android:name=".InquiryActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- 회원 탈퇴 Activity -->
+        <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
+        <activity android:name=".MailSettingsActivity" />
 
         <!-- MenuActivity 설정 유지 -->
         <activity
