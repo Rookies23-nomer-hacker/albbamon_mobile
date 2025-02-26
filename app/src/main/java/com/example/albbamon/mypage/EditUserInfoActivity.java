@@ -44,10 +44,10 @@ public class EditUserInfoActivity extends AppCompatActivity {
         List<Fragment> fragments = new ArrayList<>();
         List<String> titles = new ArrayList<>();
 
-        fragments.add(new EditUserInfo());
+        fragments.add(new EditUserInfoFragment());
         titles.add("회원정보 수정");
 
-        fragments.add(new ChangePassword());
+        fragments.add(new ChangePasswordFragment());
         titles.add("비밀번호 변경");
 
         // 🔹 어댑터 설정

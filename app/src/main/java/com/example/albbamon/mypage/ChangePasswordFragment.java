@@ -17,18 +17,18 @@ import com.example.albbamon.R;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.repository.UserRepository;
 
-public class ChangePassword extends Fragment {
+public class ChangePasswordFragment extends Fragment {
     private UserRepository userRepository;
     private EditText userEmail, nowPwInput, newPwInput, newPwReInput;
     private Button changePwButton;
     private Long userId = null;
 
-    public ChangePassword() {
+    public ChangePasswordFragment() {
         // 기본 생성자
     }
 
-    public static ChangePassword newInstance() {
-        return new ChangePassword();
+    public static ChangePasswordFragment newInstance() {
+        return new ChangePasswordFragment();
     }
 
     @Nullable

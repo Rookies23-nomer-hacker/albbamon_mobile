@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +17,7 @@ import com.example.albbamon.R;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.repository.UserRepository;
 
-public class UserMypage extends AppCompatActivity {
+public class UserMypageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,6 @@ public class UserMypage extends AppCompatActivity {
         LinearLayout layoutApply = findViewById(R.id.layout_apply);
         LinearLayout resumeManagement = findViewById(R.id.layout_resume);
 
-
         // UserRepository 초기화
         UserRepository userRepository = new UserRepository(this);
 
@@ -49,7 +49,7 @@ public class UserMypage extends AppCompatActivity {
                 if (userInfo.getProfileImg() == null || userInfo.getProfileImg().isEmpty()) {
                     profileImg.setImageResource(R.drawable.round_account_circle_24);
                 } else {
-                    Glide.with(UserMypage.this)
+                    Glide.with(UserMypageActivity.this)
                             .load(userInfo.getProfileImg())
                             .placeholder(R.drawable.round_account_circle_24)
                             .error(R.drawable.round_account_circle_24)
@@ -63,33 +63,38 @@ public class UserMypage extends AppCompatActivity {
             }
         });
 
+        // ✅ 프로필 이미지 클릭 이벤트 추가
+        profileImg.setOnClickListener(v -> {
+            Toast.makeText(this, "프로필 이미지 클릭됨", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(UserMypageActivity.this, ProfileEditActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+
         // X 버튼 클릭 시 MainActivity로 이동
         closeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(UserMypage.this, MainActivity.class);
+            Intent intent = new Intent(UserMypageActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
 
         userInfoRoute.setOnClickListener(v -> {
-            Intent intent = new Intent(UserMypage.this, UserInfoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = new Intent(UserMypageActivity.this, UserInfoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-            finish();
         });
 
         resumeManagement.setOnClickListener(v -> {
-            Intent intent = new Intent(UserMypage.this, ResumeManagement.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = new Intent(UserMypageActivity.this, ResumeManagementActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-            finish();
         });
 
         layoutApply.setOnClickListener(v -> {
-            Intent intent = new Intent(UserMypage.this, ApplicationStatus.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = new Intent(UserMypageActivity.this, ApplicationStatusActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-            finish();
         });
     }
 }

@@ -15,9 +15,9 @@ import com.example.albbamon.R;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.repository.UserRepository;
 
-public class EditUserInfo extends Fragment {
+public class EditUserInfoFragment extends Fragment {
 
-    public EditUserInfo() {
+    public EditUserInfoFragment() {
         // 기본 생성자
     }
 

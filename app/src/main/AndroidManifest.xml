@@ -4,30 +4,29 @@
     <!-- 인터넷 및 네트워크 상태 확인 권한 추가 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".mypage.ProfileEditActivity"
+            android:exported="false" />
         <!-- 다른 Activity -->
         <activity
             android:name=".activity_oh"
-            android:exported="false" />
-
-        <!-- 메인 Activity -->
+            android:exported="false" /> <!-- 메인 Activity -->
         <activity
             android:name=".SignIn"
             android:exported="false" />
@@ -36,6 +35,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,30 +48,24 @@
         <activity
             android:name=".account"
             android:exported="false" />
-        <activity android:name=".mypage.UserMypage" />
+        <activity android:name=".mypage.UserMypageActivity" />
         <activity android:name=".mypage.UserInfoActivity" />
-        <activity android:name=".mypage.ApplicationStatus" />
-        <activity android:name=".mypage.ResumeManagement" />
+        <activity android:name=".mypage.ApplicationStatusActivity" />
+        <activity android:name=".mypage.ResumeManagementActivity" />
         <activity android:name=".Resume.ResumeSchoolActivity" />
-        <activity android:name=".Resume.ResumeJobActivity"/>
-        <activity android:name=".Resume.ResumeWriteActivity"/>
-        <activity android:name=".Resume.ResumeOptionActivity"/>
-        <activity android:name=".Resume.ResumeIntroActivity"/>
-        <activity android:name=".Resume.ResumePortfolioActivity"/>
-        <activity android:name=".JobPostingActivity"/>
-        <activity
-            android:name=".mypage.EditUserInfoActivity" />
+        <activity android:name=".Resume.ResumeJobActivity" />
+        <activity android:name=".Resume.ResumeWriteActivity" />
+        <activity android:name=".Resume.ResumeOptionActivity" />
+        <activity android:name=".Resume.ResumeIntroActivity" />
+        <activity android:name=".Resume.ResumePortfolioActivity" />
+        <activity android:name=".JobPostingActivity" />
+        <activity android:name=".mypage.EditUserInfoActivity" />
         <activity
             android:name=".InquiryActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <!-- 회원 탈퇴 Activity -->
-        <activity android:name=".MemberWithdrawalActivity" />
-
-        <!-- 메일/문자수신 설정 Activity -->
+            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- 회원 탈퇴 Activity -->
+        <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" />
-
     </application>
 
 </manifest>

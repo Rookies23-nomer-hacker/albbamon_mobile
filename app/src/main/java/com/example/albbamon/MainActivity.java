@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.Resume.ResumeWriteActivity;
-import com.example.albbamon.mypage.UserMypage;
+import com.example.albbamon.mypage.UserMypageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         btnOpenMypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UserMypage.class);
+                Intent intent = new Intent(MainActivity.this, UserMypageActivity.class);
                 startActivity(intent);
             }
         });

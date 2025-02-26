@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.albbamon.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-public class ResumeManagement extends AppCompatActivity {
+public class ResumeManagementActivity extends AppCompatActivity {
 
     private LinearLayout containerLayout;
 
@@ -34,7 +34,7 @@ public class ResumeManagement extends AppCompatActivity {
 
         // 뒤로가기 버튼 클릭 시 MainActivity로 이동
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ResumeManagement.this, UserMypage.class);
+            Intent intent = new Intent(ResumeManagementActivity.this, UserMypageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
