@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -18,7 +19,7 @@ public interface CommunityAPI {
     @GET("/api/post/{postId}")
     Call<ResponseWrapper<CommunityModel>> getPostById(@Path("postId") int postId);
 
+    //검색
     @GET("/api/post/search")
     Call<List<CommunityModel>> getSearchlist(@Query("keyword") String keyword);
 }
-

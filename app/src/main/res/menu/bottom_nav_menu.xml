@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/icon_home_active"
+        android:title="홈" />
+
+    <item
+        android:id="@+id/nav_ai"
+        android:icon="@drawable/icon_ai_deactive"
+        android:title="AI 추천" />
+
+    <item
+        android:id="@+id/nav_map"
+        android:icon="@drawable/icon_alba_map_deactive"
+        android:title="알바지도" />
+
+    <item
+        android:id="@+id/nav_chat"
+        android:icon="@drawable/icon_chat"
+        android:title="채팅" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/icon_my_page_deactive"
+        android:title="마이페이지" />
+
+</menu>
