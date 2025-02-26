@@ -53,7 +53,6 @@ public class ExperienceList extends AppCompatActivity {
         total_bbs = (TextView) findViewById(R.id.totalRec_textView);
         searchButton = findViewById(R.id.searchButton);
 
-
         String keyword = getIntent().getStringExtra("keyword");
         if (keyword == null){
             //ListView 데이터 가져와서 보여주기
@@ -62,20 +61,16 @@ public class ExperienceList extends AppCompatActivity {
             postSearchList(keyword);
         }
 
-
-
-
-
         list_view.setOnItemClickListener((parent, view, position, id) -> {
             // 클릭한 아이템 가져오기
             CommunityModel selectedPost = communityList.get(position);
 
             // 데이터 확인 (디버깅용)
-            Log.d("ListViewClick", "선택된 아이템: " + selectedPost.getTitle());
+            Log.d("ListViewClick", "선택된 아이템: "+selectedPost.getPostId()+" "+selectedPost.getTitle());
 
             // 새 액티비티로 이동 (선택한 게시글 정보를 넘겨줌)
             Intent intent = new Intent(ExperienceList.this, ExperienceView.class);
-            intent.putExtra("postId", selectedPost.getPostId()); // 게시글 ID 전달
+            intent.putExtra("postId", selectedPost.getPostId()); // 게시글 ID
             startActivity(intent);
         });
 
@@ -141,7 +136,7 @@ public class ExperienceList extends AppCompatActivity {
     }
 
     private void postList() {
-        CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
 
         Call<List<CommunityModel>> call = apiService.getPosts();
 
@@ -173,7 +168,7 @@ public class ExperienceList extends AppCompatActivity {
         });
     }
     private void postSearchList(String keyword) {
-        CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
         Call<List<CommunityModel>> call = apiService.getSearchlist(keyword);
         call.enqueue(new Callback<>() {
             @Override

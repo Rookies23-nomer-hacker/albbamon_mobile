@@ -48,6 +48,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".InquiryActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+        </activity>
 
         <activity
             android:name=".mypage.ProfileEditActivity"
@@ -103,6 +108,31 @@
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:parentActivityName=".MainActivity"/>
+        <!-- 아이디 찾기 Activity들 -->
+        <activity
+            android:name=".FindIdPersonalActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".FindIdBusinessActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            tools:ignore="MissingClass" />
+
+        <!-- 개인회원 비밀번호 찾기 -->
+        <activity
+            android:name=".FindPwPersonalActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 기업회원 비밀번호 찾기 -->
+        <activity
+            android:name=".FindPwBusinessActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+
     </application>
 
 </manifest>
+
+
+
+
+

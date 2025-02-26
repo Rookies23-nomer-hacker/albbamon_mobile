@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.Experience.ExperienceList;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.model.LoginUserModel;
 import com.example.albbamon.mypage.UserMypageActivity;
@@ -82,7 +83,7 @@ public class SignIn extends AppCompatActivity {
         }
 
         // 입력값 로그 출력
-        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
+//        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
 
         UserAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
         LoginUserModel login = new LoginUserModel(email, password);
@@ -98,12 +99,15 @@ public class SignIn extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
 
+
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String responseBodyString = response.body().string().trim();
                         Log.d("API_RESPONSE", "서버 응답 원본: " + responseBodyString);
 
                         long userId = Long.parseLong(responseBodyString);
+
+                        Log.d("API_RESPONSE", "서버 쿠키: " + response.headers());
 
                         // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
                         String setCookieHeader = response.headers().get("Set-Cookie");
@@ -125,7 +129,9 @@ public class SignIn extends AppCompatActivity {
 
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
                         Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SignIn.this, UserMypageActivity.class); //MainActivity
+
+                        Intent intent = new Intent(SignIn.this, ExperienceList.class); //MainActivity
+
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
                         startActivity(intent);
                         finish();

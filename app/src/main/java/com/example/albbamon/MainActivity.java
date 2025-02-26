@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         btnFetchPosts = findViewById(R.id.btn_fetch_posts);
         recyclerPosts.setLayoutManager(new LinearLayoutManager(this));
 
-        apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
 
         btnFetchPosts.setOnClickListener(new View.OnClickListener() {
             @Override
