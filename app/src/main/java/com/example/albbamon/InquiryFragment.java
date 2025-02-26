@@ -1,5 +1,6 @@
 package com.example.albbamon;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,7 +39,7 @@ public class InquiryFragment extends Fragment {
     private Spinner spinnerMainCategory, spinnerSubCategory;
     private EditText etInquiryContent, etInquiryEmail, etInquiryPhone;
     private CheckBox cbAgreePrivacy, cbNotifyReply;
-    private Button btnSubmitInquiry, btnBack, btnGoToWithdrawal;
+    private Button btnSubmitInquiry, btnGoToWithdrawal;
     private Button btnGoToFindId;  // 아이디 찾기 버튼
     private Button btnGoToFindPw;  // **비밀번호 찾기 버튼 (새로 추가)**
 
@@ -46,6 +48,8 @@ public class InquiryFragment extends Fragment {
     private Uri attachedFileUri; // 첨부 파일 URI
     private Map<String, List<String>> subCategoriesMap; // 대분류별 상세 분류 매핑
     private ActivityResultLauncher<String> filePickerLauncher; // 파일 선택 API 런처
+
+
 
     public InquiryFragment() {
         // Required empty public constructor
@@ -57,6 +61,7 @@ public class InquiryFragment extends Fragment {
         // filePickerLauncher 등록은 onCreateView()에서 수행
     }
 
+    @SuppressLint("WrongViewCast")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -64,6 +69,12 @@ public class InquiryFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_inquiry, container, false);
+
+        ImageView btnBack = view.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
+
 
         // 레이아웃에서 뷰 찾아오기
         spinnerMainCategory = view.findViewById(R.id.spinner_main_category);

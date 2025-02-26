@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -138,7 +139,8 @@
                 android:background="@android:drawable/editbox_background"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"
-                android:inputType="number"/>
+                android:inputType="number"
+                tools:ignore="ExtraText" />
         </LinearLayout>
 
         <!-- 이메일로 찾기 입력란 레이아웃 (초기 GONE) -->

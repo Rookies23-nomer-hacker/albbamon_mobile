@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@android:color/white"
     android:padding="16dp"
     android:fitsSystemWindows="true"
     tools:context=".FindPwBusinessActivity">
@@ -44,7 +43,7 @@
                 android:elevation="1dp" />
         </LinearLayout>
 
-        <!-- 탭 인디케이터 (왼쪽: 회색 = 개인회원, 오른쪽: 빨간색 = 기업회원) -->
+        <!-- 탭 인디케이터 (왼쪽: 회색, 오른쪽: 빨간색) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -66,72 +65,31 @@
                 android:background="@android:color/holo_red_light" />
         </LinearLayout>
 
-        <!-- 라디오 그룹: 회원정보로 찾기 / 본인인증으로 찾기 -->
-        <RadioGroup
-            android:id="@+id/radioGroupPwMethodBiz"
+        <!-- 회원정보 입력 영역 -->
+        <LinearLayout
+            android:id="@+id/layoutBizInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="16dp">
 
-            <RadioButton
-                android:id="@+id/radioBizInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="회원정보로 찾기"
-                android:checked="true"
-                android:textSize="14sp"
-                android:layout_marginBottom="8dp"/>
-
-            <RadioButton
-                android:id="@+id/radioBizCert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="본인인증으로 찾기"
-                android:textSize="14sp"
-                android:layout_marginBottom="16dp"/>
-        </RadioGroup>
-
-        <!-- 회원정보로 찾기 레이아웃 (기본 VISIBLE) -->
-        <LinearLayout
-            android:id="@+id/layoutBizInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <TextView
                 android:id="@+id/tvBizLabelInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="회원정보 입력"
+                android:text="사업자등록번호 또는 가입자명을 입력하세요"
                 android:textSize="14sp"
                 android:layout_marginBottom="4dp"/>
 
+            <!-- etBizInfo가 여기 정의되어 있음 -->
             <EditText
                 android:id="@+id/etBizInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="사업자등록번호 또는 가입자명을 입력하세요"
+                android:hint="입력하세요"
                 android:background="@android:drawable/editbox_background"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"/>
-        </LinearLayout>
-
-        <!-- 본인인증으로 찾기 레이아웃 (초기 GONE) -->
-        <LinearLayout
-            android:id="@+id/layoutBizCert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tvBizCertGuide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="본인인증 절차를 진행하세요 (기업)"
-                android:textSize="14sp"
-                android:layout_marginBottom="8dp"/>
         </LinearLayout>
 
         <!-- 고객센터 안내 영역 -->

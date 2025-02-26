@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albbamon.model.UserFindIdModel;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.UserApiService;
 
@@ -103,23 +104,22 @@ public class FindIdPersonalActivity extends AppCompatActivity {
                 .build();
 
         UserApiService apiService = retrofit.create(UserApiService.class);
-        Call<List<UserModel>> call = apiService.findUserId(name, phone, ceoNum);
+        Call<List<UserFindIdModel>> call = apiService.findUserId(name, phone, ceoNum);
 
-        call.enqueue(new Callback<List<UserModel>>() {
+        call.enqueue(new Callback<List<UserFindIdModel>>() {
             @Override
-            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+            public void onResponse(Call<List<UserFindIdModel>> call, Response<List<UserFindIdModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<UserModel> userList = response.body();
-                    Log.d("usermodel111", "onResponse: " + userList.get(0));
+                    List<UserFindIdModel> userList = response.body();
+                    Log.d("usermodel111", "onResponse: " + userList.get(0).getEmail());
                     if (!userList.isEmpty()) {
                         // 안내 문구 업데이트 (XML의 tvFindResultMessage)
                         String infoMessage = "입력하신 정보와 일치하는 " + userList.size() + "개의 아이디가 있습니다.";
                         tvFindResultMessage.setText(infoMessage);
 
-                        for (UserModel model : userList){
-                            Log.d("usermodel get1", "onResponse: "+model.getData());
-                            Log.d("usermodel get2", "onResponse: "+model.getMessage());
-                            Log.d("usermodel get3", "onResponse: "+model.getStatus());
+                        for (UserFindIdModel model : userList){
+                            Log.d("usermodel get1", "onResponse: "+model.getEmail());
+                            Log.d("usermodel get2", "onResponse: "+model.getPhone());
                             Log.d("usermodel get4", "onResponse: "+model);
                         }
 
@@ -130,12 +130,11 @@ public class FindIdPersonalActivity extends AppCompatActivity {
                         StringBuilder resultBuilder = new StringBuilder();
                         resultBuilder.append("총 ").append(userList.size()).append("개의 결과 발견\n\n");
                         for (int i = 0; i < userList.size(); i++) {
-                            UserModel user = userList.get(i);
-                            if (user.getData() != null && user.getData().getUserInfo() != null) {
-                                // 1) 올바른 이메일 가져오기
-                                String email = user.getData().getUserInfo().getEmail();
-
-                                // 2) resultBuilder에 추가
+                            UserFindIdModel user = userList.get(i);
+                            // 예: 서버 JSON이 { "data": { "userInfo": { "email": "xxx@xxx.com" }}} 라면
+                            if (user.getEmail() != null) {
+                                String email = user.getEmail();
+                                // 빌더에 추가
                                 resultBuilder.append(i + 1)
                                         .append(") ")
                                         .append(email)
@@ -154,7 +153,7 @@ public class FindIdPersonalActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<UserModel>> call, Throwable t) {
+            public void onFailure(Call<List<UserFindIdModel>> call, Throwable t) {
                 Toast.makeText(FindIdPersonalActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

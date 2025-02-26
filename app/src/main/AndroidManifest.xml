@@ -58,10 +58,6 @@
             android:name=".FindPwBusinessActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
-        <!-- 채용공고 상세 화면 Activity -->
-        <activity
-            android:name=".JobDetailActivity"
-            android:exported="false" />
 
     </application>
 

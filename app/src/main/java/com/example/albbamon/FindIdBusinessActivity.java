@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albbamon.model.UserFindIdModel;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.UserApiService;
 
@@ -31,7 +32,7 @@ public class FindIdBusinessActivity extends AppCompatActivity {
     private View viewIndicatorPersonal, viewIndicatorBusiness;
     private RadioGroup radioGroupFindMethodBiz;
     private LinearLayout layoutBizNumber, layoutBizEmail, layoutBizCert;
-    private EditText etBizName, etBizNumber, etBizEmail;
+    private EditText etBizName, etBizEmail, etBizNumber;
 
     // 결과 영역 관련 뷰들 (개인회원과 유사)
     private LinearLayout layoutFindResult;
@@ -106,10 +107,12 @@ public class FindIdBusinessActivity extends AppCompatActivity {
             if (checked == R.id.radioBizNumber) {
                 String bizName = etBizName.getText().toString().trim();
                 String bizNumber = etBizNumber.getText().toString().trim();
-                callFindIdApi(bizName, bizNumber, "");
+                Log.d("usermodel3241", "onResponse: "+ etBizNumber);
+                Log.d("usermodel3555", "onResponse: "+ etBizNumber);
+                callFindIdApi(bizName, "", bizNumber, "");
             } else if (checked == R.id.radioBizEmail) {
                 String email = etBizEmail.getText().toString().trim();
-                callFindIdApi("", "", email);
+                callFindIdApi("", "","", email);
             } else if (checked == R.id.radioBizCert) {
                 // 본인인증 방식 처리 (추후 구현)
                 Toast.makeText(this, "본인인증 기능을 구현하세요.", Toast.LENGTH_SHORT).show();
@@ -133,7 +136,7 @@ public class FindIdBusinessActivity extends AppCompatActivity {
         viewIndicatorBusiness.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
     }
 
-    private void callFindIdApi(String bizName, String bizNumber, String email) {
+    private void callFindIdApi(String bizName,String phone, String bizNumber, String email) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:60085")  // 실제 API URL로 변경
                 .addConverterFactory(GsonConverterFactory.create())
@@ -141,29 +144,39 @@ public class FindIdBusinessActivity extends AppCompatActivity {
 
         UserApiService apiService = retrofit.create(UserApiService.class);
         // 아래 메서드는 예시입니다. 실제 API 엔드포인트 및 파라미터 구조에 맞게 구현하세요.
-        Call<List<UserModel>> call = apiService.findUserId(bizName, bizNumber, email);
+        // 사업자등록번호 방식 전용 API 호출 (예: findBizUserId)
+        Call<List<UserFindIdModel>> call = apiService.findUserId(bizName,"",bizNumber);
+// 또는 이메일로 찾기일 경우: apiService.findBizUserId("", "", bizEmail);
 
-        call.enqueue(new Callback<List<UserModel>>() {
+
+
+        call.enqueue(new Callback<List<UserFindIdModel>>() {
             @Override
-            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+            public void onResponse(Call<List<UserFindIdModel>> call, Response<List<UserFindIdModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<UserModel> userList = response.body();
+                    List<UserFindIdModel> userList = response.body();
                     if (!userList.isEmpty()) {
                         // 안내 문구 업데이트
                         String infoMsg = "입력하신 정보와 일치하는 " + userList.size() + "개의 아이디가 있습니다.";
                         tvFindResultMessage.setText(infoMsg);
 
                         // 여러 결과를 하나의 문자열로 구성 (각 이메일 앞에 번호 붙임)
-                        StringBuilder sb = new StringBuilder();
+                        StringBuilder resultBuilder = new StringBuilder();
+                        resultBuilder.append("총 ").append(userList.size()).append("개의 결과 발견\n\n");
                         for (int i = 0; i < userList.size(); i++) {
-                            UserModel user = userList.get(i);
-                            if (user.getData() != null && user.getData().getUserInfo() != null) {
-                                String userEmail = user.getData().getUserInfo().getEmail();
-                                sb.append((i + 1)).append(") ").append(userEmail).append("\n");
+                            UserFindIdModel user = userList.get(i);
+                            // email이 null이 아닌 경우만 추가
+                            if (user.getEmail() != null) {
+                                String email = user.getEmail();
+                                resultBuilder.append(i + 1)
+                                        .append(") ")
+                                        .append(email)
+                                        .append("\n");
                             }
                         }
-                        tvFoundId.setText(sb.toString());
+                        tvFoundId.setText(resultBuilder.toString());
                         layoutFindResult.setVisibility(View.VISIBLE);
+
                     } else {
                         Toast.makeText(FindIdBusinessActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -173,7 +186,7 @@ public class FindIdBusinessActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<UserModel>> call, Throwable t) {
+            public void onFailure(Call<List<UserFindIdModel>> call, Throwable t) {
                 Toast.makeText(FindIdBusinessActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

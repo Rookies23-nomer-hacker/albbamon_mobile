@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class FindPwPersonalActivity extends AppCompatActivity {
 
-    private Button btnPersonal, btnBusiness, btnSendSms, btnIssueTempPw;
+    private Button btnPersonal, btnBusiness, btnIssueTempPw;
     private View viewIndicatorPersonal, viewIndicatorBusiness;
     private EditText etUserId, etName, etPhone;
 
@@ -21,25 +21,24 @@ public class FindPwPersonalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_pw_personal);
 
-        // 탭 버튼
+        // 탭 버튼 연결
         btnPersonal = findViewById(R.id.btnPersonal);
         btnBusiness = findViewById(R.id.btnBusiness);
 
-        // 인디케이터
+        // 인디케이터 연결
         viewIndicatorPersonal = findViewById(R.id.viewIndicatorPersonal);
         viewIndicatorBusiness = findViewById(R.id.viewIndicatorBusiness);
 
-        // 임시비밀번호 신청 레이아웃 내 위젯
+        // 임시비밀번호 신청 레이아웃 내 위젯 연결
         etUserId = findViewById(R.id.etUserId);
         etName   = findViewById(R.id.etName);
         etPhone  = findViewById(R.id.etPhone);
-        btnSendSms = findViewById(R.id.btnSendSms);
         btnIssueTempPw = findViewById(R.id.btnIssueTempPw);
 
         // 초기 상태: 개인회원 탭 활성화
         activatePersonalTab();
 
-        // 탭 버튼 클릭
+        // 탭 버튼 클릭 이벤트
         btnPersonal.setOnClickListener(v -> {
             // 이미 개인회원 탭
             activatePersonalTab();
@@ -48,12 +47,6 @@ public class FindPwPersonalActivity extends AppCompatActivity {
             // 기업회원 비밀번호 찾기 화면으로 이동 (예시)
             startActivity(new Intent(this, FindPwBusinessActivity.class));
             finish();
-        });
-
-        // 인증번호 발송 버튼 클릭
-        btnSendSms.setOnClickListener(v -> {
-            // TODO: SMS 인증번호 발송 로직
-            Toast.makeText(this, "인증번호 발송 클릭됨", Toast.LENGTH_SHORT).show();
         });
 
         // 임시비밀번호 발급 버튼 클릭

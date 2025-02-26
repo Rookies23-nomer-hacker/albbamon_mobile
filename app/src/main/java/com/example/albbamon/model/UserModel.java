@@ -16,6 +16,8 @@ public class UserModel {
     public String getMessage() { return message; }
     public UserData getData() { return data; }
 
+
+
     // 내부 클래스: data 필드 처리
     public class UserData {
         @SerializedName("userInfo")

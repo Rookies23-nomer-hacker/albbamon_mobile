@@ -1,5 +1,6 @@
 package com.example.albbamon.api;
 
+import com.example.albbamon.model.UserFindIdModel;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.SuccessResponse;
 
@@ -25,7 +26,7 @@ public interface UserAPI {
 
     // 아이디 찾기 API 예시 (GET 요청)
     @GET("/api/user/find-id")
-    Call<List<UserModel>> findUserId(
+    Call<List<UserFindIdModel>> findUserId(
             @Query("name") String name,
             @Query("phone") String phone,
             @Query("ceoNum") String ceoNum);

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:padding="16dp"
-    tools:context=".FindPwPersonalTempActivity">
+    android:background="@android:color/white"
+    tools:context=".FindPwPersonalActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,6 +75,7 @@
         </LinearLayout>
 
         <!-- 임시비밀번호 신청 영역 -->
+        <!-- 인증 관련 입력란(이름, 휴대폰, 인증번호 발송 버튼)이 제거되었습니다. -->
         <LinearLayout
             android:id="@+id/layoutTempPw"
             android:layout_width="match_parent"
@@ -83,16 +83,7 @@
             android:orientation="vertical"
             android:layout_marginTop="16dp">
 
-            <TextView
-                android:id="@+id/tvTempPwTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="임시비밀번호 신청"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <!-- 아이디 입력 -->
+            <!-- 아이디 입력 (임시비밀번호 찾기에 필요한 필드가 있다면 유지) -->
             <EditText
                 android:id="@+id/etUserId"
                 android:layout_width="match_parent"
@@ -102,36 +93,6 @@
                 android:inputType="text"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp"/>
-
-            <!-- 이름 입력 -->
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="이름"
-                android:background="@android:drawable/editbox_background"
-                android:inputType="textPersonName"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"/>
-
-            <!-- 휴대폰 번호 입력 -->
-            <EditText
-                android:id="@+id/etPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="휴대폰 번호 입력"
-                android:background="@android:drawable/editbox_background"
-                android:inputType="phone"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- 인증번호 발송 버튼 -->
-            <Button
-                android:id="@+id/btnSendSms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="인증번호 발송"/>
         </LinearLayout>
 
         <!-- 고객센터 안내 -->
