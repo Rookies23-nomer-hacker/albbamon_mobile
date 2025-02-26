@@ -1,6 +1,6 @@
 package com.example.albbamon.Resume;
 
-import com.example.albbamon.model.ResumeRequestDto;
+import com.example.albbamon.dto.request.ResumeRequestDto;
 
 import java.time.LocalDateTime;
 

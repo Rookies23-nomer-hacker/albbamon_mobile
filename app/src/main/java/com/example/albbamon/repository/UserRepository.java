@@ -76,7 +76,7 @@ public class UserRepository {
         ChangePwRequestDto request = new ChangePwRequestDto(userId, oldPw, newPw);
 
         // ✅ 세션 쿠키 포함하여 API 요청
-        Call<UserChangePwResponseDto> call = userAPI.changePassword(sessionCookie, request);
+        Call<UserChangePwResponseDto> call = userAPI.changePassword(request);
 
         call.enqueue(new Callback<UserChangePwResponseDto>() {
             @Override
@@ -95,6 +95,7 @@ public class UserRepository {
         });
     }
 
+
     // ✅ 회원 탈퇴 API 호출 메서드 추가
     public void deleteUser(Context context, long userId, DeleteUserCallback callback) {
         // ✅ SharedPreferences에서 세션 쿠키 가져오기
@@ -106,7 +107,7 @@ public class UserRepository {
             return;
         }
 
-        // ✅ API 호출 (세션 쿠키 포함)
+        // API 호출 (세션 쿠키 포함)
         Call<ResponseBody> call = userAPI.deleteUser(sessionCookie, userId);
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -126,7 +127,7 @@ public class UserRepository {
         });
     }
 
-    // ✅ 회원 탈퇴 콜백 인터페이스
+    // 회원 탈퇴 콜백 인터페이스
     public interface DeleteUserCallback {
         void onSuccess(String message);
         void onFailure(String errorMessage);

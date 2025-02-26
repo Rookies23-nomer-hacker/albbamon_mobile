@@ -24,8 +24,8 @@ public class RetrofitClient {
             OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
             retrofitWithoutSession = new Retrofit.Builder()
-//                    .baseUrl("http://58.127.241.84:60085") // API 서버 주소
-                    .baseUrl("http://10.0.2.2:60085/")
+                    .baseUrl("http://58.127.241.84:60085") // API 서버 주소
+//                    .baseUrl("http://10.0.2.2:60085/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
                     .build();
@@ -79,7 +79,8 @@ public class RetrofitClient {
                     .build();
 
             retrofitWithSession = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:60085/") // API 서버 주소
+                    .baseUrl("http://58.127.241.84:60085")
+//                    .baseUrl("http://10.0.2.2:60085/") // API 서버 주소
                     .client(okHttpClient) // ✅ JSESSIONID 포함
                     .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
                     .build();

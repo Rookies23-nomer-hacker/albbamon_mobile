@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -42,12 +45,22 @@ public class SignIn extends AppCompatActivity {
             return insets;
         });
 
+        ImageView backButton = findViewById(R.id.backButton);
+
+        // 🔹 뒤로가기 버튼 클릭 이벤트 추가
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // 현재 액티비티 종료 (이전 화면으로 돌아감)
+            }
+        });
+
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
 
         // 회원가입 버튼 클릭 시 account 화면으로 이동
-        Button btnPer = findViewById(R.id.signUpBtn);
-        btnPer.setOnClickListener(view -> {
+        TextView textView = findViewById(R.id.signUp);
+        textView.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), account.class);
             startActivity(intent);
         });

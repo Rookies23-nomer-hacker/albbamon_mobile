@@ -4,13 +4,18 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -46,6 +51,16 @@ public class comAccount extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        ImageView backButton = findViewById(R.id.backButton);
+
+        // 🔹 뒤로가기 버튼 클릭 이벤트 추가
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // 현재 액티비티 종료 (이전 화면으로 돌아감)
+            }
         });
 
         // EditText 초기화
@@ -179,6 +194,40 @@ public class comAccount extends AppCompatActivity {
         agree2.setOnCheckedChangeListener(individualCheckBoxListener);
         agree3.setOnCheckedChangeListener(individualCheckBoxListener);
 
+        // *에 빨간색 입력
+        TextView phoneText = findViewById(R.id.phoneText);
+        TextView emailText = findViewById(R.id.emailText);
+        TextView passwordText = findViewById(R.id.passwordText);
+        TextView nameText = findViewById(R.id.nameText);
+        TextView ceoNumText = findViewById(R.id.ceoNumText);
+        TextView companyText = findViewById(R.id.companyText);
+        TextView tcagree = findViewById((R.id.tcagree));
+
+        applyRedAsterisk(emailText);
+        applyRedAsterisk(passwordText);
+        applyRedAsterisk(phoneText);
+        applyRedAsterisk(nameText);
+        applyRedAsterisk(ceoNumText);
+        applyRedAsterisk(companyText);
+        applyRedAsterisk(tcagree);
+
+    }
+
+    private void applyRedAsterisk(TextView textView) {
+        String originalText = textView.getText().toString();
+        SpannableString spannable = new SpannableString(originalText);
+
+        // '*'의 위치 찾기
+        int starIndex = originalText.indexOf("*");
+        if (starIndex != -1) {
+            spannable.setSpan(
+                    new ForegroundColorSpan(Color.RED),  // 빨간색 적용
+                    starIndex,
+                    starIndex + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+        textView.setText(spannable);
     }
 
     private void incorrectEditView(EditText editText, int color){
@@ -258,10 +307,10 @@ public class comAccount extends AppCompatActivity {
 
         if (isAllFilled && isAllChecked && isCorrect) {
             registerButton.setEnabled(true);
-            registerButton.setBackgroundColor(Color.parseColor("#FFA500")); // 활성화 색상
+            registerButton.setBackgroundColor(Color.parseColor("#FF501B")); // 활성화 색상
         } else {
             registerButton.setEnabled(false);
-            registerButton.setBackgroundColor(Color.parseColor("#A9A9A9")); // 비활성화 색상
+            registerButton.setBackgroundColor(Color.parseColor("#FF501B")); // 비활성화 색상
         }
     }
 

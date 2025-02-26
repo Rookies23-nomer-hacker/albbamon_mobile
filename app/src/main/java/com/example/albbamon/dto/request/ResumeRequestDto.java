@@ -1,4 +1,4 @@
-package com.example.albbamon.model;
+package com.example.albbamon.dto.request;
 
 import java.time.LocalDateTime;
 

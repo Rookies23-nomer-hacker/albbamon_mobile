@@ -16,13 +16,8 @@ import android.widget.Toast;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.api.UserAPI;
-import com.example.albbamon.model.ResumeRequestDto;
-import com.example.albbamon.model.UserModel;
-import com.example.albbamon.network.RetrofitClient;
+import com.example.albbamon.dto.request.ResumeRequestDto;
 
-import com.bumptech.glide.Glide;
-import com.example.albbamon.model.UserData;
-import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.repository.UserRepository;
 
@@ -30,7 +25,6 @@ import com.example.albbamon.repository.UserRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ResumeWriteActivity extends AppCompatActivity {
 
