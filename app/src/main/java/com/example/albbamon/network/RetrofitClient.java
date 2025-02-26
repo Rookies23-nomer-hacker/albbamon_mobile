@@ -17,6 +17,18 @@ public class RetrofitClient {
     private static final String TAG = "RetrofitClient";
     private static Retrofit retrofitWithoutSession = null; // 로그인 요청용 (세션 X)
     private static Retrofit retrofitWithSession = null;    // 인증이 필요한 요청용 (세션 O)
+    private static Retrofit retrofit = null;
+
+    public static Retrofit getRetrofitInstance() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:60085/")
+//                    .baseUrl("http://58.127.241.84:60085") // 여기에 API 서버 주소 입력
+                    .addConverterFactory(GsonConverterFactory.create()) // JSON 변환 설정
+                    .build();
+        }
+        return retrofit;
+    }
 
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
