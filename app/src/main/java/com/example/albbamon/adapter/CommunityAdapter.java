@@ -29,7 +29,6 @@ public class CommunityAdapter extends ArrayAdapter<CommunityModel> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_community, parent, false);
         }
-        Log.e("keyword", "검색 제목: " + R.id.item_title);
         // View 참조
         TextView titleView = convertView.findViewById(R.id.item_title);
         TextView contentView = convertView.findViewById(R.id.item_content);

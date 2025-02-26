@@ -174,7 +174,6 @@ public class ExperienceList extends AppCompatActivity {
     }
     private void postSearchList(String keyword) {
         CommunityAPI apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
-        Log.e("keyword", "검색 시도: " + keyword);
         Call<List<CommunityModel>> call = apiService.getSearchlist(keyword);
         call.enqueue(new Callback<>() {
             @Override
@@ -182,7 +181,6 @@ public class ExperienceList extends AppCompatActivity {
                 Log.e("keyword", "응답 코드: " + response.code()); // 서버 응답 코드 출력
                 if (response.isSuccessful() && response.body() != null) {
                     List<CommunityModel> bbs = response.body();
-                    Log.e("keyword", "검색 시도2: " + bbs);
                     runOnUiThread(() -> {
                         runOnUiThread(() -> {
                             communityList.clear();  // 기존 데이터 삭제 (중복 방지)
