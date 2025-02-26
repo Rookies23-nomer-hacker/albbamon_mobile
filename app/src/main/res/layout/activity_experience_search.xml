@@ -41,7 +41,7 @@
             android:paddingEnd="12dp"
             android:singleLine="true"
             android:textColor="@android:color/black"
-            android:textColorHint="@color/hint_gray"
+            android:textColorHint="@color/hint_text_color"
             android:textSize="16sp" />
 
     </LinearLayout>

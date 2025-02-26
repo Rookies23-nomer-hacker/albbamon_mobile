@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.albbamon.Experience.ExperienceList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +121,13 @@ public class MenuActivity extends AppCompatActivity {
         // 메뉴 리스트 업데이트
         menuAdapter = new MenuAdapter(menuList, position -> {
             // 메뉴 클릭 시 동작
+            String selectedMenu = menuList.get(position).getTitle();
+
+            if (selectedMenu.equals("알바 경험담")) {
+                // 알바 경험담을 클릭하면 새로운 액티비티 실행
+                Intent intent = new Intent(MenuActivity.this, ExperienceList.class);
+                startActivity(intent);
+            }
         });
         menuRecyclerView.setAdapter(menuAdapter);
     }
