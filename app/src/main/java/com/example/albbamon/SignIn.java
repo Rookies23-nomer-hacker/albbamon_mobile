@@ -17,7 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.albbamon.api.UserApi;
+import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.model.LoginUserModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.gson.Gson;
@@ -81,9 +81,9 @@ public class SignIn extends AppCompatActivity {
         }
 
         // 입력값 로그 출력
-        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
+//        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
 
-        UserApi apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserApi.class);
+        UserAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
         LoginUserModel login = new LoginUserModel(email, password);
 
         // 서버에서 단순 문자열을 반환하므로 ResponseBody 사용
@@ -96,6 +96,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
+
 
                 if (response.isSuccessful() && response.body() != null) {
                     try {

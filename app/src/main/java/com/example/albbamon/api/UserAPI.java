@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public interface UserApi {
+public interface UserAPI {
 
 //    // 모든 사용자 정보 가져오기
 //    @GET("/api/user")
