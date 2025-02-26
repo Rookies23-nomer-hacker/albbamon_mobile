@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    tools:context=".FindPwPersonalActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 상단 제목 -->
+        <TextView
+            android:id="@+id/tvTitlePw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 찾기"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 탭 영역: 개인회원 / 기업회원 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btnPersonal"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="개인회원"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#000000"
+                android:elevation="1dp" />
+
+            <Button
+                android:id="@+id/btnBusiness"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="기업회원"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#000000"
+                android:elevation="1dp" />
+        </LinearLayout>
+
+        <!-- 탭 인디케이터: 왼쪽 빨간색(개인), 오른쪽 회색(기업) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <View
+                android:id="@+id/viewIndicatorPersonal"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_red_light" />
+
+            <View
+                android:id="@+id/viewIndicatorBusiness"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#DDDDDD" />
+        </LinearLayout>
+
+        <!-- 임시비밀번호 신청 영역 -->
+        <!-- 인증 관련 입력란(이름, 휴대폰, 인증번호 발송 버튼)이 제거되었습니다. -->
+        <LinearLayout
+            android:id="@+id/layoutTempPw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <!-- 아이디 입력 (임시비밀번호 찾기에 필요한 필드가 있다면 유지) -->
+            <EditText
+                android:id="@+id/etUserId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디 입력"
+                android:background="@android:drawable/editbox_background"
+                android:inputType="text"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+        </LinearLayout>
+
+        <!-- 고객센터 안내 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#F0F0F0"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvGuideTitlePw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 찾기 안내"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvGuideContentPw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="임시비밀번호 발급 후, 로그인하여 비밀번호를 변경해주세요.\n\n고객센터: 1588-9351 / helpdesk@albbamon.com\n상담시간: [월~금] 9:00~19:00 (점심 12:00~13:00)"
+                android:textSize="12sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
+
+        <!-- 임시비밀번호 발급 버튼 -->
+        <Button
+            android:id="@+id/btnIssueTempPw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="임시비밀번호 발급"
+            android:backgroundTint="#FF5F1F"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
+</ScrollView>
