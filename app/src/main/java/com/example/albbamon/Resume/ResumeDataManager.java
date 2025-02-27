@@ -1,6 +1,9 @@
 package com.example.albbamon.Resume;
 
+import android.util.Log;
+
 import com.example.albbamon.dto.request.ResumeRequestDto;
+import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -62,16 +65,81 @@ public class ResumeDataManager {
     public String getResumeImgName() { return resumeImgName; }
     public String getResumeImgData() { return resumeImgData; }
 
+    // ✅ Setter 추가
+    public void setSchool(String school) { this.school = school; }
+    public void setStatus(String status) { this.status = status; }
+    public void setPersonal(String personal) { this.personal = personal; }
+    public void setWorkPlaceRegion(String workPlaceRegion) { this.workPlaceRegion = workPlaceRegion; }
+    public void setWorkPlaceCity(String workPlaceCity) { this.workPlaceCity = workPlaceCity; }
+    public void setIndustryOccupation(String industryOccupation) { this.industryOccupation = industryOccupation; }
+    // ✅ 근무형태 저장 및 가져오기
+    public void setEmploymentType(String employmentType) {
+        this.employmentType = employmentType;
+    }
+    public void setWorkingPeriod(String workingPeriod) { this.workingPeriod = workingPeriod; }
+    public void setWorkingDay(String workingDay) { this.workingDay = workingDay; }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+    public void setPortfolio(List<String> portfolioFiles) {
+        this.portfolioList.clear();
+        this.portfolioList.addAll(portfolioFiles);
+    }
+    // 데이터 저장 메서드
+    public void setPersonalInfo(Long userId, String school, String status, String personal) {
+        this.userId = userId;
+        this.school = school;
+        this.status = status;
+        this.personal = personal;
+    }
+
+    public void setWorkInfo(String workPlaceRegion, String workPlaceCity, String industryOccupation, String employmentType) {
+        this.workPlaceRegion = workPlaceRegion;
+        this.workPlaceCity = workPlaceCity;
+        this.industryOccupation = industryOccupation;
+        this.employmentType = employmentType;
+    }
+
+
+    public void setWorkingConditions(String workingPeriod, String workingDay) {
+        this.workingPeriod = workingPeriod;
+        this.workingDay = workingDay;
+    }
+
+    // ✅ 포트폴리오 개수 반환
+    public int getPortfolioCount() {
+        return portfolioList.size();
+    }
+
     public void setResumeImgUrl(String resumeImgUrl) { this.resumeImgUrl = resumeImgUrl; }
     public void setResumeImgName(String resumeImgName) { this.resumeImgName = resumeImgName; }
     public void setResumeImgData(String resumeImgData) { this.resumeImgData = resumeImgData; }
 
     public ResumeRequestDto toResumeRequestDto() {
-        return new ResumeRequestDto(
-                userId, school, status, personal, workPlaceRegion, workPlaceCity, industryOccupation,
-                employmentType, workingPeriod, workingDay, introduction, portfolioData, portfolioUrl, portfolioName,
-                resumeImgUrl, resumeImgName, resumeImgData, // ✅ null 허용
-                LocalDateTime.now(), LocalDateTime.now()
+        Log.d("DEBUG-DM", "🚀 toResumeRequestDto() 호출됨");
+        Log.d("DEBUG-DM", "📌 personal 값: " + personal);
+        Log.d("DEBUG-DM", "📌 employmentType 값: " + employmentType);
+
+        // ✅ LocalDateTime.now()를 ISO 8601 형식으로 변환
+        LocalDateTime now = LocalDateTime.now();
+        Log.d("DEBUG-DM", "📌 현재 시간: " + now.toString());
+
+        ResumeRequestDto dto = new ResumeRequestDto(
+                null, school, status, personal, workPlaceRegion, workPlaceCity, industryOccupation,
+                employmentType, workingPeriod, workingDay, introduction,
+                portfolioData != null ? portfolioData : "",
+                portfolioUrl != null ? portfolioUrl : "",
+                portfolioName != null ? portfolioName : "",
+                resumeImgUrl != null ? resumeImgUrl : "",
+                resumeImgName != null ? resumeImgName : "",
+                resumeImgData != null ? resumeImgData : "",
+                now, now
         );
+
+        Log.d("DEBUG-DM", "📌 변환된 ResumeRequestDto: " + new Gson().toJson(dto));
+        return dto;
     }
+
+
 }

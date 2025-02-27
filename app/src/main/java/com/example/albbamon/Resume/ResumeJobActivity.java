@@ -2,6 +2,7 @@ package com.example.albbamon.Resume;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -33,14 +34,16 @@ public class ResumeJobActivity extends AppCompatActivity {
 
         radioGroupCareer.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.radioNewbie) {
-                dataManager.setEmploymentType("신입");
+                dataManager.setPersonal("신입");
             } else if (checkedId == R.id.radioExperienced) {
-                dataManager.setEmploymentType("경력");
+                dataManager.setPersonal("경력");
             }
         });
 
         findViewById(R.id.btnSave).setOnClickListener(v -> {
-            String selectedCareer = dataManager.getEmploymentType();
+            String selectedCareer = dataManager.getPersonal(); // ✅ personal 값 가져오기
+            Log.d("DEBUG-JOB", "📌 저장된 personal 값: " + selectedCareer); // ✅ 값 확인
+
             Toast.makeText(this, "경력사항 저장완료", Toast.LENGTH_SHORT).show();
 
             Intent resultIntent = new Intent();

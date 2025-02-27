@@ -15,17 +15,19 @@ import android.widget.Toast;
 
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
-import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.request.ResumeRequestDto;
+import com.example.albbamon.network.RetrofitClient;
 
 import com.example.albbamon.dto.response.ResumeResponseDto;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.mypage.EditUserInfoActivity;
 import com.example.albbamon.repository.UserRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +45,6 @@ public class ResumeWriteActivity extends AppCompatActivity {
     private Button btnSave, btnEditProfile;
     private TextView nameText, phoneText, emailText;
     private TextView schoolContent, jobContent, optionContent, introContent, portfolioContent;
-    private UserAPI userAPI;
     private ResumeAPI resumeAPI;
     private ScrollView scrollView;
 
@@ -92,6 +93,10 @@ public class ResumeWriteActivity extends AppCompatActivity {
                 Log.e("ResumeWriteActivity", "사용자 정보 가져오기 실패: " + errorMessage);
             }
         });
+
+        resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+//        resumeAPI = RetrofitClient.getRetrofitInstance().create(ResumeAPI.class); // ✅ 초기화 추가
+
 
         // 회원정보 수정 버튼 클릭 이벤트
         btnEditProfile.setOnClickListener(v -> {
@@ -186,112 +191,94 @@ public class ResumeWriteActivity extends AppCompatActivity {
             } else if (requestCode == REQUEST_CODE_PORTFOLIO) { // ✅ 포트폴리오 개수 추가
                     String portfolioInfo = data.getStringExtra("portfolioContent");
                     portfolioContent.setText(portfolioInfo);
-                }
+            }
         }
     }
 
     private void saveResumeToServer() {
-        ResumeDataManager dataManager = ResumeDataManager.getInstance();
+        Log.d("DEBUG", "🚀 saveResumeToServer() 호출됨");
 
-        // ✅ 포트폴리오 데이터를 문자열로 변환 (쉼표로 구분된 파일명 리스트)
-        List<String> portfolioFiles = dataManager.getPortfolioList();
-        String portfolioData = String.join(",", portfolioFiles);
-
-        // ✅ ResumeRequestDto 객체 생성
-        ResumeRequestDto resumeData = new ResumeRequestDto(
-                1L,  // ✅ 사용자 ID (임시값, 로그인된 사용자 정보에서 가져와야 함)
-                dataManager.getSchool(),
-                dataManager.getStatus(),
-                dataManager.getPersonal(),
-                dataManager.getWorkPlaceRegion(),
-                dataManager.getWorkPlaceCity(),
-                dataManager.getIndustryOccupation(),
-                dataManager.getEmploymentType(),
-                dataManager.getWorkingPeriod(),
-                dataManager.getWorkingDay(),
-                dataManager.getIntroduction(),
-                portfolioData,
-                dataManager.getPortfolioUrl(),
-                dataManager.getPortfolioName(),
-                "https://example.com/image.jpg",  // ✅ 이미지 URL (실제 앱에서는 업로드한 URL로 변경)
-                "resume_image.jpg",  // ✅ 이미지 파일명
-                "BASE64_ENCODED_STRING",  // ✅ Base64로 인코딩된 이미지 데이터
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        );
-
-        // ✅ 서버로 데이터 전송
-        resumeAPI.saveResume(1L, resumeData).enqueue(new Callback<ResumeResponseDto>() {
-            @Override
-            public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 실패", Toast.LENGTH_SHORT).show();
-                    Log.e("API_ERROR", "응답 코드: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
-                Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", "이력서 저장 실패", t);
-            }
-        });
-    }
-
-
-    private void saveResumeToServer() {
         ResumeDataManager dataManager = ResumeDataManager.getInstance();
         ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
 
-        // ✅ userId를 ResumeDataManager에서 가져옴
-        long userId = dataManager.getUserId();
+        long userId = userRepository.getUserId();
+        Log.d("DEBUG", "📌 가져온 userId: " + userId);
+
+        if (resumeAPI == null) { // ✅ resumeAPI가 null인지 체크
+            Log.e("ERROR", "❌ resumeAPI가 null입니다. Retrofit 초기화 확인 필요.");
+            return;
+        }
+
+        if (userId == 0L) {
+            Log.d("DEBUG", "⚠️ userId가 0이므로 fetchUserInfo() 호출");
+            userRepository.fetchUserInfo(new UserRepository.UserCallback() {
+                @Override
+                public void onSuccess(UserInfo userInfo) {
+                    long updatedUserId = userInfo.getId();
+                    Log.d("DEBUG", "✅ fetchUserInfo() 성공, userId: " + updatedUserId);
+                    sendResumeRequest(updatedUserId, resumeData);
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Log.e("ERROR", "❌ fetchUserInfo() 실패: " + errorMessage);
+                    Toast.makeText(ResumeWriteActivity.this, "로그인 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Log.d("DEBUG", "✅ userId가 존재하므로 바로 sendResumeRequest() 실행");
+            sendResumeRequest(userId, resumeData);
+        }
+    }
+
+    private void sendResumeRequest(long userId, ResumeRequestDto resumeData) {
+        Log.d("DEBUG", "🚀 sendResumeRequest() 호출됨, userId: " + userId);
+
+        if (resumeAPI == null) {
+            Log.e("ERROR", "❌ sendResumeRequest() 실행 중 resumeAPI가 null입니다.");
+            return;
+        }
+
+        // ✅ LocalDateTime을 ISO 8601 형식으로 변환하도록 설정
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, (com.google.gson.JsonSerializer<LocalDateTime>)
+                        (localDateTime, type, jsonSerializationContext) ->
+                                jsonSerializationContext.serialize(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                .create();
+
+        String jsonData = gson.toJson(resumeData);
+        Log.d("DEBUG", "📌 요청 데이터 (LocalDateTime 변환 적용됨): " + jsonData);
 
         resumeAPI.saveResume(userId, resumeData).enqueue(new Callback<ResumeResponseDto>() {
             @Override
             public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
+                Log.d("DEBUG", "📌 API 응답 코드: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("DEBUG", "✅ 이력서 저장 성공");
                     Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.e("ERROR", "❌ 이력서 저장 실패, 응답 코드: " + response.code());
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        Log.e("ERROR", "📌 서버 응답 메시지: " + errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(ResumeWriteActivity.this, "이력서 저장 실패", Toast.LENGTH_SHORT).show();
-                    Log.e("API_ERROR", "응답 코드: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
+                Log.e("ERROR", "🚨 네트워크 오류: " + t.getMessage());
                 Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", "이력서 저장 실패", t);
             }
         });
     }
 
-    private void saveResumeToServer() {
-        ResumeDataManager dataManager = ResumeDataManager.getInstance();
-        ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
 
-        // ✅ 로그인된 사용자 정보에서 userId 가져오기
-        long userId = userRepository.getUserInfo().getUserId();
 
-        resumeAPI.saveResume(userId, resumeData).enqueue(new Callback<ResumeResponseDto>() {
-            @Override
-            public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 실패", Toast.LENGTH_SHORT).show();
-                    Log.e("API_ERROR", "응답 코드: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
-                Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", "이력서 저장 실패", t);
-            }
-        });
-    }
 
 
 
