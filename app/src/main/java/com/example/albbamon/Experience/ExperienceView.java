@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.example.albbamon.R;
@@ -38,6 +41,7 @@ public class ExperienceView extends AppCompatActivity {
     private boolean isMyPost = false;
     private long bbs_userId;
     private long userId; // SharedPreferences에서 가져올 사용자 ID
+    String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +100,17 @@ public class ExperienceView extends AppCompatActivity {
                         date_text.setText(date);
 
                         bbs_userId = bbs.getUserId();
-                        Log.d("API_SUCCESS", "게시글 작성자 ID: " + bbs_userId);
+                        String localPath = bbs.getFile_name();
+                        if (localPath != null){
+                            String localPrefix = "D:/abbamon/albbamon-api-server/src/main/webapp";
+                            String serverPrefix = "http://10.0.2.2:60085";
 
+                            // ✅ 변환 수행 (localPrefix 부분을 serverPrefix로 대체)
+                            imageUrl = localPath.replace(localPrefix, serverPrefix);
+                            loadServerImage(imageUrl);
+                        }
+                        Log.d("API_SUCCESS", "게시글 작성자 ID: " + bbs_userId);
+                        Log.d("API_SUCCESS", "파일 경로: " + imageUrl);
                         // API 응답을 받은 후 isMyPost 설정
                         isMyPost = (userId == bbs_userId);
                         Log.d("Session", "isMyPost: " + isMyPost);
@@ -116,6 +129,19 @@ public class ExperienceView extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    //이미지 view 함수
+    private void loadServerImage(String imageUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // 캐싱 전략 사용 (속도 향상)
+//                    .placeholder(R.drawable.) // 로딩 중 표시할 이미지
+//                    .error(R.drawable.) // 에러 발생 시 표시할 이미지
+                    .into(img_view); // ImageView에 적용
+            img_view.setVisibility(View.VISIBLE);
+        }
     }
 
     // ✅ BottomSheetDialog 표시
@@ -189,19 +215,19 @@ public class ExperienceView extends AppCompatActivity {
                     //삭제 로직
                     CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
                     Map<String, Object> requestBody = new HashMap<>();
-                    requestBody.put("userId", userId);
-                    Call<Void> call = apiService.deletePost(postId, requestBody);
+                    Log.d("요청한 값", "요청한 postid, userid: " + postId+" "+userId);
+                    Call<Void> call = apiService.mobiledeletePost(postId, userId);
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {
                                 Toast.makeText(ExperienceView.this, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                finish(); // 화면 종료
+                                Intent intent = new Intent(ExperienceView.this, ExperienceList.class);
+                                startActivity(intent);
                             } else {
-                                Toast.makeText(ExperienceView.this, "삭제 실패: 서버 오류", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ExperienceView.this, "삭제 실패", Toast.LENGTH_LONG).show();
                             }
                         }
-
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
                             Toast.makeText(ExperienceView.this, "삭제 요청 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();

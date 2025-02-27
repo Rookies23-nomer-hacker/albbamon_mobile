@@ -34,7 +34,7 @@ public class ExperienceUpdate extends AppCompatActivity {
     TextView btn_submit;
     EditText et_title, et_content;
     long postId, userId;
-    String old_title, old_content, edit_title, edit_content;
+    String old_title, old_content, edit_title, edit_content, file_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +70,8 @@ public class ExperienceUpdate extends AppCompatActivity {
                    //변경된 내용이 없을 때
                     Toast.makeText(ExperienceUpdate.this, "수정된 내용이 없습니다.", Toast.LENGTH_SHORT).show();
                 }else{
-                    CreatePostRequestDto requestDto = new CreatePostRequestDto(userId, edit_title, edit_content,"");
+
+                    CreatePostRequestDto requestDto = new CreatePostRequestDto(userId, edit_title, edit_content,file_name);
                     CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
                     Call<Void> call = apiService.updatePost(postId, requestDto);
                     call.enqueue(new Callback<Void>() {
@@ -124,6 +125,7 @@ public class ExperienceUpdate extends AppCompatActivity {
                         et_content.setText(bbs.getContents());
                         old_title = et_title.getText().toString().strip();
                         old_content = et_content.getText().toString().strip();
+                        file_name = bbs.getFile_name().toString();
                     } else {
                         Log.e("API_ERROR", "data 필드가 null 입니다.");
                     }
