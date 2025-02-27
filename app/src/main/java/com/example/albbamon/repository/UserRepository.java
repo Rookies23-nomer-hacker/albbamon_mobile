@@ -11,6 +11,7 @@ import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.model.UserModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.network.SuccessResponse;
+import com.google.gson.Gson;
 
 import javax.security.auth.callback.PasswordCallback;
 
@@ -43,7 +44,12 @@ public class UserRepository {
                         callback.onFailure("userInfo가 null입니다.");
                     }
                 } else {
-                    Log.d("DEBUG", "응답 실패: " + response.code());
+                    try {
+                        Log.e("API_ERROR", "서버 응답 실패 - 코드: " + response.code());
+                        Log.e("API_ERROR", "응답 본문: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "응답 본문 읽기 실패", e);
+                    }
                     callback.onFailure("응답 실패: " + response.code());
                 }
             }
