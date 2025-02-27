@@ -30,9 +30,9 @@
         <activity
             android:name=".Experience.ExperienceView"
             android:exported="false" />
-        <activity
-            android:name=".network.ExperienceView"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".network.ExperienceView"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Experience.ExperienceCreate"
             android:exported="false" />
