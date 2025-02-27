@@ -23,6 +23,9 @@ import com.example.albbamon.api.ResponseWrapper;
 import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.network.RetrofitClient;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -183,7 +186,27 @@ public class ExperienceView extends AppCompatActivity {
         builder.setTitle("삭제하기")
                 .setMessage("정말로 이 게시글을 삭제하시겠습니까?")
                 .setPositiveButton("예", (dialog, which) -> {
-                    //삭제 로직 구현 예정
+                    //삭제 로직
+                    CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
+                    Map<String, Object> requestBody = new HashMap<>();
+                    requestBody.put("userId", userId);
+                    Call<Void> call = apiService.deletePost(postId, requestBody);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(ExperienceView.this, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                finish(); // 화면 종료
+                            } else {
+                                Toast.makeText(ExperienceView.this, "삭제 실패: 서버 오류", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(ExperienceView.this, "삭제 요청 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 })
                 .setNegativeButton("아니요", (dialog, which) -> dialog.dismiss())
                 .show();

@@ -123,7 +123,8 @@ public class ExperienceCreate extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     Toast.makeText(ExperienceCreate.this, "게시글이 작성되었습니다!", Toast.LENGTH_SHORT).show();
-                    finish(); // 액티비티 종료
+                    Intent intent = new Intent(ExperienceCreate.this, ExperienceList.class);
+                    startActivity(intent);
                 } else {
                     try {
                         String errorMsg = response.errorBody().string(); // 서버 응답 에러 메시지

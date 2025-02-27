@@ -4,14 +4,15 @@ import com.example.albbamon.dto.request.CreatePostRequestDto;
 import com.example.albbamon.model.CommunityModel;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface CommunityAPI {
     // 게시글 리스트 가져오기
@@ -35,5 +36,12 @@ public interface CommunityAPI {
     Call<Void> updatePost(
             @Path("postId") Long postId,
             @Body CreatePostRequestDto requestDto
+    );
+
+    //글 삭제
+    @DELETE("/mobile/delete/{postId}")
+    Call<Void> deletePost(
+            @Path("postId") long postId,
+            @Query("userId") long userId
     );
 }
