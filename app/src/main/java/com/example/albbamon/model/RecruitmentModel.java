@@ -3,11 +3,8 @@ package com.example.albbamon.model;
 import com.google.gson.annotations.SerializedName;
 
 public class RecruitmentModel {
-    @SerializedName("id")  // 채용 공고 ID
+    @SerializedName("id")
     private Long id;
-
-    @SerializedName("userId")  // ✅ user_id 추가 (JSON 필드명과 매칭)
-    private Long userId;
 
     @SerializedName("title")
     private String title;
@@ -18,12 +15,11 @@ public class RecruitmentModel {
     @SerializedName("file")
     private String file;
 
+    @SerializedName("item") // ✅ item 필드 추가
+    private String item;
+
     public Long getId() {
         return id;
-    }
-
-    public Long getUserId() {  // ✅ Getter 추가
-        return userId;
     }
 
     public String getTitle() {
@@ -36,5 +32,9 @@ public class RecruitmentModel {
 
     public String getFile() {
         return file;
+    }
+
+    public String getItem() { // ✅ Getter 추가
+        return item;
     }
 }

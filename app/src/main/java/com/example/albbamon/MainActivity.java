@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         // 자동 슬라이드 시작
         handler.postDelayed(autoScrollRunnable, AUTO_SCROLL_DELAY);
 
-        apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
+        apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(CommunityAPI.class);
 
         recyclerCommunity = findViewById(R.id.recycler_community);
         allJobsCommunity = new ArrayList<>();
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchRecruitmentPosts() {
-        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstance().create(RecruitmentAPI.class);
+        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
         Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
 
         call.enqueue(new Callback<RecruitmentResponse>() {
@@ -327,74 +327,66 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchPremiumRecruitmentPosts() {
-        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstance().create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> recruitmentCall = recruitmentAPI.getRecruitmentPosts();
-        Call<List<Long>> paymentCall = RetrofitClient.getRetrofitInstance().create(PaymentAPI.class).getPremiumUserIds(); // ✅ 결제된 유저 ID 가져오기
+        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
+        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts(); // ✅ 기존 리스트 API 호출
 
-        // 1️⃣ 모든 채용 공고 가져오기
-        recruitmentCall.enqueue(new Callback<RecruitmentResponse>() {
+        call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
             public void onResponse(Call<RecruitmentResponse> call, Response<RecruitmentResponse> response) {
+                Log.d("API_RESPONSE", "Response Code: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     RecruitmentResponse recruitmentResponse = response.body();
-                    List<RecruitmentModel> allJobs = recruitmentResponse.getData().getRecruitmentList();
-                    Log.d("API_RESPONSE", "Total Jobs Count: " + allJobs.size()); // 🔥 총 공고 개수 확인
+                    Log.d("API_RESPONSE", "Message: " + recruitmentResponse.getMessage());
 
-                    // 2️⃣ 결제된 유저 ID 가져오기
-                    paymentCall.enqueue(new Callback<List<Long>>() {
-                        @Override
-                        public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                List<Long> premiumUserIds = response.body();
-                                Log.d("API_RESPONSE", "Premium User IDs: " + premiumUserIds); // 🔥 프리미엄 유저 ID 리스트 확인
+                    allJobsSpecial.clear(); // ✅ 기존 리스트 초기화
 
-                                allJobsSpecial.clear();
+                    if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
+                        List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
 
-                                // 3️⃣ 채용 공고 중 `user_id`가 결제된 유저 ID에 포함된 것만 필터링
-                                for (RecruitmentModel job : allJobs) {
-                                    Log.d("API_RESPONSE", "Checking Job: " + job.getTitle() + " | User ID: " + job.getUserId());
+                        int maxItems = 5; // ✅ 최대 5개까지만 가져오기
+                        int count = 0;
 
-                                    if (premiumUserIds.contains(job.getUserId())) {
-                                        Log.d("API_RESPONSE", "✅ Premium Job Found: " + job.getTitle());
+                        for (RecruitmentModel job : jobList) {
+                            // ✅ item 값이 "Y"인 공고만 필터링
+                            if ("Y".equals(job.getItem())) {
+                                Log.d("API_RESPONSE", "✅ Premium Job Found: " + job.getTitle());
 
-                                        String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
-                                                ? null
-                                                : "서버_URL/" + job.getFile();
+                                String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
+                                        ? null
+                                        : "서버_URL" + job.getFile();
 
-                                        allJobsSpecial.add(new JobModel(
-                                                job.getTitle(),
-                                                (job.getWage() != null) ? "급여: " + job.getWage() : "급여 정보 없음",
-                                                imageUrl
-                                        ));
+                                allJobsSpecial.add(new JobModel(
+                                        job.getTitle(),
+                                        (job.getWage() != null) ? "급여: " + job.getWage() : "급여 정보 없음",
+                                        imageUrl
+                                ));
 
-                                        // ✅ 최대 5개까지만 가져오기
-                                        if (allJobsSpecial.size() >= 5) break;
-                                    }
-                                }
-
-                                Log.d("API_RESPONSE", "Final Premium Job Count: " + allJobsSpecial.size()); // 🔥 최종 프리미엄 공고 개수 확인
-                                jobAdapterSpecial.notifyDataSetChanged(); // ✅ RecyclerView 갱신
-                            } else {
-                                Log.e("API_ERROR", "프리미엄 유저 ID 데이터 없음.");
+                                count++;
+                                if (count >= maxItems) break; // 🔥 최대 5개까지만 가져오기
                             }
                         }
 
-                        @Override
-                        public void onFailure(Call<List<Long>> call, Throwable t) {
-                            Log.e("API_FAILURE", "결제된 유저 ID API 요청 실패: " + t.getMessage());
-                        }
-                    });
+                        Log.d("API_RESPONSE", "Final Premium Job Count: " + allJobsSpecial.size());
+                        jobAdapterSpecial.notifyDataSetChanged(); // ✅ RecyclerView 갱신
+                    } else {
+                        Log.e("API_ERROR", "프리미엄 공고 없음.");
+                        Toast.makeText(MainActivity.this, "프리미엄 공고 데이터 없음", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Log.e("API_ERROR", "채용 공고 데이터 없음.");
+                    Log.e("API_ERROR", "Response Failed. Body: " + response.errorBody());
+                    Toast.makeText(MainActivity.this, "프리미엄 공고 데이터 로딩 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecruitmentResponse> call, Throwable t) {
-                Log.e("API_FAILURE", "채용 공고 API 요청 실패: " + t.getMessage());
+                Log.e("API_FAILURE", "Error: " + t.getMessage());
+                Toast.makeText(MainActivity.this, "프리미엄 공고 API 요청 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
 
 }
