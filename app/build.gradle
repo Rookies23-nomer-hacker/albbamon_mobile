@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    // namespace와 applicationId는 여기에서 관리합니다.
     namespace 'com.example.albbamon'
     compileSdk 35
 
@@ -57,3 +58,4 @@ dependencies {
     // OkHttp 의존성 추가
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 }
+

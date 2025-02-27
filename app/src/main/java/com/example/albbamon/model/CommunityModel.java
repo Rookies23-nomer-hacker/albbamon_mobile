@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class CommunityModel {
     @SerializedName("postId")
-    private Integer postId;
+    private long postId;
     @SerializedName("userId")
-    private String userId;
+    private long userId;
     @SerializedName("title")
     private String title;
     @SerializedName("contents")
@@ -18,8 +18,8 @@ public class CommunityModel {
     @SerializedName("userName")
     private String userName;
 
-    public Integer getPostId() { return postId; }
-    public String getUserId() { return userId; }
+    public long getPostId() { return postId; }
+    public long getUserId() { return userId; }
     public String getTitle() { return title; }
     public String getContents() { return contents; }
     public String getFile_name() { return file_name; }
