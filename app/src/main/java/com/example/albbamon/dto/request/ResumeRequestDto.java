@@ -20,15 +20,13 @@ public class ResumeRequestDto {
     private String resume_imgurl;
     private String resume_img_name;
     private String resume_img_data;
-    private LocalDateTime create_date;
-    private LocalDateTime last_modified_date;
 
     public ResumeRequestDto(Long user_id, String school, String status, String personal,
                             String work_place_region, String work_place_city, String industry_occupation,
                             String employmentType, String working_period, String working_day,
                             String introduction, String portfolioData, String portfoliourl, String portfolioName,
-                            String resume_imgurl, String resume_img_name, String resume_img_data,
-                            LocalDateTime create_date, LocalDateTime last_modified_date) {
+                            String resume_imgurl, String resume_img_name, String resume_img_data
+                            ) {
         this.user_id = user_id;
         this.school = school;
         this.status = status;
@@ -46,8 +44,6 @@ public class ResumeRequestDto {
         this.resume_imgurl = resume_imgurl;
         this.resume_img_name = resume_img_name;
         this.resume_img_data = resume_img_data;
-        this.create_date = create_date;
-        this.last_modified_date = last_modified_date;
     }
 
 }

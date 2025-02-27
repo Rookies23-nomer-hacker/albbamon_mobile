@@ -122,8 +122,6 @@ public class ResumeDataManager {
         Log.d("DEBUG-DM", "📌 employmentType 값: " + employmentType);
 
         // ✅ LocalDateTime.now()를 ISO 8601 형식으로 변환
-        LocalDateTime now = LocalDateTime.now();
-        Log.d("DEBUG-DM", "📌 현재 시간: " + now.toString());
 
         ResumeRequestDto dto = new ResumeRequestDto(
                 null, school, status, personal, workPlaceRegion, workPlaceCity, industryOccupation,
@@ -133,8 +131,7 @@ public class ResumeDataManager {
                 portfolioName != null ? portfolioName : "",
                 resumeImgUrl != null ? resumeImgUrl : "",
                 resumeImgName != null ? resumeImgName : "",
-                resumeImgData != null ? resumeImgData : "",
-                now, now
+                resumeImgData != null ? resumeImgData : ""
         );
 
         Log.d("DEBUG-DM", "📌 변환된 ResumeRequestDto: " + new Gson().toJson(dto));

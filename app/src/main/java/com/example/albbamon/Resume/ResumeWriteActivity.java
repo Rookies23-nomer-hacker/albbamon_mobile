@@ -16,19 +16,19 @@ import android.widget.Toast;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.dto.request.ResumeRequestDto;
+import com.example.albbamon.mypage.ResumeManagementActivity;
 import com.example.albbamon.network.RetrofitClient;
 
 import com.example.albbamon.dto.response.ResumeResponseDto;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.mypage.EditUserInfoActivity;
 import com.example.albbamon.repository.UserRepository;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,21 +95,20 @@ public class ResumeWriteActivity extends AppCompatActivity {
         });
 
         resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
-//        resumeAPI = RetrofitClient.getRetrofitInstance().create(ResumeAPI.class); // ✅ 초기화 추가
-
-
-        // 회원정보 수정 버튼 클릭 이벤트
-        btnEditProfile.setOnClickListener(v -> {
-            Toast.makeText(ResumeWriteActivity.this, "회원정보 수정 화면으로 이동", Toast.LENGTH_SHORT).show();
-            // startActivity(new Intent(this, UserEditActivity.class));  // 회원정보 수정 화면 이동 시 사용
-        });
-
-        // 이력서 저장 버튼 클릭 이벤트
-        btnSave.setOnClickListener(v -> saveResumeToServer());
 
         // ScrollView를 맨 위로 이동
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_UP));
 
+        // 이력서 저장 버튼 클릭 이벤트
+        btnSave.setOnClickListener(v -> {
+            if (!isValidInput()) {  // ✅ 필수 입력값이 비어 있으면 실행 중단
+                return;
+            }
+            saveResumeToServer();
+        });
+
+
+        // 회원정보 수정 버튼 클릭
         findViewById(R.id.userEdit).setOnClickListener( v -> {
             Intent intent = new Intent(this, EditUserInfoActivity.class);
             startActivity(intent);
@@ -178,22 +177,50 @@ public class ResumeWriteActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_SCHOOL) {
                 String schoolInfo = data.getStringExtra("schoolContent");
+                Log.d("DEBUG", "📌 학력 사항 업데이트: " + schoolInfo);
                 schoolContent.setText(schoolInfo);
             } else if (requestCode == REQUEST_CODE_JOB) {
                 String jobInfo = data.getStringExtra("jobContent");
+                Log.d("DEBUG", "📌 경력 사항 업데이트: " + jobInfo);
                 jobContent.setText(jobInfo);
             } else if (requestCode == REQUEST_CODE_OPTION) {
                 String optionInfo = data.getStringExtra("optionContent");
+                Log.d("DEBUG", "📌 희망 근무조건 업데이트: " + optionInfo);
                 optionContent.setText(optionInfo);
             } else if (requestCode == REQUEST_CODE_INTRO) { // ✅ 자기소개 추가
                 String introInfo = data.getStringExtra("introContent");
+                Log.d("DEBUG", "📌 자기소개 업데이트: " + introInfo);
                 introContent.setText(introInfo);
             } else if (requestCode == REQUEST_CODE_PORTFOLIO) { // ✅ 포트폴리오 개수 추가
-                    String portfolioInfo = data.getStringExtra("portfolioContent");
-                    portfolioContent.setText(portfolioInfo);
+                String portfolioInfo = data.getStringExtra("portfolioContent");
+                Log.d("DEBUG", "📌 포트폴리오 업데이트: " + portfolioInfo);
+                portfolioContent.setText(portfolioInfo);
             }
         }
     }
+
+    private boolean isValidInput() {
+        ResumeDataManager dataManager = ResumeDataManager.getInstance();
+
+        if (dataManager.getSchool() == null || dataManager.getSchool().trim().isEmpty()) {
+            Toast.makeText(this, "학력사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dataManager.getPersonal() == null || dataManager.getPersonal().trim().isEmpty()) {
+            Toast.makeText(this, "경력사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dataManager.getEmploymentType() == null || dataManager.getEmploymentType().trim().isEmpty()) {
+            Toast.makeText(this, "희망근무조건을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dataManager.getIntroduction() == null || dataManager.getIntroduction().trim().isEmpty()) {
+            Toast.makeText(this, "자기소개를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
 
     private void saveResumeToServer() {
         Log.d("DEBUG", "🚀 saveResumeToServer() 호출됨");
@@ -208,27 +235,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
             Log.e("ERROR", "❌ resumeAPI가 null입니다. Retrofit 초기화 확인 필요.");
             return;
         }
-
-        if (userId == 0L) {
-            Log.d("DEBUG", "⚠️ userId가 0이므로 fetchUserInfo() 호출");
-            userRepository.fetchUserInfo(new UserRepository.UserCallback() {
-                @Override
-                public void onSuccess(UserInfo userInfo) {
-                    long updatedUserId = userInfo.getId();
-                    Log.d("DEBUG", "✅ fetchUserInfo() 성공, userId: " + updatedUserId);
-                    sendResumeRequest(updatedUserId, resumeData);
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    Log.e("ERROR", "❌ fetchUserInfo() 실패: " + errorMessage);
-                    Toast.makeText(ResumeWriteActivity.this, "로그인 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Log.d("DEBUG", "✅ userId가 존재하므로 바로 sendResumeRequest() 실행");
-            sendResumeRequest(userId, resumeData);
-        }
+        sendResumeRequest(userId, resumeData);
     }
 
     private void sendResumeRequest(long userId, ResumeRequestDto resumeData) {
@@ -239,48 +246,45 @@ public class ResumeWriteActivity extends AppCompatActivity {
             return;
         }
 
-        // ✅ LocalDateTime을 ISO 8601 형식으로 변환하도록 설정
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, (com.google.gson.JsonSerializer<LocalDateTime>)
-                        (localDateTime, type, jsonSerializationContext) ->
-                                jsonSerializationContext.serialize(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
-                .create();
-
-        String jsonData = gson.toJson(resumeData);
-        Log.d("DEBUG", "📌 요청 데이터 (LocalDateTime 변환 적용됨): " + jsonData);
-
-        resumeAPI.saveResume(userId, resumeData).enqueue(new Callback<ResumeResponseDto>() {
+        resumeAPI.saveResume(userId, resumeData).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("DEBUG", "📌 API 응답 코드: " + response.code());
 
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("DEBUG", "✅ 이력서 저장 성공");
-                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.e("ERROR", "❌ 이력서 저장 실패, 응답 코드: " + response.code());
+                if (response.isSuccessful()) {
                     try {
-                        String errorResponse = response.errorBody().string();
-                        Log.e("ERROR", "📌 서버 응답 메시지: " + errorResponse);
+                        // ✅ 응답 본문을 String으로 변환
+                        String responseBody = response.body() != null ? response.body().string() : "";
+                        Log.d("DEBUG", "📌 서버 응답 메시지: " + responseBody);
+
+                        Toast.makeText(ResumeWriteActivity.this, responseBody, Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(ResumeWriteActivity.this, ResumeManagementActivity.class);
+                        startActivity(intent);
+                        finish(); // 현재 액티비티 종료
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Log.e("ERROR", "❌ 이력서 저장 실패, 응답 코드: " + response.code());
+
+                    try {
+                        String errorResponse = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                        Log.e("ERROR", "📌 서버 오류 메시지: " + errorResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(ResumeWriteActivity.this, "이력서 저장 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
-                Log.e("ERROR", "🚨 네트워크 오류: " + t.getMessage());
-                Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("ERROR", "🚨 네트워크 오류 발생! 메시지: " + t.getMessage(), t);
+                Toast.makeText(ResumeWriteActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
-
-
-
-
-
 }

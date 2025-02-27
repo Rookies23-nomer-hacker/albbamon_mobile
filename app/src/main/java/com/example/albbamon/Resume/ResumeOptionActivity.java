@@ -2,7 +2,6 @@ package com.example.albbamon.Resume;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -68,7 +67,6 @@ public class ResumeOptionActivity extends AppCompatActivity {
                 selectedJobType = "계약직";
             }
             dataManager.setEmploymentType(selectedJobType);
-            Log.d("DEBUG-OPTION", "📌 저장된 employmentType 값: " + selectedJobType); // ✅ 값 확인
         });
 
         findViewById(R.id.btnSave).setOnClickListener(v -> {
