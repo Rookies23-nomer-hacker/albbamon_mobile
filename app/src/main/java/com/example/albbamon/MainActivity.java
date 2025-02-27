@@ -11,18 +11,27 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.widget.NestedScrollView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.albbamon.api.CommunityAPI;
+import com.example.albbamon.api.PaymentAPI;
+import com.example.albbamon.api.RecruitmentAPI;
 import com.example.albbamon.model.CommunityModel;
+import com.example.albbamon.model.RecruitmentModel;
+import com.example.albbamon.model.RecruitmentResponse;
 import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,16 +41,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.gson.reflect.TypeToken;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerSpecial, recyclerPoint, recyclerBrands;
+    private RecyclerView recyclerSpecial, recyclerRecent, recyclerCommunity;
     private AppBarLayout appBarLayout;
     private BottomNavigationView bottomNavigationView;
     private Button btnMoreSpecial, btnMorePoint, btnMoreBrands;
     private static final int MAX_ITEMS = 5;
-    private List<JobModel> allJobsSpecial, allJobsPoint, allJobsBrands;
-    private JobAdapter jobAdapterSpecial, jobAdapterPoint, jobAdapterBrands;
+    private List<JobModel> allJobsSpecial, allJobsRecent, allJobsCommunity,displayedJobsCommunity;
+    private JobAdapter jobAdapterSpecial, jobAdapterRecent, jobAdapterCommunity;
     private ViewPager2 viewPager;
     private TextView bannerIndicator;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -49,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
     private final int AUTO_SCROLL_DELAY = 3000; // 3초마다 변경
 
 
-    private RecyclerView recyclerPosts;
     private CommunityAdapter adapter;
     private Button btnFetchPosts;
     private CommunityAPI apiService;
 
+
+    private JobAdapter recruitmentAdapter;
 
     private List<Integer> bannerImages = Arrays.asList(
             R.drawable.img_alrimi,
@@ -86,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerSpecial = findViewById(R.id.recycler_special);
-        recyclerPoint = findViewById(R.id.recycler_point);
-        recyclerBrands = findViewById(R.id.recycler_brands);
+        recyclerRecent = findViewById(R.id.recycler_recent);
+        recyclerCommunity = findViewById(R.id.recycler_community);
         appBarLayout = findViewById(R.id.appBarLayout);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         NestedScrollView nestedScrollView = findViewById(R.id.nested_scroll_view);
@@ -99,44 +113,28 @@ public class MainActivity extends AppCompatActivity {
 
         // 전체 데이터 목록
         allJobsSpecial = new ArrayList<>();
-        allJobsPoint = new ArrayList<>();
-        allJobsBrands = new ArrayList<>();
+        allJobsRecent = new ArrayList<>();
+        allJobsCommunity = new ArrayList<>();
 
-        // 샘플 데이터 추가
-        for (int i = 1; i <= 10; i++) {
-            allJobsSpecial.add(new JobModel("서빙 알바 " + i,  "시급 11,000원", R.drawable.sample_job));
-            allJobsPoint.add(new JobModel("편의점 알바 " + i, "시급 10,500원", R.drawable.sample_job));
-            allJobsBrands.add(new JobModel("브랜드 알바 " + i, "시급 12,000원", R.drawable.sample_job));
-        }
-
-        // 최대 5개만 보여주는 리스트 생성
-        List<JobModel> displayedJobsSpecial = new ArrayList<>(allJobsSpecial.subList(0, Math.min(MAX_ITEMS, allJobsSpecial.size())));
-        List<JobModel> displayedJobsPoint = new ArrayList<>(allJobsPoint.subList(0, Math.min(MAX_ITEMS, allJobsPoint.size())));
-        List<JobModel> displayedJobsBrands = new ArrayList<>(allJobsBrands.subList(0, Math.min(MAX_ITEMS, allJobsBrands.size())));
-
-        // 어댑터 설정
-        jobAdapterSpecial = new JobAdapter(displayedJobsSpecial);
-        jobAdapterPoint = new JobAdapter(displayedJobsPoint);
-        jobAdapterBrands = new JobAdapter(displayedJobsBrands);
+        jobAdapterSpecial = new JobAdapter(allJobsSpecial);
+        jobAdapterRecent = new JobAdapter(allJobsRecent);
+        jobAdapterCommunity = new JobAdapter(displayedJobsCommunity);
 
         recyclerSpecial.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerSpecial.setAdapter(jobAdapterSpecial);
 
-        recyclerPoint.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerPoint.setAdapter(jobAdapterPoint);
+        recyclerRecent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerRecent.setAdapter(jobAdapterRecent);
 
-        recyclerBrands.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerBrands.setAdapter(jobAdapterBrands);
+        recyclerCommunity.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerCommunity.setAdapter(jobAdapterCommunity);
+
 
         // ✅ RecyclerView 아이템 클릭 이벤트 설정
         jobAdapterSpecial.setOnItemClickListener(position -> {
             JobModel clickedJob = allJobsSpecial.get(position);
             Toast.makeText(MainActivity.this, "클릭한 알바: " + clickedJob.getTitle(), Toast.LENGTH_SHORT).show();
         });
-
-        // ✅ 로고 버튼 클릭
-        ImageView logo = findViewById(R.id.icon);
-        logo.setOnClickListener(v -> Toast.makeText(MainActivity.this, "로고 클릭됨!", Toast.LENGTH_SHORT).show());
 
         // ✅ 메뉴 버튼 클릭
         ImageView menuButton = findViewById(R.id.menu_button);
@@ -147,12 +145,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
-        // ✅ "제트" 버튼 클릭
-        ImageView button1 = findViewById(R.id.button1_icon);
-        button1.setOnClickListener(v -> Toast.makeText(MainActivity.this, "제트 버튼 클릭됨!", Toast.LENGTH_SHORT).show());
 
         // ✅ 스크롤 이벤트 감지하여 상단바 & 하단바 숨김 처리
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -189,18 +181,23 @@ public class MainActivity extends AppCompatActivity {
         // 자동 슬라이드 시작
         handler.postDelayed(autoScrollRunnable, AUTO_SCROLL_DELAY);
 
-        recyclerPosts = findViewById(R.id.recycler_posts);
-        btnFetchPosts = findViewById(R.id.btn_fetch_posts);
-        recyclerPosts.setLayoutManager(new LinearLayoutManager(this));
-
         apiService = RetrofitClient.getRetrofitInstance().create(CommunityAPI.class);
 
-        btnFetchPosts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fetchCommunityPosts();
-            }
-        });
+        recyclerCommunity = findViewById(R.id.recycler_community);
+        allJobsCommunity = new ArrayList<>();
+        displayedJobsCommunity = new ArrayList<>();
+
+        jobAdapterCommunity = new JobAdapter(displayedJobsCommunity);
+        recyclerCommunity.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerCommunity.setAdapter(jobAdapterCommunity);
+
+        recruitmentAdapter = new JobAdapter(allJobsRecent);
+        recyclerRecent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerRecent.setAdapter(recruitmentAdapter);
+
+        fetchCommunityPosts();
+        fetchRecruitmentPosts();
+        fetchPremiumRecruitmentPosts();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -222,9 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         });
-
-
-
     }
 
     @Override
@@ -240,19 +234,164 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<CommunityModel>> call, Response<List<CommunityModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<CommunityModel> posts = response.body();
-                    adapter = new CommunityAdapter(posts);
-                    recyclerPosts.setAdapter(adapter);
+                    allJobsCommunity.clear();
+
+                    for (CommunityModel post : response.body()) {
+                        // 🔥 file 값이 NULL이면 기본 이미지 사용
+                        String imageUrl = (post.getFile_name() == null || post.getFile_name().isEmpty())
+                                ? null  // NULL일 경우 기본 이미지 사용
+                                : "서버_URL/" + post.getFile_name(); // 서버 URL을 붙여서 사용
+
+                        // 🔥 커뮤니티 전용 생성자 사용
+                        allJobsCommunity.add(new JobModel(
+                                post.getTitle(),
+                                "작성자: " + post.getUserName(),  // subtitle (작성자)
+                                imageUrl,
+                                true // 커뮤니티 데이터임을 명시
+                        ));
+                    }
+
+                    displayedJobsCommunity.clear();
+                    displayedJobsCommunity.addAll(allJobsCommunity.subList(0, Math.min(MAX_ITEMS, allJobsCommunity.size())));
+
+                    if (jobAdapterCommunity == null) {
+                        jobAdapterCommunity = new JobAdapter(displayedJobsCommunity);
+                        recyclerCommunity.setAdapter(jobAdapterCommunity);
+                    } else {
+                        jobAdapterCommunity.notifyDataSetChanged();
+                    }
                 } else {
-                    Toast.makeText(MainActivity.this, "서버 응답 실패: " + response.code(), Toast.LENGTH_SHORT).show();
-                    Log.e("API_ERROR", "Response error: " + response.code());
+                    Toast.makeText(MainActivity.this, "Community 데이터 로딩 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<CommunityModel>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "API 요청 실패", Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", "Failure: " + t.getMessage());
+                Toast.makeText(MainActivity.this, "Community API 요청 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchRecruitmentPosts() {
+        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstance().create(RecruitmentAPI.class);
+        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
+
+        call.enqueue(new Callback<RecruitmentResponse>() {
+            @Override
+            public void onResponse(Call<RecruitmentResponse> call, Response<RecruitmentResponse> response) {
+                Log.d("API_RESPONSE", "Response Code: " + response.code());
+
+                if (response.isSuccessful() && response.body() != null) {
+                    RecruitmentResponse recruitmentResponse = response.body();
+                    Log.d("API_RESPONSE", "Message: " + recruitmentResponse.getMessage());
+
+                    allJobsRecent.clear();
+
+                    // ✅ "recruitmentList" 내부의 데이터를 가져옴 (최대 5개만)
+                    if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
+                        List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
+
+                        // 🔥 최대 5개까지만 가져오기
+                        int maxItems = Math.min(jobList.size(), 5);
+                        for (int i = 0; i < maxItems; i++) {
+                            RecruitmentModel job = jobList.get(i);
+
+                            String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
+                                    ? null
+                                    : "서버_URL/" + job.getFile();
+
+                            allJobsRecent.add(new JobModel(
+                                    job.getTitle(),
+                                    (job.getWage() != null) ? "급여: " + job.getWage() : "급여 정보 없음",
+                                    imageUrl
+                            ));
+                        }
+                    } else {
+                        Log.e("API_ERROR", "recruitmentList가 비어 있음.");
+                        Toast.makeText(MainActivity.this, "채용 공고 데이터 없음", Toast.LENGTH_SHORT).show();
+                    }
+
+                    recruitmentAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e("API_ERROR", "Response Failed. Body: " + response.errorBody());
+                    Toast.makeText(MainActivity.this, "채용 공고 데이터 로딩 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecruitmentResponse> call, Throwable t) {
+                Log.e("API_FAILURE", "Error: " + t.getMessage());
+                Toast.makeText(MainActivity.this, "채용 공고 API 요청 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchPremiumRecruitmentPosts() {
+        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstance().create(RecruitmentAPI.class);
+        Call<RecruitmentResponse> recruitmentCall = recruitmentAPI.getRecruitmentPosts();
+        Call<List<Long>> paymentCall = RetrofitClient.getRetrofitInstance().create(PaymentAPI.class).getPremiumUserIds(); // ✅ 결제된 유저 ID 가져오기
+
+        // 1️⃣ 모든 채용 공고 가져오기
+        recruitmentCall.enqueue(new Callback<RecruitmentResponse>() {
+            @Override
+            public void onResponse(Call<RecruitmentResponse> call, Response<RecruitmentResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    RecruitmentResponse recruitmentResponse = response.body();
+                    List<RecruitmentModel> allJobs = recruitmentResponse.getData().getRecruitmentList();
+                    Log.d("API_RESPONSE", "Total Jobs Count: " + allJobs.size()); // 🔥 총 공고 개수 확인
+
+                    // 2️⃣ 결제된 유저 ID 가져오기
+                    paymentCall.enqueue(new Callback<List<Long>>() {
+                        @Override
+                        public void onResponse(Call<List<Long>> call, Response<List<Long>> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                List<Long> premiumUserIds = response.body();
+                                Log.d("API_RESPONSE", "Premium User IDs: " + premiumUserIds); // 🔥 프리미엄 유저 ID 리스트 확인
+
+                                allJobsSpecial.clear();
+
+                                // 3️⃣ 채용 공고 중 `user_id`가 결제된 유저 ID에 포함된 것만 필터링
+                                for (RecruitmentModel job : allJobs) {
+                                    Log.d("API_RESPONSE", "Checking Job: " + job.getTitle() + " | User ID: " + job.getUserId());
+
+                                    if (premiumUserIds.contains(job.getUserId())) {
+                                        Log.d("API_RESPONSE", "✅ Premium Job Found: " + job.getTitle());
+
+                                        String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
+                                                ? null
+                                                : "서버_URL/" + job.getFile();
+
+                                        allJobsSpecial.add(new JobModel(
+                                                job.getTitle(),
+                                                (job.getWage() != null) ? "급여: " + job.getWage() : "급여 정보 없음",
+                                                imageUrl
+                                        ));
+
+                                        // ✅ 최대 5개까지만 가져오기
+                                        if (allJobsSpecial.size() >= 5) break;
+                                    }
+                                }
+
+                                Log.d("API_RESPONSE", "Final Premium Job Count: " + allJobsSpecial.size()); // 🔥 최종 프리미엄 공고 개수 확인
+                                jobAdapterSpecial.notifyDataSetChanged(); // ✅ RecyclerView 갱신
+                            } else {
+                                Log.e("API_ERROR", "프리미엄 유저 ID 데이터 없음.");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Long>> call, Throwable t) {
+                            Log.e("API_FAILURE", "결제된 유저 ID API 요청 실패: " + t.getMessage());
+                        }
+                    });
+                } else {
+                    Log.e("API_ERROR", "채용 공고 데이터 없음.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecruitmentResponse> call, Throwable t) {
+                Log.e("API_FAILURE", "채용 공고 API 요청 실패: " + t.getMessage());
             }
         });
     }

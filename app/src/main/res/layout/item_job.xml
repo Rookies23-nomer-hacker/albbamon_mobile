@@ -16,10 +16,9 @@
 
         <ImageView
             android:id="@+id/job_image"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sample_job"/>
+            android:layout_width="176dp"
+            android:layout_height="60dp"
+            android:src="@drawable/b_logo" />
 
         <TextView
             android:id="@+id/job_title"
@@ -40,5 +39,16 @@
             android:textStyle="bold"
             android:textColor="@android:color/holo_blue_dark"
             android:paddingTop="4dp"/>
+
+        <TextView
+            android:id="@+id/job_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
