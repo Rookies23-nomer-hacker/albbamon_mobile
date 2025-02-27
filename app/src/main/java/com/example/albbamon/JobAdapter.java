@@ -39,7 +39,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
         JobModel job = jobList.get(position);
         holder.jobTitle.setText(job.getTitle());
-        holder.companyName.setText(job.getCompany());
         holder.salary.setText(job.getSalary());
         holder.jobImage.setImageResource(job.getImageResId());
     }
@@ -50,13 +49,12 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     }
 
     public static class JobViewHolder extends RecyclerView.ViewHolder {
-        TextView jobTitle, companyName, salary;
+        TextView jobTitle, salary;
         ImageView jobImage;
 
         public JobViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             jobTitle = itemView.findViewById(R.id.job_title);
-            companyName = itemView.findViewById(R.id.job_company);
             salary = itemView.findViewById(R.id.job_salary);
             jobImage = itemView.findViewById(R.id.job_image);
 

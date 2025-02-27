@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- 툴바 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#FFFFFF"
+        android:elevation="0dp"
+        android:outlineProvider="none"
+        android:paddingBottom="1dp"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="뒤로 가기"
+            android:src="@drawable/ic_title_back" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:padding="13dp"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textColor="@android:color/black"
+            android:text="지원 완료"
+            android:textSize="16sp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- 툴바 아래 구분선 -->
+    <View
+        android:id="@+id/toolbar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <!-- 메인 이미지 -->
+    <ImageView
+        android:id="@+id/success_icon"
+        android:layout_width="400dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_mail_success"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+
+
+
+    <!-- 성공 메시지 -->
+
+    <!-- 지원 완료 정보 -->
+
+    <!-- 성공 메시지 -->
+    <TextView
+        android:id="@+id/success_message"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="홈페이지 지원 내역이 저장되었습니다."
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/success_icon" />
+
+    <!-- 첫 번째 구분선 -->
+    <View
+        android:id="@+id/line_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/success_message"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 지원 완료 정보 -->
+
+    <!-- 두 번째 구분선 -->
+    <TextView
+        android:id="@+id/application_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:text="지원완료"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_1" />
+
+    <View
+        android:id="@+id/line_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/application_info"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 회사명 -->
+    <TextView
+        android:id="@+id/company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="에프알엘코리아주식회사\n[유니클로] 본사 정보보안(ISO) 사무직 / 파트타이머"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/line_2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="start"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 세 번째 구분선 -->
+    <View
+        android:id="@+id/line_3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/company_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 보안 경고 -->
+    <LinearLayout
+        android:id="@+id/security_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/line_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp">
+
+        <!-- 경고 아이콘 -->
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_warning" />
+
+        <!-- 경고 메시지 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:text="💡 현금카드, 통장 비밀번호 요구 NO! \n     취업을 빙자한 사기 위험이 있습니다."
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <!-- 하단 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btn_memo"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:text="메모 하기"
+            android:backgroundTint="@color/hint_text_color"
+            android:textColor="@android:color/black"
+            android:padding="12dp"/>
+
+        <Button
+            android:id="@+id/btn_check_status"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:text="지원현황 확인"
+            android:backgroundTint="@color/apply_button_color"
+            android:textColor="@android:color/white"
+            android:padding="12dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

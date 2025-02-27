@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.Experience.ExperienceList;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.model.LoginUserModel;
@@ -139,7 +140,7 @@ public class SignIn extends AppCompatActivity {
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
                         Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(SignIn.this, UserMypageActivity.class); //MainActivity
+                        Intent intent = new Intent(SignIn.this, MainActivity.class); //MainActivity
 
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
                         startActivity(intent);

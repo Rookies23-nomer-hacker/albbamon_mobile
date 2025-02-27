@@ -22,6 +22,9 @@
         android:theme="@style/Theme.Albbamon"
         tools:targetApi="31">
         <activity
+            android:name=".mypage.CeoMypageActivity"
+            android:exported="false" />
+        <activity
             android:name=".Experience.ExperienceSearch"
             android:exported="false" />
         <activity
@@ -30,9 +33,6 @@
         <activity
             android:name=".Experience.ExperienceView"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".network.ExperienceView"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".Experience.ExperienceCreate"
             android:exported="false" />
@@ -56,24 +56,20 @@
 
         <activity
             android:name=".mypage.ProfileEditActivity"
-            android:exported="false" />
-        <!-- 다른 Activity -->
+            android:exported="false" /> <!-- 다른 Activity -->
         <activity
             android:name=".activity_oh"
             android:exported="false" /> <!-- 메인 Activity -->
-<!--        <activity-->
-<!--            android:name=".SignIn"-->
-<!--            android:exported="false" />-->
+
         <!-- 🚀 MainActivity를 다시 추가 -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
         <activity
             android:name=".comAccount"
             android:exported="false" />
@@ -95,20 +91,14 @@
         <activity android:name=".Resume.ResumePortfolioActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" />
-        <activity
-            android:name=".InquiryActivity"
-            android:exported="true"
-            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- 회원 탈퇴 Activity -->
+        <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
-        <activity android:name=".MailSettingsActivity" />
-
-        <!-- MenuActivity 설정 유지 -->
+        <activity android:name=".MailSettingsActivity" /> <!-- MenuActivity 설정 유지 -->
         <activity
             android:name=".MenuActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
-        <!-- 아이디 찾기 Activity들 -->
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- 아이디 찾기 Activity들 -->
         <activity
             android:name=".FindIdPersonalActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
@@ -126,13 +116,6 @@
         <activity
             android:name=".FindPwBusinessActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
-
     </application>
 
 </manifest>
-
-
-
-
-

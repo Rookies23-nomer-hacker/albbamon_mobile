@@ -12,24 +12,13 @@
         android:id="@+id/tv_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원님의 정보를 안전하게 보호하기 위해\n비밀번호를 다시 한 번 입력해 주시기 바랍니다."
-        android:textSize="14sp"
-        android:textColor="@color/gray"
+        android:text="필수항목"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:lineSpacingExtra="4dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <!-- 구분선 -->
-    <View
-        android:id="@+id/view_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/light_gray"
-        android:layout_marginVertical="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 아이디 라벨 -->
     <TextView
@@ -39,8 +28,8 @@
         android:text="이메일"
         android:textSize="14sp"
         android:textColor="@color/black"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/view_divider"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_info"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- 아이디 입력 필드 (비활성화) -->
@@ -48,72 +37,293 @@
         android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/light_gray"
-        android:text="이메일이 존재하지 않습니다."
-        android:textColor="@color/gray"
+        android:background="@drawable/edittext_background"
+        android:hint="이메일을 불러오는 중 입니다..."
+        android:textColor="@color/black"
         android:textSize="14sp"
         android:paddingHorizontal="12dp"
-        android:focusable="false"
-        android:cursorVisible="false"
-        android:longClickable="false"
         android:singleLine="true"
         app:layout_constraintTop_toBottomOf="@id/email_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="15dp" />
 
-    <!-- 비밀번호 라벨 -->
+    <!-- 이름 라벨 -->
     <TextView
-        android:id="@+id/password_label"
+        android:id="@+id/name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="비밀번호"
+        android:text="이름"
         android:textSize="14sp"
         android:textColor="@color/black"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/et_email"
         app:layout_constraintStart_toStartOf="parent"/>
 
-
+    <!-- 이름 입력 필드 -->
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/white"
-        android:hint="비밀번호를 입력해주세요."
+        android:background="@drawable/edittext_background"
+        android:hint="이름을 불러오는 중 입니다."
         android:textColor="@color/black"
         android:textSize="14sp"
         android:paddingHorizontal="12dp"
         android:singleLine="true"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/password_label"
+        app:layout_constraintTop_toBottomOf="@id/name_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/black"
-        app:cornerRadius="8dp" />
+        android:layout_marginTop="15dp" />
 
-    <!-- 비밀번호 입력 필드 아래 가변적 여백 추가 -->
-    <View
-        android:id="@+id/empty_space"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        app:layout_constraintBottom_toTopOf="@id/custom_twobutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
-        android:layout_weight="1"/>
+    <!-- 생년월일 라벨 -->
+    <TextView
+        android:id="@+id/birth_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="생년월일"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/et_name"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- 버튼 영역 (하단 고정) -->
-    <include
-        layout="@layout/custom_twobutton"
-        android:id="@+id/custom_twobutton"
+    <!-- 생년월일 선택 필드 -->
+    <LinearLayout
+        android:id="@+id/birth_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/birth_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/spinner_year"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="1998"
+            android:paddingHorizontal="12dp"/>
+
+        <EditText
+            android:id="@+id/spinner_month"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="12"
+            android:paddingHorizontal="12dp"
+            android:layout_marginStart="10dp"/>
+        <EditText
+            android:id="@+id/spinner_day"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="01"
+            android:paddingHorizontal="12dp"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
+
+    <!-- 성별 라벨 -->
+    <TextView
+        android:id="@+id/gender_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="성별"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/birth_layout"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 성별 입력 필드 -->
+    <EditText
+        android:id="@+id/et_gender"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/edittext_background"
+        android:textColor="@color/black"
+        android:text="여자"
+        android:textSize="14sp"
+        android:paddingHorizontal="12dp"
+        android:singleLine="true"
+        app:layout_constraintTop_toBottomOf="@id/gender_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:focusable="false"
+        android:cursorVisible="false" />
+
+    <!-- 휴대폰 라벨 -->
+    <TextView
+        android:id="@+id/phone_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="휴대폰"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/et_gender"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 휴대폰 입력 필드 + 변경 버튼 -->
+    <!-- 휴대폰 입력 필드 + 변경 버튼 -->
+    <LinearLayout
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/phone_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/et_phone_"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:hint="휴대폰 번호를 불러오는 중 입니다..."
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingHorizontal="12dp"
+            android:singleLine="true"/>
+
+        <Button
+            android:id="@+id/btn_change_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="변경"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/black"
+            android:background="@drawable/status_background"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
+
+    <!-- 주소 라벨 -->
+    <TextView
+        android:id="@+id/address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주소"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/phone"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 주소 입력 필드 + 검색 버튼 -->
+    <LinearLayout
+        android:id="@+id/address_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/address_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/et_address"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:hint="주소를 불러오는 중 입니다..."
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:paddingHorizontal="12dp"
+            android:singleLine="true"/>
+
+        <Button
+            android:id="@+id/btn_search_address"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="변경"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/black"
+            android:background="@drawable/status_background"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
+
+    <!-- 약관동의 제목 -->
+    <TextView
+        android:id="@+id/tv_terms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="약관동의"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/address_field"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- 첫 번째 약관 -->
+    <LinearLayout
+        android:id="@+id/first_terms1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_terms"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <CheckBox
+            android:id="@+id/chk_terms1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(선택) 개인정보수집 및 이용 동의-공고추천·혜택"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/btn_terms1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_left"
+            android:contentDescription="약관 보기"/>
+    </LinearLayout>
+
+    <!-- 두 번째 약관 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/first_terms1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <CheckBox
+            android:id="@+id/chk_terms2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(선택) 개인정보수집 및 이용 동의-닉네임"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/btn_terms2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_left"
+            android:contentDescription="약관 보기"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
