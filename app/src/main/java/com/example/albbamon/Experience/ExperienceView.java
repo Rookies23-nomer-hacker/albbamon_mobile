@@ -92,6 +92,7 @@ public class ExperienceView extends AppCompatActivity {
                         content_text.setText(bbs.getContents());
                         date_text.setText(date);
 
+                        bbs_userId = bbs.getUserId();
                         Log.d("API_SUCCESS", "게시글 작성자 ID: " + bbs_userId);
 
                         // API 응답을 받은 후 isMyPost 설정
