@@ -30,14 +30,6 @@
             android:textStyle="bold"
             android:paddingTop="8dp"/>
 
-        <TextView
-            android:id="@+id/job_company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="회사 이름"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            android:paddingTop="4dp"/>
 
         <TextView
             android:id="@+id/job_salary"
