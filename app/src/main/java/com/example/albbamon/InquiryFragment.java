@@ -43,6 +43,7 @@ public class InquiryFragment extends Fragment {
     private Button btnGoToFindId;  // 아이디 찾기 버튼
     private Button btnGoToFindPw;  // **비밀번호 찾기 버튼 (새로 추가)**
 
+    private Button btnGoToJobList;  // 채용공고 목록 버튼 추가
     private TextView tvAttachedFile;  // 파일 이름을 표시할 TextView
 
     private Uri attachedFileUri; // 첨부 파일 URI
@@ -88,6 +89,7 @@ public class InquiryFragment extends Fragment {
         tvAttachedFile = view.findViewById(R.id.tv_attached_file);
         btnBack = view.findViewById(R.id.btn_back);
         btnGoToWithdrawal = view.findViewById(R.id.btn_go_to_withdrawal);
+        btnGoToJobList = view.findViewById(R.id.btn_go_to_job_list); // 채용공고 목록 버튼
 
         // 아이디 찾기 버튼
         btnGoToFindId = view.findViewById(R.id.btn_go_to_find_id);
@@ -109,6 +111,17 @@ public class InquiryFragment extends Fragment {
             }
         });
 
+        // 채용공고 목록 버튼 클릭 이벤트
+        btnGoToJobList.setOnClickListener(v -> {
+            Log.d("InquiryFragment", "btn_go_to_job_list 버튼 클릭됨");  // 로그 확인
+            try {
+                Intent intent = new Intent(requireContext(), JobListActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Log.e("InquiryFragment", "JobListActivity 실행 실패: " + e.getMessage());
+                Toast.makeText(requireContext(), "채용공고 목록을 열 수 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
         // 회원 탈퇴 버튼
         btnGoToWithdrawal.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MemberWithdrawalActivity.class);
