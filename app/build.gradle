@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    // namespace와 applicationId는 여기에서 관리합니다.
     namespace 'com.example.albbamon'
     compileSdk 35
 
@@ -14,7 +15,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -23,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -35,16 +34,28 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.media3.transformer
+    implementation libs.cronet.embedded
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
-    // Retrofit 의존성 추가
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // JSON 자동 변환
+
+
+    implementation libs.material
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // JSON 자동 변환
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 
     // OkHttp 의존성 추가
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 }
+

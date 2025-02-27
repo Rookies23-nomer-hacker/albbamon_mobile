@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Resume.ResumePortfolioActivity"
+    android:background="@color/white">
+
+    <!-- 뒤로 가기 아이콘 -->
+    <ImageView
+        android:id="@+id/BackIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 상단 타이틀 -->
+    <TextView
+        android:id="@+id/header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자기소개"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/BackIcon"
+        app:layout_constraintTop_toTopOf="@id/BackIcon"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 자기소개 제목 -->
+    <TextView
+        android:id="@+id/tvIntroTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자기소개 *"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_text"
+        android:layout_marginTop="50dp"/>
+
+    <!-- 자기소개 입력 필드 -->
+    <EditText
+        android:id="@+id/etIntro"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:hint="자기소개를 입력하세요."
+        android:background="@android:drawable/editbox_background"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:maxLines="6"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvIntroTitle"
+        android:layout_marginTop="10dp"
+        android:gravity="top|start"/>
+
+    <!-- 글자 수 제한 표시 -->
+    <TextView
+        android:id="@+id/tvCharCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 / 50,000"
+        android:textSize="12sp"
+        android:textColor="#D7D7D7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etIntro"
+        android:layout_marginTop="4dp"/>
+
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="저장"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FD0200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
