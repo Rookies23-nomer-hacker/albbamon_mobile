@@ -17,6 +17,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -29,6 +30,7 @@ public class RetrofitClient {
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
         if (retrofitWithoutSession == null) {
+
             OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
             retrofitWithoutSession = new Retrofit.Builder()
@@ -36,6 +38,7 @@ public class RetrofitClient {
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+
         }
         return retrofitWithoutSession;
     }
