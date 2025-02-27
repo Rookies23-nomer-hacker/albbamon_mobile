@@ -1,5 +1,6 @@
 package com.example.albbamon.mypage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +20,7 @@ import com.example.albbamon.repository.UserRepository;
 
 public class ChangePasswordFragment extends Fragment {
     private UserRepository userRepository;
-    private EditText userEmail, nowPwInput, newPwInput, newPwReInput;
-    private Button changePwButton;
+    private EditText nowPwInput, newPwInput, newPwReInput;
     private Long userId = null;
 
     public ChangePasswordFragment() {
@@ -37,48 +37,42 @@ public class ChangePasswordFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_change_password, container, false);
 
         // UI 요소 초기화
-        userEmail = view.findViewById(R.id.et_email);
         nowPwInput = view.findViewById(R.id.now_pw);
         newPwInput = view.findViewById(R.id.new_pw);
         newPwReInput = view.findViewById(R.id.new_pw_re);
-        changePwButton = view.findViewById(R.id.btn_change_pw);
+
+        nowPwInput.setFocusableInTouchMode(true);
+        newPwInput.setFocusableInTouchMode(true);
+        newPwReInput.setFocusableInTouchMode(true);
 
         // UserRepository 초기화
         userRepository = new UserRepository(requireContext());
 
         // fetchUserInfo() 호출하여 로그인된 사용자 정보 가져오기
-        fetchUserInfo();
-
-        // 버튼 클릭 시 비밀번호 변경 API 호출
-        changePwButton.setOnClickListener(v -> handleChangePassword());
+//        fetchUserInfo();
 
         return view;
     }
 
     // 로그인된 사용자 정보 가져오기
-    private void fetchUserInfo() {
-        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
-            @Override
-            public void onSuccess(UserInfo userInfo) {
-                userEmail.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
-                userId = userInfo.getId(); // 로그인된 유저 ID 저장
-                Log.d("ChangePassword", "로그인된 사용자 ID: " + userId);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("ChangePassword", errorMessage);
-                Toast.makeText(requireContext(), "사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void fetchUserInfo() {
+//        userRepository.fetchUserInfo(new UserRepository.UserCallback() {
+//            @Override
+//            public void onSuccess(UserInfo userInfo) {
+//                userId = userInfo.getId(); // 로그인된 유저 ID 저장
+//                Log.d("ChangePassword", "로그인된 사용자 ID: " + userId);
+//            }
+//
+//            @Override
+//            public void onFailure(String errorMessage) {
+//                Log.e("ChangePassword", errorMessage);
+//                Toast.makeText(requireContext(), "사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     // 비밀번호 변경 요청 함수
-    private void handleChangePassword() {
-        if (userId == null) {
-            Toast.makeText(requireContext(), "사용자 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    public void handleChangePassword() {
 
         String nowPw = nowPwInput.getText().toString().trim();
         String newPw = newPwInput.getText().toString().trim();
@@ -90,25 +84,35 @@ public class ChangePasswordFragment extends Fragment {
             return;
         }
         if (!newPw.equals(newPwRe)) {
-            Toast.makeText(requireContext(), "새 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "새로운 비밀번호 두 개의 값이 일치하지 않습니다. 확인해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 서버에 비밀번호 변경 요청
-        userRepository.changePassword(requireContext(), userId, nowPw, newPw, new UserRepository.PasswordCallback() {
+        // 🚀 **이제 실제 입력된 비밀번호 값을 전달**
+        userRepository.changePassword(nowPw, newPw, new UserRepository.PasswordCallback() {
             @Override
             public void onSuccess(String message) {
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-                clearInputFields(); // 입력 필드 초기화
+                Log.d("ChangePassword", "비밀번호 변경 성공: " + message);
+                Toast.makeText(requireContext(), "비밀번호가 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                clearInputFields();
+
+                // UserInfoActivity로 이동
+                Intent intent = new Intent(requireContext(), UserInfoActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // 기존 스택을 정리하고 이동
+                startActivity(intent);
+
+                // 현재 Activity 종료 (만약 ChangePasswordFragment가 Activity에 포함된 경우)
+                requireActivity().finish();
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                Log.e("ChangePassword", errorMessage);
+                Log.e("ChangePassword", "비밀번호 변경 실패: " + errorMessage);
+                Toast.makeText(requireContext(), "비밀번호 변경에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     // 입력 필드 초기화
     private void clearInputFields() {

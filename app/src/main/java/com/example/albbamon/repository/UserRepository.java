@@ -62,22 +62,12 @@ public class UserRepository {
         });
     }
 
-
-
     // 비밀번호 변경 API 호출 메서드 추가
-    public void changePassword(Context context, Long userId, String oldPw, String newPw, PasswordCallback callback) {
-        // ✅ SharedPreferences에서 저장된 세션 쿠키 가져오기
-        SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        String sessionCookie = prefs.getString("cookie", "");
+    public void changePassword(String oldPw, String newPw, PasswordCallback callback) {
+        // ✅ userId 없이 요청하는 DTO 생성
+        ChangePwRequestDto request = new ChangePwRequestDto(oldPw, newPw);
 
-        if (sessionCookie.isEmpty()) {
-            callback.onFailure("❌ 세션 쿠키가 없습니다. 로그인이 필요합니다.");
-            return;
-        }
-
-        ChangePwRequestDto request = new ChangePwRequestDto(userId, oldPw, newPw);
-
-        // ✅ 세션 쿠키 포함하여 API 요청
+        // ✅ API 요청 (세션 쿠키 필요 없음)
         Call<UserChangePwResponseDto> call = userAPI.changePassword(request);
 
         call.enqueue(new Callback<UserChangePwResponseDto>() {
@@ -96,7 +86,6 @@ public class UserRepository {
             }
         });
     }
-
 
     // ✅ 회원 탈퇴 API 호출 메서드 추가
     public void deleteUser(DeleteUserCallback callback) {
