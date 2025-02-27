@@ -3,6 +3,7 @@ package com.example.albbamon.Experience;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.albbamon.R;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.api.ResponseWrapper;
+import com.example.albbamon.dto.request.CreatePostRequestDto;
 import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.network.RetrofitClient;
 
@@ -28,6 +30,7 @@ public class ExperienceUpdate extends AppCompatActivity {
     TextView btn_submit;
     EditText et_title, et_content;
     long postId, userId;
+    String old_title, old_content, edit_title, edit_content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,19 @@ public class ExperienceUpdate extends AppCompatActivity {
         // 뒤로 가기 버튼
         back_img_btn.setOnClickListener(view -> finish());
 
+        // 등록 버튼
+        btn_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edit_title = et_title.getText().toString().strip();
+                edit_content = et_content.getText().toString().strip() ;
+                if(edit_title.equals(old_title)){
+                    Log.e("test", "수정된 값"+edit_title);
+                }
+//                CreatePostRequestDto requestDto = new CreatePostRequestDto(userId, edit_title, edit_content,"");
+            }
+        });
+
     }
 
     // 게시글 데이터 불러오기 (비동기 API)
@@ -68,9 +84,10 @@ public class ExperienceUpdate extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     CommunityModel bbs = response.body().getData();
                     if (bbs != null) {
-                        String date = bbs.getCreateDate().substring(0, 10) + " " + bbs.getCreateDate().substring(11, 16);
                         et_title.setText(bbs.getTitle());
                         et_content.setText(bbs.getContents());
+                        old_title = et_title.getText().toString().strip();
+                        old_content = et_content.getText().toString().strip();
                     } else {
                         Log.e("API_ERROR", "data 필드가 null 입니다.");
                     }
