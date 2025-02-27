@@ -11,5 +11,12 @@
     ]]></string>
 
     <string name="back_button_desc">뒤로가기</string>
+
+    <string-array name="filter_options">
+        <item>최신순</item>
+        <item>마감임박순</item>
+        <item>급여높은순</item>
+        <item>근무시간짧은순</item>
+    </string-array>
 </resources>
 
