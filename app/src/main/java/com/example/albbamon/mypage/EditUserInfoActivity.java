@@ -34,8 +34,8 @@ public class EditUserInfoActivity extends AppCompatActivity {
         });
 
         // 2개의 탭
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        TabLayout tabLayout = findViewById(R.id.multitabLayout);
+        ViewPager2 viewPager = findViewById(R.id.viewPager2);
 
         // 🔹 탭 목록과 프래그먼트 동적 추가 가능
         List<Fragment> fragments = new ArrayList<>();

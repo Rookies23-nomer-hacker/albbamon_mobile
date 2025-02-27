@@ -107,7 +107,6 @@
                     android:id="@+id/btn_upload"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-
                     android:layout_marginLeft="30dp"
                     android:background="@drawable/rounded_white_button"
                     android:contentDescription="파일 업로드"

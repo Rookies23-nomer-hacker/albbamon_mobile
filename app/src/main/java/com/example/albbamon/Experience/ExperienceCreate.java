@@ -1,6 +1,7 @@
 package com.example.albbamon.Experience;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,7 +23,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.example.albbamon.R;
+import com.example.albbamon.SignIn;
+import com.example.albbamon.api.CommunityAPI;
+import com.example.albbamon.dto.request.CreatePostRequestDto;
+import com.example.albbamon.model.LoginUserModel;
+import com.example.albbamon.network.RetrofitClient;
 
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 public class ExperienceCreate extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
@@ -41,6 +52,22 @@ public class ExperienceCreate extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_experience_create);
 
+        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+        long userId = prefs.getLong("userId", -1); // 기본값 -1 (저장된 값이 없을 경우)
+
+        if (userId != -1) {
+            // userId가 정상적으로 저장되어 있다면 사용 가능
+            Log.d("Session", "User ID: " + userId);
+        } else {
+            // userId 값이 저장되지 않았거나 오류 발생
+            Log.d("Session", "User ID가 저장되지 않음");
+            Toast.makeText(this, "로그인 후 이용해주세요.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ExperienceCreate.this, SignIn.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
+            startActivity(intent);
+            finish();
+        }
+
         back_btn = findViewById(R.id.back_img_btn);
         btnUpload = findViewById(R.id.btn_upload);
         edit_title = findViewById(R.id.et_title);
@@ -48,15 +75,17 @@ public class ExperienceCreate extends AppCompatActivity {
         submit_btn = findViewById(R.id.btn_submit);
         char_count = findViewById(R.id.tv_character_count);
 
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
+
+
 
         //등록 버튼 클릭
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = edit_title.getText().toString();
-                Log.d("입력 받은 값", "제목 : " + title);
-            }
-        });
+                createPostAction(userId,apiService);
+                }
+            });
 
         //contet 입력 감지(글자 수 업데이트)
         edit_content.addTextChangedListener(new TextWatcher() {
@@ -82,6 +111,38 @@ public class ExperienceCreate extends AppCompatActivity {
         btnUpload.setOnClickListener(this::showPopupMenu);
     }
 
+
+    private void createPostAction(long userId, CommunityAPI apiService){
+        String title = edit_title.getText().toString();
+        String content = edit_content.getText().toString();
+        CreatePostRequestDto requestDto = new CreatePostRequestDto(userId, title, content,"");
+        Call<Void> call = apiService.createPost(requestDto);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+
+                    Toast.makeText(ExperienceCreate.this, "게시글이 작성되었습니다!", Toast.LENGTH_SHORT).show();
+                    finish(); // 액티비티 종료
+                } else {
+                    try {
+                        String errorMsg = response.errorBody().string(); // 서버 응답 에러 메시지
+                        Log.e("API_ERROR", "Error Response: " + errorMsg);
+                        Toast.makeText(ExperienceCreate.this, "작성 실패!", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ExperienceCreate.this, "서버 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", t.getMessage());
+            }
+        });
+    }
     // 팝업 메뉴를 표시하는 메서드
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);

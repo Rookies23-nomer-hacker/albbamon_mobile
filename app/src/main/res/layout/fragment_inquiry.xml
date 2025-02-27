@@ -228,6 +228,15 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal" />
 
+        <Button
+            android:id="@+id/btn_go_to_job_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="채용공고 목록 보기"
+            android:backgroundTint="#FF5F1F"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"/>
+
     </LinearLayout>
 </ScrollView>
 

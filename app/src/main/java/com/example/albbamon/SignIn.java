@@ -17,7 +17,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.Experience.ExperienceList;
 import com.example.albbamon.api.UserAPI;
+import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.model.LoginUserModel;
 import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
@@ -98,14 +100,23 @@ public class SignIn extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
 
+                for (String name : response.headers().names()) {
+                    Log.d("API_RESPONSE", "헤더: " + name + " = " + response.headers().get(name));
+                }
 
                 if (response.isSuccessful() && response.body() != null) {
                     try {
+                        // 서버에서 응답온 데이터에서 userid 추출
                         String responseBodyString = response.body().string().trim();
                         Log.d("API_RESPONSE", "서버 응답 원본: " + responseBodyString);
 
-                        long userId = Long.parseLong(responseBodyString);
+                        // JSON을 UserResponseDto로 변환
+                        Gson gson = new Gson();
+                        UserResponseDto userResponse = gson.fromJson(responseBodyString, UserResponseDto.class);
 
+                        // ✅ userId 가져오기
+                        long userId = userResponse.getUserId();
+                        Log.d("API_RESPONSE", "✅ 로그인 성공 - userId: " + userId);
                         Log.d("API_RESPONSE", "서버 쿠키: " + response.headers());
 
                         // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
