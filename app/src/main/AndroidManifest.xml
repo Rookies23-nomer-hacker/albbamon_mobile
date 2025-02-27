@@ -116,6 +116,19 @@
         <activity
             android:name=".FindPwBusinessActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+        <!-- ✅ 채용공고 목록 Activity -->
+        <activity
+            android:name=".JobListActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Albbamon" />
+
+        <!-- ✅ 검색 Activity -->
+        <activity
+            android:name=".SearchActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Albbamon" />
+
+        <activity android:name=".JobDetailActivity" />
     </application>
 
 </manifest>
