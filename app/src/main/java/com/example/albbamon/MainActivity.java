@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
         List<JobModel> displayedJobsBrands = new ArrayList<>(allJobsBrands.subList(0, Math.min(MAX_ITEMS, allJobsBrands.size())));
 
         // 어댑터 설정
-        jobAdapterSpecial = new JobAdapter(displayedJobsSpecial);
-        jobAdapterPoint = new JobAdapter(displayedJobsPoint);
-        jobAdapterBrands = new JobAdapter(displayedJobsBrands);
+//        jobAdapterSpecial = new JobAdapter(displayedJobsSpecial);
+//        jobAdapterPoint = new JobAdapter(displayedJobsPoint);
+//        jobAdapterBrands = new JobAdapter(displayedJobsBrands);
 
         recyclerSpecial.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerSpecial.setAdapter(jobAdapterSpecial);
@@ -129,10 +129,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerBrands.setAdapter(jobAdapterBrands);
 
         // ✅ RecyclerView 아이템 클릭 이벤트 설정
-        jobAdapterSpecial.setOnItemClickListener(position -> {
-            JobModel clickedJob = allJobsSpecial.get(position);
-            Toast.makeText(MainActivity.this, "클릭한 알바: " + clickedJob.getTitle(), Toast.LENGTH_SHORT).show();
-        });
+//        jobAdapterSpecial.setOnItemClickListener(position -> {
+//            JobModel clickedJob = allJobsSpecial.get(position);
+//            Toast.makeText(MainActivity.this, "클릭한 알바: " + clickedJob.getTitle(), Toast.LENGTH_SHORT).show();
+//        });
 
         // ✅ 로고 버튼 클릭
         ImageView logo = findViewById(R.id.icon);
