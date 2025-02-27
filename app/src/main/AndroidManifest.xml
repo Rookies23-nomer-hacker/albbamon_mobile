@@ -9,17 +9,17 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
-        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".mypage.CeoMypageActivity"
@@ -42,17 +42,18 @@
         <activity
             android:name=".SignIn"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".InquiryActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
-\
+            android:windowSoftInputMode="stateVisible|adjustResize">
+        </activity>
+
         <activity
             android:name=".mypage.ProfileEditActivity"
             android:exported="false" /> <!-- 다른 Activity -->
@@ -64,11 +65,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".comAccount"
@@ -79,14 +79,7 @@
         <activity
             android:name=".account"
             android:exported="false" />
-        <activity android:name=".mypage.UserMypageActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".mypage.UserMypageActivity" />
         <activity android:name=".mypage.UserInfoActivity" />
         <activity android:name=".mypage.ApplicationStatusActivity" />
         <activity android:name=".mypage.ResumeManagementActivity" />
@@ -97,7 +90,8 @@
         <activity android:name=".Resume.ResumeIntroActivity" />
         <activity android:name=".Resume.ResumePortfolioActivity" />
         <activity android:name=".JobPostingActivity" />
-        <activity android:name=".mypage.EditUserInfoActivity" /> <!-- 회원 탈퇴 Activity -->
+        <activity android:name=".mypage.EditUserInfoActivity" />
+        <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" /> <!-- MenuActivity 설정 유지 -->
         <activity
@@ -111,10 +105,14 @@
         <activity
             android:name=".FindIdBusinessActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
-            tools:ignore="MissingClass" /> <!-- 개인회원 비밀번호 찾기 -->
+            tools:ignore="MissingClass" />
+
+        <!-- 개인회원 비밀번호 찾기 -->
         <activity
             android:name=".FindPwPersonalActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- 기업회원 비밀번호 찾기 -->
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 기업회원 비밀번호 찾기 -->
         <activity
             android:name=".FindPwBusinessActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />

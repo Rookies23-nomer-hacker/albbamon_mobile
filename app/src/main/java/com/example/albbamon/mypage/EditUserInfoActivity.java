@@ -30,10 +30,7 @@ public class EditUserInfoActivity extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.back);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EditUserInfoActivity.this, UserInfoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            onBackPressed();
         });
 
         // 2개의 탭
