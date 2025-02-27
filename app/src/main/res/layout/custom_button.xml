@@ -20,18 +20,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:paddingTop="5dp"
         android:gravity="center">
 
         <!-- 확인 버튼 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_confirm"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:backgroundTint="@color/appcolor"
-            android:text="확인"
+            android:text="수정완료"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="8dp" />

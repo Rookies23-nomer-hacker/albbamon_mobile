@@ -34,10 +34,7 @@ public class ResumeManagementActivity extends AppCompatActivity {
 
         // 뒤로가기 버튼 클릭 시 MainActivity로 이동
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ResumeManagementActivity.this, UserMypageActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            onBackPressed();
         });
 
         // 이력서 카드뷰 추가 (동적)

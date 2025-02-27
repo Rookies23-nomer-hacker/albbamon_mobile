@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.albbamon.Experience.ExperienceList;
 
+
+import com.example.albbamon.Resume.ResumePortfolioActivity;
+import com.example.albbamon.Resume.ResumeWriteActivity;
+import com.example.albbamon.mypage.ResumeManagementActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,49 +88,71 @@ public class MenuActivity extends AppCompatActivity {
 
         switch (categoryIndex) {
             case 0: // 채용정보
-                menuList.add(new MenuModel("스크랩알바", R.drawable.sample_job));
-                menuList.add(new MenuModel("최근본알바", R.drawable.sample_job));
-                menuList.add(new MenuModel("맞춤알바", R.drawable.sample_job));
-                menuList.add(new MenuModel("AI 추천알바", R.drawable.sample_job));
+                menuList.add(new MenuModel("스크랩알바", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("최근본알바", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("맞춤알바", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("AI 추천알바", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("전체알바", R.drawable.sample_job));
-                menuList.add(new MenuModel("급구알바", R.drawable.sample_job));
+                menuList.add(new MenuModel("급구알바", R.drawable.ico_favorite_off));
                 break;
             case 1: // 회원서비스
                 menuList.add(new MenuModel("이력서관리", R.drawable.sample_job));
-                menuList.add(new MenuModel("지원현황", R.drawable.sample_job));
+                menuList.add(new MenuModel("이력서작성", R.drawable.sample_job));
+                menuList.add(new MenuModel("지원현황", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("포트폴리오관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("공고관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("공고등록", R.drawable.sample_job));
                 break;
             case 2: // 인재정보
-                menuList.add(new MenuModel("인재정보 홈", R.drawable.sample_job));
-                menuList.add(new MenuModel("전체인재", R.drawable.sample_job));
-                menuList.add(new MenuModel("내 주변 인재", R.drawable.sample_job));
-                menuList.add(new MenuModel("실시간 활동 인재", R.drawable.sample_job));
-                menuList.add(new MenuModel("대하생 인재", R.drawable.sample_job));
+                menuList.add(new MenuModel("인재정보 홈", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("전체인재", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("내 주변 인재", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("실시간 활동 인재", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("대학생 인재", R.drawable.ico_favorite_off));
                 break;
             case 3: // 알바토크
-                menuList.add(new MenuModel("알바 경험담", R.drawable.sample_job));
-                menuList.add(new MenuModel("한줄톡", R.drawable.sample_job));
-                menuList.add(new MenuModel("면접족보", R.drawable.sample_job));
-                menuList.add(new MenuModel("알바후기", R.drawable.sample_job));
+                menuList.add(new MenuModel("알바경험담", R.drawable.sample_job));
+                menuList.add(new MenuModel("한줄톡", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("면접족보", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("알바후기", R.drawable.ico_favorite_off));
                 break;
             case 4: // 고객센터
                 menuList.add(new MenuModel("공지사항", R.drawable.sample_job));
-                menuList.add(new MenuModel("문의하기", R.drawable.sample_job));
-                menuList.add(new MenuModel("자주 묻는 질문", R.drawable.sample_job));
-                menuList.add(new MenuModel("이용가이드", R.drawable.sample_job));
+                menuList.add(new MenuModel("문의하기", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("자주 묻는 질문", R.drawable.ico_favorite_off));
+                menuList.add(new MenuModel("이용가이드", R.drawable.ico_favorite_off));
                 break;
         }
 
         // 메뉴 리스트 업데이트
         menuAdapter = new MenuAdapter(menuList, position -> {
-            // 메뉴 클릭 시 동작
+            // 🔹 메뉴 클릭 시 해당 액티비티로 이동하도록 처리
             String selectedMenu = menuList.get(position).getTitle();
+            Intent intent = null;
 
-            if (selectedMenu.equals("알바 경험담")) {
-                // 알바 경험담을 클릭하면 새로운 액티비티 실행
-                Intent intent = new Intent(MenuActivity.this, ExperienceList.class);
+            switch (selectedMenu) {
+                case "전체알바":
+                    intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
+                    break;
+                case "이력서관리":
+                    intent = new Intent(MenuActivity.this, ResumeManagementActivity.class);
+                    break;
+                case "이력서작성":
+                    intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
+                    break;
+                case "포트폴리오관리":
+                    intent = new Intent(MenuActivity.this, ResumePortfolioActivity.class);
+                    break;
+                case "공고등록":
+                    intent = new Intent(MenuActivity.this, JobPostingActivity.class);
+                    break;
+                case "알바경험담":
+                    intent = new Intent(MenuActivity.this, ExperienceList.class);
+                    break;
+                // 여기에 다른 메뉴도 추가 가능
+            }
+
+            if (intent != null) {
                 startActivity(intent);
             }
         });
