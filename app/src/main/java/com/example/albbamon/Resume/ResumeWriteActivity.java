@@ -18,7 +18,9 @@ import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.request.ResumeRequestDto;
 
+import com.example.albbamon.dto.response.ResumeResponseDto;
 import com.example.albbamon.model.UserInfo;
+import com.example.albbamon.mypage.EditUserInfoActivity;
 import com.example.albbamon.repository.UserRepository;
 
 
@@ -73,13 +75,6 @@ public class ResumeWriteActivity extends AppCompatActivity {
         // 뒤로 가기 버튼 클릭 이벤트
         backIcon.setOnClickListener(v -> finish()); // 현재 액티비티 종료
 
-//        // Retrofit 클라이언트 생성
-//        Retrofit retrofit = RetrofitClient.getRetrofitInstanceWithSession(this);
-//        userAPI = retrofit.create(UserAPI.class);
-//        resumeAPI = retrofit.create(ResumeAPI.class);
-//        // 사용자 정보 가져오기
-//        fetchUserInfo();
-
         // UserRepository 초기화
         userRepository = new UserRepository(this);
 
@@ -109,53 +104,13 @@ public class ResumeWriteActivity extends AppCompatActivity {
 
         // ScrollView를 맨 위로 이동
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_UP));
-    }
 
-    /**
-     * 사용자 정보 가져오는 함수입니다.
-
-    private void fetchUserInfo() {
-        userAPI.getUserInfo().enqueue(new Callback<UserModel>() {
-            @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    UserModel userModel = response.body();
-
-                    // ✅ UserData 가져오기
-                    UserData userData = userModel.getData();
-                    UserInfo userInfo = (userData != null) ? userData.getUserInfo() : null;
-
-                    // ✅ 전체 JSON 응답을 로그로 출력
-                    Log.d("API_SUCCESS", "전체 응답: " + response.body().toString());
-
-                    if (userInfo != null) {
-                        // ✅ API 응답 데이터 로그 출력
-                        Log.d("API_SUCCESS", "사용자 정보: "
-                                + (userInfo.getName() != null ? userInfo.getName() : "null") + ", "
-                                + (userInfo.getEmail() != null ? userInfo.getEmail() : "null") + ", "
-                                + (userInfo.getPhone() != null ? userInfo.getPhone() : "null"));
-
-                        // ✅ UI 업데이트
-                        nameText.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
-                        phoneText.setText(userInfo.getPhone() != null ? userInfo.getPhone() : "전화번호 없음");
-                        emailText.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
-                    } else {
-                        Log.e("API_ERROR", "사용자 정보가 없습니다.");
-                    }
-
-                } else {
-                    Log.e("API_ERROR", "사용자 정보 가져오기 실패: " + response.code() + " - " + response.message());
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-                Log.e("API_ERROR", "API 호출 실패", t);
-            }
+        findViewById(R.id.userEdit).setOnClickListener( v -> {
+            Intent intent = new Intent(this, EditUserInfoActivity.class);
+            startActivity(intent);
         });
     }
-*/
+
     /**
      * 학력 정보 이동 함수
      */
@@ -244,7 +199,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
 
         // ✅ ResumeRequestDto 객체 생성
         ResumeRequestDto resumeData = new ResumeRequestDto(
-                1L,  // ✅ 사용자 ID (임시값)
+                1L,  // ✅ 사용자 ID (임시값, 로그인된 사용자 정보에서 가져와야 함)
                 dataManager.getSchool(),
                 dataManager.getStatus(),
                 dataManager.getPersonal(),
@@ -255,16 +210,20 @@ public class ResumeWriteActivity extends AppCompatActivity {
                 dataManager.getWorkingPeriod(),
                 dataManager.getWorkingDay(),
                 dataManager.getIntroduction(),
-                portfolioData,   // ✅ 포트폴리오 데이터 (쉼표로 연결된 파일명)
-                "",  // ✅ 포트폴리오 URL (현재 없음)
+                portfolioData,
+                dataManager.getPortfolioUrl(),
+                dataManager.getPortfolioName(),
+                "https://example.com/image.jpg",  // ✅ 이미지 URL (실제 앱에서는 업로드한 URL로 변경)
+                "resume_image.jpg",  // ✅ 이미지 파일명
+                "BASE64_ENCODED_STRING",  // ✅ Base64로 인코딩된 이미지 데이터
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
 
         // ✅ 서버로 데이터 전송
-        resumeAPI.createResume(resumeData).enqueue(new Callback<String>() {
+        resumeAPI.saveResume(1L, resumeData).enqueue(new Callback<ResumeResponseDto>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -274,7 +233,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
                 Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
                 Log.e("API_ERROR", "이력서 저장 실패", t);
             }
@@ -282,13 +241,16 @@ public class ResumeWriteActivity extends AppCompatActivity {
     }
 
 
-    private void saveResume() {
-        // ✅ ResumeDataManager에서 데이터 가져오기
-        ResumeRequestDto resumeData = ResumeDataManager.getInstance().toResumeRequestDto();
+    private void saveResumeToServer() {
+        ResumeDataManager dataManager = ResumeDataManager.getInstance();
+        ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
 
-        resumeAPI.createResume(resumeData).enqueue(new Callback<String>() {
+        // ✅ userId를 ResumeDataManager에서 가져옴
+        long userId = dataManager.getUserId();
+
+        resumeAPI.saveResume(userId, resumeData).enqueue(new Callback<ResumeResponseDto>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -298,12 +260,40 @@ public class ResumeWriteActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
                 Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
                 Log.e("API_ERROR", "이력서 저장 실패", t);
             }
         });
     }
+
+    private void saveResumeToServer() {
+        ResumeDataManager dataManager = ResumeDataManager.getInstance();
+        ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
+
+        // ✅ 로그인된 사용자 정보에서 userId 가져오기
+        long userId = userRepository.getUserInfo().getUserId();
+
+        resumeAPI.saveResume(userId, resumeData).enqueue(new Callback<ResumeResponseDto>() {
+            @Override
+            public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 성공!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ResumeWriteActivity.this, "이력서 저장 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("API_ERROR", "응답 코드: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResumeResponseDto> call, Throwable t) {
+                Toast.makeText(ResumeWriteActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", "이력서 저장 실패", t);
+            }
+        });
+    }
+
+
 
 
 }

@@ -26,13 +26,16 @@ public class RetrofitClient {
     private static Retrofit retrofitWithSession = null;
     private static String sessionCookie = null; // 세션 쿠키 저장 변수
 
+    private static final String BASE_URL = "http://192.168.0.6:60085/";
+//    private static final String BASE_URL = "http://10.0.2.2:60085/";
+
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
         if (retrofitWithoutSession == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
             retrofitWithoutSession = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:60085/")
+                    .baseUrl(BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -89,7 +92,7 @@ public class RetrofitClient {
                     .build();
 
             retrofitWithSession = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:60085/")
+                    .baseUrl(BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
