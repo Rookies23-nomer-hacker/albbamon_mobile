@@ -20,6 +20,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.example.albbamon.Experience.ExperienceList;
+import com.example.albbamon.Resume.ResumeNewJobActivity;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.api.PaymentAPI;
 import com.example.albbamon.api.RecruitmentAPI;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerSpecial, recyclerRecent, recyclerCommunity;
     private AppBarLayout appBarLayout;
     private BottomNavigationView bottomNavigationView;
-    private Button btnMoreSpecial, btnMorePoint, btnMoreBrands;
+    private Button btnMoreSpecial, btnMoreRecent, btnMoreCommunity;
     private static final int MAX_ITEMS = 5;
     private List<JobModel> allJobsSpecial, allJobsRecent, allJobsCommunity,displayedJobsCommunity;
     private JobAdapter jobAdapterSpecial, jobAdapterRecent, jobAdapterCommunity;
@@ -108,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
         // "더보기" 버튼 추가
         btnMoreSpecial = findViewById(R.id.btn_more_point1);
-        btnMorePoint = findViewById(R.id.btn_more_point2);
-        btnMoreBrands = findViewById(R.id.btn_more_point3);
+        btnMoreRecent = findViewById(R.id.btn_more_point2);
+        btnMoreCommunity = findViewById(R.id.btn_more_point3);
 
         // 전체 데이터 목록
         allJobsSpecial = new ArrayList<>();
@@ -159,8 +161,16 @@ public class MainActivity extends AppCompatActivity {
 
         // ✅ "더보기" 버튼 클릭 이벤트 (현재 기능 없음)
         btnMoreSpecial.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Special 더보기 클릭!", Toast.LENGTH_SHORT).show());
-        btnMorePoint.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Point 더보기 클릭!", Toast.LENGTH_SHORT).show());
-        btnMoreBrands.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Brands 더보기 클릭!", Toast.LENGTH_SHORT).show());
+
+        btnMoreRecent.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ResumeNewJobActivity.class);
+            startActivity(intent);
+        });
+
+        btnMoreCommunity.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ExperienceList.class);
+            startActivity(intent);
+        });
 
         viewPager = findViewById(R.id.banner_viewpager);
         bannerIndicator = findViewById(R.id.banner_indicator);
@@ -386,7 +396,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

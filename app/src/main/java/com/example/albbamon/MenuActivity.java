@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.albbamon.Experience.ExperienceList;
 
 
+import com.example.albbamon.Resume.ResumeNewJobActivity;
 import com.example.albbamon.Resume.ResumePortfolioActivity;
 import com.example.albbamon.Resume.ResumeWriteActivity;
 import com.example.albbamon.mypage.ResumeManagementActivity;
@@ -132,7 +133,7 @@ public class MenuActivity extends AppCompatActivity {
 
             switch (selectedMenu) {
                 case "전체알바":
-                    intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
+                    intent = new Intent(MenuActivity.this, ResumeNewJobActivity.class);
                     break;
                 case "이력서관리":
                     intent = new Intent(MenuActivity.this, ResumeManagementActivity.class);
