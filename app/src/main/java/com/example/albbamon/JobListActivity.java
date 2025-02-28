@@ -56,10 +56,5 @@ public class JobListActivity extends AppCompatActivity {
         jobList.add(new JobItem("설비IOP 모집", "남녀O모집 보너스 지급", "대구 전지역", "4,000,000원", "30분전"));
         jobList.add(new JobItem("주방 직원 모집", "동백명주", "대구", "2,100,000원", "1시간전"));
 
-
-        // RecyclerView 설정
-        jobAdapter = new JobAdapter(jobList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(jobAdapter);
     }
 }
