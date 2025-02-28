@@ -20,10 +20,6 @@ public interface ResumeAPI {
     @POST("/api/mobile/resume/profileImage")
     Call<ProfileImageResponseDto> updateProfileImage(@Body ProfileImageRequestDto profileImageRequestDto);
 
-    // ✅ `userId`가 세션에 포함된 상태에서 `resume_id` 가져오기
-    @GET("/api/mobile/myResumeId")
-    Call<Map<String, Object>> getMyResumeId();
-
     // ✅ `resume_id`로 전체 이력서 정보 가져오기
     @GET("/api/mobile/resume/view")
     Call<Map<String, Object>> getResume();
