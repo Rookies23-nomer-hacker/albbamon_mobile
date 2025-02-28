@@ -37,7 +37,14 @@ public class PortfolioFileAdapter extends RecyclerView.Adapter<PortfolioFileAdap
     @Override
     public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
         String fileName = fileList.get(position);
-        holder.fileNameTextView.setText(fileName);
+        String item = fileList.get(position);
+
+        if (item.startsWith("http")) { // ✅ URL이면
+            holder.fileNameTextView.setText("[URL] " + item);
+        } else { // ✅ 파일이면
+            holder.fileNameTextView.setText("[FILE] " + fileName);
+//            holder.fileNameTextView.setText(item);
+        }
 
         holder.btnDelete.setOnClickListener(v -> {
             fileList.remove(position);

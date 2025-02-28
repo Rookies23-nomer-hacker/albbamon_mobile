@@ -84,7 +84,11 @@ public class ResumeDataManager {
     }
     public void setPortfolio(List<String> portfolioFiles) {
         this.portfolioList.clear();
-        this.portfolioList.addAll(portfolioFiles);
+        for (String item : portfolioFiles) {
+            if (!item.startsWith("[URL]")) { // ✅ URL 제외
+                this.portfolioList.add(item.replace("[FILE] ", ""));
+            }
+        }
     }
     // 데이터 저장 메서드
     public void setPersonalInfo(Long userId, String school, String status, String personal) {
@@ -112,14 +116,24 @@ public class ResumeDataManager {
         return portfolioList.size();
     }
 
+    public void setPortfolioData(String portfolioData) {
+        this.portfolioData = portfolioData;
+    }
+    public void setPortfolioName(String portfolioName) {
+        this.portfolioName = portfolioName;
+    }
+
+    public void setPortfolioUrl(String portfolioUrl) {
+        this.portfolioUrl = portfolioUrl;
+    }
     public void setResumeImgUrl(String resumeImgUrl) { this.resumeImgUrl = resumeImgUrl; }
     public void setResumeImgName(String resumeImgName) { this.resumeImgName = resumeImgName; }
     public void setResumeImgData(String resumeImgData) { this.resumeImgData = resumeImgData; }
 
     public ResumeRequestDto toResumeRequestDto() {
         Log.d("DEBUG-DM", "🚀 toResumeRequestDto() 호출됨");
-        Log.d("DEBUG-DM", "📌 personal 값: " + personal);
-        Log.d("DEBUG-DM", "📌 employmentType 값: " + employmentType);
+        Log.d("DEBUG-DM", "📌 포트폴리오 파일 URL: " + portfolioUrl);
+        Log.d("DEBUG-DM", "📌 포트폴리오 파일 이름: " + portfolioName);
 
         // ✅ LocalDateTime.now()를 ISO 8601 형식으로 변환
 

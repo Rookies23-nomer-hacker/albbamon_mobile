@@ -42,7 +42,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PORTFOLIO = 1005;
 
     private ImageView backIcon;
-    private Button btnSave, btnEditProfile;
+    private Button btnSave;
     private TextView nameText, phoneText, emailText;
     private TextView schoolContent, jobContent, optionContent, introContent, portfolioContent;
     private ResumeAPI resumeAPI;
@@ -60,7 +60,6 @@ public class ResumeWriteActivity extends AppCompatActivity {
         // UI 요소 연결
         backIcon = findViewById(R.id.BackIcon);
         btnSave = findViewById(R.id.btnSave);
-        btnEditProfile = findViewById(R.id.userEdit);
         scrollView = findViewById(R.id.scrollView);
 
         nameText = findViewById(R.id.Name);
@@ -226,6 +225,12 @@ public class ResumeWriteActivity extends AppCompatActivity {
         Log.d("DEBUG", "🚀 saveResumeToServer() 호출됨");
 
         ResumeDataManager dataManager = ResumeDataManager.getInstance();
+
+        // ✅ API 요청 전 데이터 확인 로그 추가
+        Log.d("DEBUG-W", "📌 API 요청 전 포트폴리오 데이터 확인");
+        Log.d("DEBUG-W", "portfolioName: " + dataManager.getPortfolioName());
+        Log.d("DEBUG-W", "portfolioUrl: " + dataManager.getPortfolioUrl());
+
         ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
 
         long userId = userRepository.getUserId();
@@ -235,7 +240,9 @@ public class ResumeWriteActivity extends AppCompatActivity {
             Log.e("ERROR", "❌ resumeAPI가 null입니다. Retrofit 초기화 확인 필요.");
             return;
         }
-        sendResumeRequest(userId, resumeData);
+
+        sendResumeRequest(dataManager.getUserId(), resumeData);
+//        sendResumeRequest(userId, resumeData);
     }
 
     private void sendResumeRequest(long userId, ResumeRequestDto resumeData) {
