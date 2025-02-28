@@ -86,7 +86,7 @@
 
     <!-- 회사명 -->
     <TextView
-        android:id="@+id/tv_company"
+        android:id="@+id/company"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -98,7 +98,46 @@
 
     <!-- 공고 제목 -->
     <TextView
-        android:id="@+id/tv_job_title"
+        android:id="@+id/recruitmentTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="[1일단기/동마중] 7월7일 시험감독 아르바이트"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop ="4dp"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- 시급 -->
+    <TextView
+        android:id="@+id/wage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="[1일단기/동마중] 7월7일 시험감독 아르바이트"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop ="4dp"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- 상태 -->
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="[1일단기/동마중] 7월7일 시험감독 아르바이트"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop ="4dp"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- 공고일 -->
+    <TextView
+        android:id="@+id/createDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -118,22 +157,22 @@
 
     <!-- 기업 후기 작성 버튼 -->
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/btn_review"-->
-<!--        style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:layout_marginVertical="20dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:layout_marginHorizontal="10dp"-->
-<!--        android:padding="10dp"-->
-<!--        android:paddingBottom="60dp"-->
-<!--        android:text="기업후기 작성하기"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="16dp"-->
-<!--        android:textStyle="bold"-->
-<!--        app:cornerRadius="10dp"-->
-<!--        app:strokeColor="#DDDDDD"-->
-<!--        app:strokeWidth="1dp" />-->
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/btn_review"-->
+    <!--        style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="60dp"-->
+    <!--        android:layout_marginVertical="20dp"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:layout_marginHorizontal="10dp"-->
+    <!--        android:padding="10dp"-->
+    <!--        android:paddingBottom="60dp"-->
+    <!--        android:text="기업후기 작성하기"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="16dp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:cornerRadius="10dp"-->
+    <!--        app:strokeColor="#DDDDDD"-->
+    <!--        app:strokeWidth="1dp" />-->
 
 </LinearLayout>

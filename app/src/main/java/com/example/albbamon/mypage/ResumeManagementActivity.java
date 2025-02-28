@@ -102,7 +102,7 @@ public class ResumeManagementActivity extends AppCompatActivity {
 
         //이력서 클릭하기
         FrameLayout frameButton = findViewById(R.id.frame_button);
-        frameButton.setOnClickListener(new View.OnClickListener() {
+        /*frameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ResumeManagementActivity.this, ResumeDetailActivity.class);
@@ -114,7 +114,7 @@ public class ResumeManagementActivity extends AppCompatActivity {
             btnMore.setOnClickListener(v -> showBottomSheetDialog());
         } else {
             Log.e("ResumeManagement", "btn_more를 찾을 수 없습니다.");
-        }
+        }*/
     }
 
     private void showBottomSheetDialog() {
