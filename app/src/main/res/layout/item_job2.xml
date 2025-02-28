@@ -53,15 +53,6 @@
             android:textColor="#FF5722"
             android:layout_marginTop="2dp"/>
 
-        <!-- 위치 및 근무시간 -->
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="위치"
-            android:textSize="14sp"
-            android:textColor="#444444"
-            android:layout_marginTop="2dp"/>
 
         <!-- 지원하기 버튼 -->
         <Button
@@ -71,12 +62,11 @@
             android:text="지원하기"
             android:textSize="12sp"
             android:textColor="#F5F5F5"
-            android:backgroundTint="@android:color/black"
+            android:backgroundTint="@color/appcolor"
             android:padding="6dp"
             android:layout_marginStart="5dp"
             android:layout_gravity="end"
-            android:elevation="2dp"
-            android:background="@drawable/btn_border"/>
+            android:elevation="2dp"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
