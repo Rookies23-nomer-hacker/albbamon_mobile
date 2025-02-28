@@ -35,14 +35,6 @@
             android:textStyle="bold"
             android:textColor="#333333"/>
 
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10분 전"
-            android:textSize="12sp"
-            android:textColor="#888888"
-            android:layout_marginTop="4dp"/>
         <!-- 급여 -->
         <TextView
             android:id="@+id/tvSalary"

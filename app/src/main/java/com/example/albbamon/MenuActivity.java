@@ -141,9 +141,6 @@ public class MenuActivity extends AppCompatActivity {
                 case "이력서작성":
                     intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
                     break;
-                case "포트폴리오관리":
-                    intent = new Intent(MenuActivity.this, ResumePortfolioActivity.class);
-                    break;
                 case "공고등록":
                     intent = new Intent(MenuActivity.this, JobPostingActivity.class);
                     break;

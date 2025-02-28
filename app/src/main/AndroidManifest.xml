@@ -90,6 +90,8 @@
         <activity android:name=".Resume.ResumeIntroActivity" />
         <activity android:name=".Resume.ResumePortfolioActivity" />
         <activity android:name=".Resume.ResumeNewJobActivity" />
+        <activity android:name=".Resume.ResumePremiumActivity" />
+        <activity android:name=".RecruitmentViewActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" />
         <!-- 회원 탈퇴 Activity -->

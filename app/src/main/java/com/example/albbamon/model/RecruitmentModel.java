@@ -1,8 +1,9 @@
 package com.example.albbamon.model;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class RecruitmentModel {
+public class RecruitmentModel implements Serializable {
     @SerializedName("id")
     private Long id;
 
@@ -15,11 +16,14 @@ public class RecruitmentModel {
     @SerializedName("file")
     private String file;
 
-    @SerializedName("item") // ✅ item 필드 추가
+    @SerializedName("item")
     private String item;
 
-    @SerializedName("company") // ✅ 회사명 필드 추가
+    @SerializedName("company")
     private String company;
+
+    @SerializedName("contents") // ✅ 추가: 상세 내용 필드
+    private String contents;
 
     public Long getId() {
         return id;
@@ -37,11 +41,15 @@ public class RecruitmentModel {
         return file;
     }
 
-    public String getItem() { // ✅ Getter 추가
+    public String getItem() {
         return item;
     }
 
-    public String getCompany() { // ✅ 회사명 Getter 추가
+    public String getCompany() {
         return company;
+    }
+
+    public String getContents() { // ✅ Getter 추가
+        return contents;
     }
 }

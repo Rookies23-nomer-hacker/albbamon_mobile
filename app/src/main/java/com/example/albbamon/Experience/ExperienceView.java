@@ -43,6 +43,8 @@ public class ExperienceView extends AppCompatActivity {
         setContentView(R.layout.activity_experience_view);
 
         postId = getIntent().getLongExtra("postId", -1);
+        userId = getIntent().getLongExtra("userId", -1);
+
         Log.d("DetailActivity", "Post ID: " + postId);
 
         title_text = findViewById(R.id.title_text);

@@ -1,5 +1,6 @@
 package com.example.albbamon;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -62,9 +64,23 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             Glide.with(holder.itemView.getContext())
                     .load(job.getImageUrl())
                     .placeholder(R.drawable.b_logo) // 로딩 중 기본 이미지
-                    .error(R.drawable.b_logo) // 에러 시 기본 이미지
+                    .error(R.drawable.b_logo)
+                    .skipMemoryCache(true) // 🔥 캐시 비활성화 (테스트용)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)// 에러 시 기본 이미지
                     .into(holder.jobImage);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            Log.d("JobAdapter", "🔥 클릭된 아이템: " + job.getTitle() + ", ID: " + job.getId());
+
+            if (listener != null) {
+                Log.d("JobAdapter",     "✅ onItemClick 실행");
+                listener.onItemClick(position);
+            } else {
+                Log.e("JobAdapter", "❌ onItemClickListener가 null 상태!");
+            }
+        });
+
     }
 
 

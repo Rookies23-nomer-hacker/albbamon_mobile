@@ -18,7 +18,7 @@ public class CommunityModel {
     @SerializedName("userName")
     private String userName;
 
-    public long getPostId() { return postId; }
+    public Long getPostId() { return postId; }
     public long getUserId() { return userId; }
     public String getTitle() { return title; }
     public String getContents() { return contents; }
