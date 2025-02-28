@@ -137,6 +137,12 @@
             android:exported="true"
             android:theme="@style/Theme.Albbamon" />
 
+        <activity
+            android:name=".InquiryRecyclerViewFragment"
+            android:exported="true"
+            android:theme="@style/Theme.Albbamon"
+            tools:ignore="Instantiatable" />
+
         <activity android:name=".JobDetailActivity" />
     </application>
 
