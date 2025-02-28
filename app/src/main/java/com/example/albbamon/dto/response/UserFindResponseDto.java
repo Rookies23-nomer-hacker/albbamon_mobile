@@ -1,4 +1,4 @@
-package com.example.albbamon.dto;
+package com.example.albbamon.dto.response;
 
 import com.google.gson.annotations.SerializedName;
 

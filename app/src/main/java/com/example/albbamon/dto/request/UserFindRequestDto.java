@@ -1,4 +1,4 @@
-package com.example.albbamon.model;
+package com.example.albbamon.dto.request;
 
 public class UserFindRequestDto {
     private String name;

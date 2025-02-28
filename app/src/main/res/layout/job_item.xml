@@ -106,26 +106,34 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
-        android:layout_marginTop ="4dp"/>
+        android:layout_marginTop ="4dp"
+        android:layout_marginBottom="40dp"/>
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
 
     <!-- 기업 후기 작성 버튼 -->
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_review"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginVertical="20dp"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="10dp"
-        android:padding="10dp"
-        android:paddingBottom="60dp"
-        android:text="기업후기 작성하기"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:cornerRadius="10dp"
-        app:strokeColor="#DDDDDD"
-        app:strokeWidth="1dp" />
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/btn_review"-->
+<!--        style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_marginVertical="20dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:layout_marginHorizontal="10dp"-->
+<!--        android:padding="10dp"-->
+<!--        android:paddingBottom="60dp"-->
+<!--        android:text="기업후기 작성하기"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="16dp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:cornerRadius="10dp"-->
+<!--        app:strokeColor="#DDDDDD"-->
+<!--        app:strokeWidth="1dp" />-->
 
 </LinearLayout>
