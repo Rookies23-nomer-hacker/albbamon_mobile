@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.albbamon.Experience.ExperienceList;
 
 
+import com.example.albbamon.Resume.ResumeDetailActivity;
 import com.example.albbamon.Resume.ResumePortfolioActivity;
 import com.example.albbamon.Resume.ResumeWriteActivity;
 import com.example.albbamon.mypage.ResumeManagementActivity;
@@ -135,7 +136,7 @@ public class MenuActivity extends AppCompatActivity {
                     intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
                     break;
                 case "이력서관리":
-                    intent = new Intent(MenuActivity.this, ResumeManagementActivity.class);
+                    intent = new Intent(MenuActivity.this, ResumeDetailActivity.class);
                     break;
                 case "이력서작성":
                     intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);

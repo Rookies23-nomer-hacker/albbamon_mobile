@@ -89,6 +89,7 @@
         <activity android:name=".Resume.ResumeOptionActivity" />
         <activity android:name=".Resume.ResumeIntroActivity" />
         <activity android:name=".Resume.ResumePortfolioActivity" />
+        <activity android:name=".Resume.ResumeDetailActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" />
         <!-- 회원 탈퇴 Activity -->
