@@ -10,9 +10,10 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <include
-            layout="@layout/custom_toolbar" />
+        <!-- 툴바 포함 -->
+        <include layout="@layout/custom_toolbar" />
 
+        <!-- 검색창 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +21,6 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <!-- 검색창 -->
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="55dp"
@@ -30,7 +30,6 @@
                 android:background="@drawable/status_background"
                 android:paddingEnd="10dp">
 
-                <!-- 검색 입력창 -->
                 <EditText
                     android:id="@+id/searchEditText"
                     android:layout_width="match_parent"
@@ -42,7 +41,6 @@
                     android:singleLine="true"
                     android:textSize="14sp" />
 
-                <!-- 검색 아이콘 -->
                 <ImageView
                     android:id="@+id/searchIcon"
                     android:layout_width="40dp"
@@ -55,47 +53,27 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <!-- 🔹 탭을 검색창 바로 아래 배치 -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:background="@color/white"
-            android:padding="16dp">
+            app:tabIndicatorColor="@color/appcolor"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="fixed"
+            app:tabIndicatorFullWidth="true"
+            app:tabRippleColor="@null"
+            app:tabTextColor="@color/gray"
+            app:tabSelectedTextColor="@color/black"
+            app:tabPaddingBottom="8dp"/>
 
-            <include layout="@layout/custom_tap2"/>
-
-        </LinearLayout>
-<!--        <LinearLayout-->
-<!--            xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical"-->
-<!--            android:background="@color/white">-->
-
-<!--            <com.google.android.material.tabs.TabLayout-->
-<!--                android:id="@+id/tabLayout"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginVertical="10dp"-->
-
-<!--                android:backgroundTint="@color/white"-->
-<!--                app:tabIndicatorColor="@color/appcolor"-->
-<!--                app:tabIndicatorHeight="4dp"-->
-<!--                app:tabMode="fixed"-->
-<!--                app:tabIndicatorFullWidth="true"-->
-<!--                app:tabRippleColor="@null"-->
-<!--                app:tabTextColor="@color/gray"-->
-<!--                app:tabSelectedTextColor="@color/black"-->
-<!--                app:tabPaddingBottom="8dp"/>-->
-<!--            <androidx.viewpager2.widget.ViewPager2-->
-<!--                android:id="@+id/viewPager"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"/>-->
-<!--        </LinearLayout>-->
+        <!-- 🔹 ViewPager2를 탭 바로 아래 배치 -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
     </LinearLayout>
 </ScrollView>
-
-
-

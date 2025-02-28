@@ -102,4 +102,13 @@ public class RetrofitClient {
         }
         return retrofitWithSession;
     }
+
+    private static final String BASE_URL = "http://10.0.2.2:60085/";  // 서버 URL
+
+    public static Retrofit getRetrofitInstance() {
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
 }
