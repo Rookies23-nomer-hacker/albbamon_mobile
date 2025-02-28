@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.util.Base64;
 
 public class SignIn extends AppCompatActivity {
 
@@ -46,6 +48,7 @@ public class SignIn extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         ImageView backButton = findViewById(R.id.backButton);
 
@@ -116,11 +119,15 @@ public class SignIn extends AppCompatActivity {
 
                         // ✅ userId 가져오기
                         long userId = userResponse.getUserId();
+                        String email = userResponse.getEmail();
                         Log.d("API_RESPONSE", "✅ 로그인 성공 - userId: " + userId);
                         Log.d("API_RESPONSE", "서버 쿠키: " + response.headers());
 
                         // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
                         String setCookieHeader = response.headers().get("Set-Cookie");
+
+                        CheckBox autoLoginCheck = findViewById(R.id.autoLogin);
+                        Boolean autoCheck = autoLoginCheck.isChecked();
 
                         if (setCookieHeader != null) {
                             Log.d("SESSION", "서버에서 받은 세션 쿠키: " + setCookieHeader);
@@ -131,6 +138,22 @@ public class SignIn extends AppCompatActivity {
                             editor.putString("cookie", setCookieHeader); // ✅ 세션 쿠키 저장
                             editor.putLong("userId", userId); // ✅ userId 저장
                             editor.apply();
+
+                            if (autoCheck == true){
+                                SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
+                                SharedPreferences.Editor cacheEditor = eCache.edit();
+
+                                String encodedEmail = Base64.encodeToString(email.getBytes(), Base64.NO_WRAP);
+
+                                Log.d("API_RESPONSE", encodedEmail);
+
+                                cacheEditor.putString("email", encodedEmail); //email 캐시 저장
+                                cacheEditor.apply();
+                                Log.d("auto", "이메일 저장 완료");
+
+                                String savedEmail = eCache.getString("email", "default_value");
+                                Log.d("auto", "저장된 이메일 확인: " + savedEmail);
+                            }
 
                             Log.d("SESSION", "세션 쿠키 저장 완료");
                         } else {

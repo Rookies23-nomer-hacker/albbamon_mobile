@@ -27,6 +27,9 @@ public class EditUserInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_user_info, container, false);
 
         EditText userEmail = view.findViewById(R.id.et_email);
+        EditText userName = view.findViewById(R.id.et_name);
+        EditText userPhone = view.findViewById(R.id.et_phone);
+
 
         // UserRepository 초기화
         UserRepository userRepository = new UserRepository(requireContext());
@@ -36,6 +39,8 @@ public class EditUserInfoFragment extends Fragment {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 userEmail.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
+                userName.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+                userPhone.setText(userInfo.getPhone() != null ? userInfo.getPhone() : "번호 없음");
             }
 
             @Override
