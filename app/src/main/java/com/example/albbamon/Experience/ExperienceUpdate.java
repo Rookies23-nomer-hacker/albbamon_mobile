@@ -1,11 +1,14 @@
 package com.example.albbamon.Experience;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,8 +19,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.albbamon.R;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.api.ResponseWrapper;
+import com.example.albbamon.dto.request.CreatePostRequestDto;
 import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.network.RetrofitClient;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +34,7 @@ public class ExperienceUpdate extends AppCompatActivity {
     TextView btn_submit;
     EditText et_title, et_content;
     long postId, userId;
+    String old_title, old_content, edit_title, edit_content, file_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,52 @@ public class ExperienceUpdate extends AppCompatActivity {
         // 뒤로 가기 버튼
         back_img_btn.setOnClickListener(view -> finish());
 
+        // 등록 버튼
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edit_title = et_title.getText().toString().strip();
+                edit_content = et_content.getText().toString().strip() ;
+                if(edit_title.equals(old_title) && edit_content.equals(old_content)){
+                   //변경된 내용이 없을 때
+                    Toast.makeText(ExperienceUpdate.this, "수정된 내용이 없습니다.", Toast.LENGTH_SHORT).show();
+                }else{
+
+                    CreatePostRequestDto requestDto = new CreatePostRequestDto(userId, edit_title, edit_content,file_name);
+                    CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
+                    Call<Void> call = apiService.updatePost(postId, requestDto);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+
+                                Toast.makeText(ExperienceUpdate.this, "게시글이 수정되었습니다!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(ExperienceUpdate.this, ExperienceView.class);
+                                intent.putExtra("postId", postId);
+                                startActivity(intent);
+                            } else {
+                                try {
+                                    String errorMsg = response.errorBody().string(); // 서버 응답 에러 메시지
+                                    Log.e("API_ERROR", "Error Response: " + errorMsg);
+                                    Toast.makeText(ExperienceUpdate.this, "수정 실패!", Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(ExperienceUpdate.this, "서버 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("API_ERROR", t.getMessage());
+                        }
+                    });
+                }
+
+            }
+        });
+
     }
 
     // 게시글 데이터 불러오기 (비동기 API)
@@ -68,9 +121,11 @@ public class ExperienceUpdate extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     CommunityModel bbs = response.body().getData();
                     if (bbs != null) {
-                        String date = bbs.getCreateDate().substring(0, 10) + " " + bbs.getCreateDate().substring(11, 16);
                         et_title.setText(bbs.getTitle());
                         et_content.setText(bbs.getContents());
+                        old_title = et_title.getText().toString().strip();
+                        old_content = et_content.getText().toString().strip();
+                        file_name = bbs.getFile_name().toString();
                     } else {
                         Log.e("API_ERROR", "data 필드가 null 입니다.");
                     }
