@@ -52,28 +52,30 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
     private void loadApplyList() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
 
-        // API 호출
         recruitmentAPI.getRecruitmentApplyList(recruitmentId).enqueue(new Callback<SuccessResponse<GetRecruitmentApplyListResponseDto>>() {
             @Override
             public void onResponse(Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> call, Response<SuccessResponse<GetRecruitmentApplyListResponseDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // 서버 응답에서 applyList 추출
+                    Log.d("API_RESPONSE", "✅ 서버 응답 성공! " + response.body().toString());
                     List<RecruitmentApply> recruitmentApplyList = response.body().getData().getApplyList();
                     applyList.clear();
                     if (recruitmentApplyList != null) {
                         applyList.addAll(recruitmentApplyList);
+                        Log.d("API_RESPONSE", "📌 받아온 지원서 수: " + recruitmentApplyList.size());
                     }
                     adapter.notifyDataSetChanged();
                 } else {
+                    Log.e("API_RESPONSE", "🚨 서버 응답 오류: " + response.code());
                     Toast.makeText(RecruitmentApplyListActivity.this, "데이터 불러오기 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> call, Throwable t) {
-                Toast.makeText(RecruitmentApplyListActivity.this, "API 요청 실패", Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", "네트워크 오류: " + t.getMessage());
+                Log.e("API_ERROR", "❌ API 요청 실패: " + t.getMessage());
+                Toast.makeText(RecruitmentApplyListActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }

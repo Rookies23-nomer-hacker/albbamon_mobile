@@ -11,6 +11,6 @@ public interface RecruitmentAPI {
     @GET("api/mobile/recruitment/list/my")
     Call<SuccessResponse<GetRecruitmentResponseDto>> getMyRecruitments();
 
-    @GET("api/mobile/recruitment/{recruitmentId}/apply")
+    @GET("api/recruitment/{recruitmentId}/apply")
     Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> getRecruitmentApplyList(@Path("recruitmentId") Long recruitmentId);
 }

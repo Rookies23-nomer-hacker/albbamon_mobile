@@ -1,6 +1,7 @@
 package com.example.albbamon.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.albbamon.R;
 import com.example.albbamon.model.MyRecruitment;
+import com.example.albbamon.mypage.RecruitmentApplyListActivity;
 
 import java.util.List;
 
@@ -49,6 +51,13 @@ public class MyRecruitmentAdapter extends RecyclerView.Adapter<MyRecruitmentAdap
         holder.tvDeadline.setText(recruitment.getDueDate());
         holder.tvCompany.setText(recruitment.getCompany());
         holder.tvJobTitle.setText(recruitment.getTitle());
+
+        // btnReview 클릭 시 recruitmentId를 Intent로 넘기기
+        holder.itemView.findViewById(R.id.btn_review).setOnClickListener(v -> {
+            Intent intent = new Intent(context, RecruitmentApplyListActivity.class);
+            intent.putExtra("recruitmentId", recruitment.getRecruitmentId()); // recruitmentId 추가
+            context.startActivity(intent);
+        });
     }
 
     @Override
