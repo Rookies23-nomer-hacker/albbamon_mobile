@@ -1,16 +1,24 @@
 package com.example.albbamon;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.albbamon.api.RecruitmentAPI;
+import com.example.albbamon.api.ResponseWrapper2;
+import com.example.albbamon.api.ResumeAPI;
+import com.example.albbamon.model.RecruitmentApplyRequest;
 import com.example.albbamon.model.RecruitmentDetailResponse;
 import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.network.RetrofitClient;
+import com.example.albbamon.model.ResumeModel;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -21,6 +29,13 @@ public class RecruitmentViewActivity extends AppCompatActivity {
     private TextView tvTitle, tvCompany, tvWage, tvContents;
     private Long jobId; // ✅ job_id 저장
 
+    private long userId;
+    private long resumeId;
+    private ImageView back_img_btn;
+    private ResumeAPI resumeAPI;
+    private RecruitmentAPI recruitmentAPI;
+
+    private Button applyButton;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +46,14 @@ public class RecruitmentViewActivity extends AppCompatActivity {
         //tvCompany = findViewById(R.id.tvCompany);
         tvWage = findViewById(R.id.tvWage);
         tvContents = findViewById(R.id.tvContents);
+
+        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+        userId = prefs.getLong("userId", -1);
+
+        if (userId == -1) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // ✅ Null 체크
         if (tvTitle == null || tvWage == null || tvContents == null) {
@@ -53,7 +76,63 @@ public class RecruitmentViewActivity extends AppCompatActivity {
             Log.e("JOB_ID", "No job_id found in Intent");
         }
 
+        back_img_btn = findViewById(R.id.back_img_btn);
+        back_img_btn.setOnClickListener(view -> finish());
+
+        applyButton = findViewById(R.id.apply_button);
+
+
+        resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
+
+        applyButton.setOnClickListener(v -> applyForJob());
     }
+
+    private void applyForJob() {
+        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+        long userId = prefs.getLong("userId", -1);
+
+        if (userId == -1) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
+        Call<ResponseWrapper2<Void>> call = recruitmentAPI.applyForJob(jobId, userId);
+
+        call.enqueue(new Callback<ResponseWrapper2<Void>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper2<Void>> call, Response<ResponseWrapper2<Void>> response) {
+                if (response.isSuccessful()) {
+                    // ✅ 채용 공고명 가져오기
+                    String jobTitle = tvTitle.getText().toString();
+
+                    // ✅ 지원 성공 후 ApplySuccessActivity로 이동
+                    Intent intent = new Intent(RecruitmentViewActivity.this, ApplySuccessActivity.class);
+                    intent.putExtra("job_title", jobTitle);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    showErrorDialog("지원에 실패했습니다. 다시 시도해주세요.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper2<Void>> call, Throwable t) {
+                showErrorDialog("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+            }
+        });
+    }
+
+    private void showErrorDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("오류 발생")
+                .setMessage(message)
+                .setPositiveButton("확인", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+
 
     private void fetchRecruitmentDetails(Long jobId) {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);

@@ -94,6 +94,9 @@
         <activity android:name=".RecruitmentViewActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" />
+        <activity android:name=".UserMypageActivity" />
+        <activity android:name=".ApplySuccessActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" /> <!-- MenuActivity 설정 유지 -->
