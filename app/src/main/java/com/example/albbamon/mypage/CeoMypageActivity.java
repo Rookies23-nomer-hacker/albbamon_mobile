@@ -86,13 +86,13 @@ public class CeoMypageActivity extends AppCompatActivity {
 
         // 공고 관리 페이지
         userInfoRoute.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, ManagementApplyer.class);
+            Intent intent = new Intent(CeoMypageActivity.this, UserInfoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
 
         resumeManagement.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, MyJobPostActivity.class);
+            Intent intent = new Intent(CeoMypageActivity.this, MyRecruitmentListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });

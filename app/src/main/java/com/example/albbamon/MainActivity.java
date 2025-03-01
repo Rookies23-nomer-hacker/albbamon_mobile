@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_profile) {
                 if (isUserLoggedIn()) {
                     // ✅ 로그인 상태면 마이페이지로 이동
-                    Intent intent = new Intent(MainActivity.this, CeoMypageActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CeoMypageActivity.class); //UserMypageActivity
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_left, 0);
                 } else {

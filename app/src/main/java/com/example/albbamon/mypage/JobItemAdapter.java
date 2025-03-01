@@ -41,9 +41,9 @@ public class JobItemAdapter extends RecyclerView.Adapter<JobItemAdapter.ViewHold
         holder.tvJobTitle.setText(jobItem.getJobTitle());
         holder.tvDeadline.setText("마감 " + jobItem.getDeadline());
 
-        // 버튼 클릭 시 ManagementApplyer로 이동
+        // 버튼 클릭 시 RecruitmentApplyListActivity 이동
         holder.btnReview.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ManagementApplyer.class);
+            Intent intent = new Intent(context, RecruitmentApplyListActivity.class);
             context.startActivity(intent);
         });
     }
