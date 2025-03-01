@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- 인터넷 및 네트워크 상태 확인 권한 추가 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,7 +12,6 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -56,14 +55,12 @@
             android:exported="false" />
         <activity
             android:name=".SignIn"
-            android:exported="false" >
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".InquiryActivity"
@@ -75,15 +72,15 @@
         <activity
             android:name=".activity_oh"
             android:exported="false" /> <!-- 메인 Activity -->
+
         <!-- 🚀 MainActivity를 다시 추가 -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".comAccount"
@@ -104,6 +101,9 @@
         <activity android:name=".Resume.ResumeOptionActivity" />
         <activity android:name=".Resume.ResumeIntroActivity" />
         <activity android:name=".Resume.ResumePortfolioActivity" />
+        <activity android:name=".Resume.ResumeNewJobActivity" />
+        <activity android:name=".Resume.ResumePremiumActivity" />
+        <activity android:name=".RecruitmentViewActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" /> <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
@@ -119,17 +119,24 @@
         <activity
             android:name=".FindIdBusinessActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
-            tools:ignore="MissingClass" /> <!-- 개인회원 비밀번호 찾기 -->
+            tools:ignore="MissingClass" />
+
+        <!-- 개인회원 비밀번호 찾기 -->
         <activity
             android:name=".FindPwPersonalActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- 기업회원 비밀번호 찾기 -->
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 기업회원 비밀번호 찾기 -->
         <activity
             android:name=".FindPwBusinessActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" /> <!-- ✅ 채용공고 목록 Activity -->
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <!-- ✅ 채용공고 목록 Activity -->
         <activity
             android:name=".JobListActivity"
             android:exported="true"
-            android:theme="@style/Theme.Albbamon" /> <!-- ✅ 검색 Activity -->
+            android:theme="@style/Theme.Albbamon" />
+
+        <!-- ✅ 검색 Activity -->
         <activity
             android:name=".SearchActivity"
             android:exported="true"
