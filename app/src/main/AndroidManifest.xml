@@ -42,12 +42,7 @@
         <activity
             android:name=".mypage.RecruitmentApplyListActivity"
             android:exported="false" />
-        <activity
-            android:name=".mypage.MyJobPostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".mypage.ManagementApplyer"
-            android:exported="false" /> <!-- <activity -->
+        <!-- <activity -->
         <!-- android:name=".autologin.Splash" -->
         <!-- android:exported="true"> -->
         <!-- <intent-filter> -->
@@ -121,9 +116,15 @@
         <activity android:name=".Resume.ResumeOptionActivity" />
         <activity android:name=".Resume.ResumeIntroActivity" />
         <activity android:name=".Resume.ResumePortfolioActivity" />
+        <activity android:name=".Resume.ResumeNewJobActivity" />
+        <activity android:name=".Resume.ResumePremiumActivity" />
         <activity android:name=".Resume.ResumeDetailActivity" />
+        <activity android:name=".RecruitmentViewActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" /> <!-- 회원 탈퇴 Activity -->
+        <activity android:name=".ApplySuccessActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" /> <!-- MenuActivity 설정 유지 -->
         <activity android:name=".mypage.MyRecruitmentListActivity" />

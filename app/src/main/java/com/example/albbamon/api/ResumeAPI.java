@@ -1,20 +1,20 @@
 package com.example.albbamon.api;
 
 import com.example.albbamon.dto.request.ResumeRequestDto;
+import com.example.albbamon.dto.response.ResumeResponseDto;
+import com.example.albbamon.model.ResumeModel;
 import com.example.albbamon.dto.request.ProfileImageRequestDto;
 import com.example.albbamon.dto.response.ProfileImageResponseDto;
 
 import java.util.Map;
-import com.example.albbamon.dto.response.ResumeResponseDto;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ResumeAPI {
     @POST("/api/mobile/resume/write")
@@ -28,6 +28,8 @@ public interface ResumeAPI {
             @Query("userId") long userId
     );
 
+    @GET("/api/resume/{userId}")
+    Call<ResponseWrapper2<ResumeModel>> getResumeByUserId(@Path("userId") long userId);
 
     @POST("/api/resume/write")  // 서버에 이력서 저장 요청
     Call<String> createResume(@Body ResumeRequestDto resumeRequestDto);

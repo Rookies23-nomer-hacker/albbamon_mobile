@@ -30,19 +30,19 @@ public class UserRepository {
         this.prefs = context.getSharedPreferences("USER_DATA", Context.MODE_PRIVATE); // ✅ SharedPreferences 초기화
     }
 
-    // ✅ SharedPreferences에서 userId 가져오기 (동기적으로 즉시 반환)
+    // SharedPreferences에서 userId 가져오기 (동기적으로 즉시 반환)
     public long getUserId() {
         return prefs.getLong("userId", 0L); // 저장된 userId 반환 (없으면 기본값 0)
     }
 
-    // ✅ SharedPreferences에 userId 저장하는 메서드 추가 (fetchUserInfo() 실행 후 저장 필요)
+    // SharedPreferences에 userId 저장하는 메서드 추가 (fetchUserInfo() 실행 후 저장 필요)
     private void saveUserId(long userId) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong("userId", userId);
         editor.apply();
     }
 
-    // ✅ fetchUserInfo() 실행 후 userId 저장
+    // fetchUserInfo() 실행 후 userId 저장
     public void fetchUserInfo(UserCallback callback) {
         Log.d("DEBUG", "🚀 fetchUserInfo() 호출됨");
 
@@ -69,7 +69,12 @@ public class UserRepository {
                         callback.onFailure("userInfo가 null입니다.");
                     }
                 } else {
-                    Log.d("DEBUG", "응답 실패: " + response.code());
+                    try {
+                        Log.e("API_ERROR", "서버 응답 실패 - 코드: " + response.code());
+                        Log.e("API_ERROR", "응답 본문: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "응답 본문 읽기 실패", e);
+                    }
                     callback.onFailure("응답 실패: " + response.code());
                 }
             }
@@ -130,7 +135,8 @@ public class UserRepository {
         });
     }
 
-    // 기존 인터페이스 변경 없음
+
+    // 회원 탈퇴 콜백 인터페이스
     public interface DeleteUserCallback {
         void onSuccess(String message);
         void onFailure(String errorMessage);

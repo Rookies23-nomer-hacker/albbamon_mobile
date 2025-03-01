@@ -32,6 +32,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.example.albbamon.model.ResumeModel;
 
 public class ResumeWriteActivity extends AppCompatActivity {
 
@@ -233,8 +234,8 @@ public class ResumeWriteActivity extends AppCompatActivity {
 
         ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
 
-        long userId = userRepository.getUserId();
-        Log.d("DEBUG", "📌 가져온 userId: " + userId);
+        //long userId = userRepository.getUserId();
+        //Log.d("DEBUG", "📌 가져온 userId: " + userId);
 
         if (resumeAPI == null) { // ✅ resumeAPI가 null인지 체크
             Log.e("ERROR", "❌ resumeAPI가 null입니다. Retrofit 초기화 확인 필요.");

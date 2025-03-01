@@ -11,7 +11,7 @@ import com.example.albbamon.R;
 import com.example.albbamon.adapter.MyRecruitmentAdapter;
 import com.example.albbamon.model.MyRecruitment;
 import com.example.albbamon.dto.response.GetRecruitmentResponseDto;
-import com.example.albbamon.model.SuccessResponse;
+import com.example.albbamon.network.SuccessResponse;
 import com.example.albbamon.api.RecruitmentAPI;
 import com.example.albbamon.network.RetrofitClient;
 
