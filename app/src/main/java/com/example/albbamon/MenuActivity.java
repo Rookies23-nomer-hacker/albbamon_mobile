@@ -147,7 +147,7 @@ public class MenuActivity extends AppCompatActivity {
                 case "알바경험담":
                     intent = new Intent(MenuActivity.this, ExperienceList.class);
                     break;
-                case "문의하기":  // ✅ 문의하기 액티비티 설정
+                case "문의하기":  // ✅ 문의하기 액티비티 변경
                     intent = new Intent(MenuActivity.this, InquiryFormActivity.class);
                     break;
                 default:
