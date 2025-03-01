@@ -163,7 +163,12 @@ public class ResumePortfolioActivity extends AppCompatActivity {
             ResumeDataManager dataManager = ResumeDataManager.getInstance();
             dataManager.setPortfolio(uploadedFiles);
 
-            if (!uploadedFiles.isEmpty()) {
+            if (uploadedFiles.isEmpty()) {
+                // ✅ 포트폴리오가 없으면 null로 설정
+                dataManager.setPortfolioName(null);
+                dataManager.setPortfolioUrl(null);
+                dataManager.setPortfolioData(null);
+            } else {
                 String fileName = uploadedFiles.get(0);
                 String fileUrl = "http://upload/resume/portfolio/" + fileName;
 
