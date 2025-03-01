@@ -8,7 +8,6 @@ import com.example.albbamon.network.SuccessResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import com.example.albbamon.dto.request.UpdateApplyStatusRequestDto;
-import com.example.albbamon.model.SuccessResponse;
 import com.example.albbamon.dto.response.GetRecruitmentResponseDto;
 import com.example.albbamon.dto.response.GetRecruitmentApplyListResponseDto;
 import retrofit2.Call;
@@ -42,7 +41,8 @@ public interface RecruitmentAPI {
     @POST("/api/mobile/recruitment/{recruitmentId}/apply")
     Call<ResponseWrapper2<Void>> applyForJob(
             @Path("recruitmentId") long recruitmentId,
-            @Query("userId") long userId
+            @Query("userId") long userId);
+
     @POST("api/recruitment/{recruitmentId}/apply/{applyId}/status")
     Call<String> updateApplyStatus(
             @Path("recruitmentId") Long recruitmentId,

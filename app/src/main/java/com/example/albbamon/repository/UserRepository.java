@@ -27,6 +27,8 @@ public class UserRepository {
     public UserRepository(Context context) {
         this.userAPI = RetrofitClient.getRetrofitInstanceWithSession(context).create(UserAPI.class);
     }
+
+
     public void fetchUserInfo(UserCallback callback) {
         Log.d("UserRepository", "🚀 [API 요청] fetchUserInfo");
 

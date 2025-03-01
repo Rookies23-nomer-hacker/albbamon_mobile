@@ -32,24 +32,28 @@ public class ResumeModel {
 
     public long getResumeId() {
         return resumeId;
+    }
     public String getCreateDate() {
         return createDate;
     }
 
     public void setResumeId(long resumeId) {
         this.resumeId = resumeId;
+    }
     public String getCareer() {
         return career;
     }
 
     public long getUserId() {
         return userId;
+    }
     public String getAddress() {
         return address;
     }
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
     public String getWorkType() {
         return workType;
     }
