@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +20,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Albbamon"
-        android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
             android:name=".mypage.MyJobPostActivity"
@@ -35,6 +36,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".mypage.ResultUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mypage.RecruitmentApplyListActivity"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".autologin.Splash" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".mypage.CeoMypageActivity"
             android:exported="false" />
@@ -106,8 +121,12 @@
         <activity android:name=".RecruitmentViewActivity" />
         <activity android:name=".JobPostingActivity" />
         <activity android:name=".mypage.EditUserInfoActivity" /> <!-- 회원 탈퇴 Activity -->
+        <activity android:name=".ApplySuccessActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!-- 회원 탈퇴 Activity -->
         <activity android:name=".MemberWithdrawalActivity" /> <!-- 메일/문자수신 설정 Activity -->
         <activity android:name=".MailSettingsActivity" /> <!-- MenuActivity 설정 유지 -->
+        <activity android:name=".mypage.MyRecruitmentListActivity" />
         <activity
             android:name=".MenuActivity"
             android:exported="true"
