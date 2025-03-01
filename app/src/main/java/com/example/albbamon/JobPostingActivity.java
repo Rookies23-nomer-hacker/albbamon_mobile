@@ -1,10 +1,12 @@
 package com.example.albbamon;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -41,6 +44,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -73,6 +77,7 @@ public class JobPostingActivity extends AppCompatActivity {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                         ivSelectedPhoto.setImageBitmap(bitmap); // 이미지 뷰에 표시
                         fileBitmap = bitmap;
+                        file = convertBitmapToMultipart(this, bitmap, "upload_image");
                     } catch (IOException e) {
                         e.printStackTrace();
                         Toast.makeText(this, "이미지 로드 실패", Toast.LENGTH_SHORT).show();
@@ -161,7 +166,7 @@ public class JobPostingActivity extends AppCompatActivity {
 
         // ✅ API 호출
         RecruitmentAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<SuccessResponse<Void>> call = apiService.createRecruitment(filePart, jobPostingBody);
+        Call<SuccessResponse<Void>> call = apiService.createRecruitment(file, jobPostingBody);
 
         call.enqueue(new Callback<SuccessResponse<Void>>() {
             @Override
@@ -235,5 +240,24 @@ public class JobPostingActivity extends AppCompatActivity {
 
     }
 
+    public static MultipartBody.Part convertBitmapToMultipart(Context context, Bitmap bitmap, String fileName) {
+        // ✅ 1. Bitmap을 임시 파일로 저장
+        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = new File(filesDir, fileName + ".jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+        } catch (IOException e) {
+            Log.e("ImageUtils", "파일 변환 중 오류 발생", e);
+            return null;
+        }
+
+        // ✅ 2. RequestBody 생성
+        RequestBody requestFile = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
+
+        // ✅ 3. MultipartBody.Part 생성
+        return MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
+    }
 
 }
