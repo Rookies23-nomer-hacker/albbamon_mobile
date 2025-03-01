@@ -102,19 +102,19 @@ public class ResumeManagementActivity extends AppCompatActivity {
 
         //이력서 클릭하기
         FrameLayout frameButton = findViewById(R.id.frame_button);
-        /*frameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ResumeManagementActivity.this, ResumeDetailActivity.class);
-//                intent.putExtra("postId", postId); // 이력서 아이디 넣어야됨
-                startActivity(intent);
-            }
-        });
+//        frameButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ResumeManagementActivity.this, ResumeDetailActivity.class);
+////                intent.putExtra("postId", postId); // 이력서 아이디 넣어야됨
+//                startActivity(intent);
+//            }
+//        });
         if (btnMore != null) {
             btnMore.setOnClickListener(v -> showBottomSheetDialog());
         } else {
             Log.e("ResumeManagement", "btn_more를 찾을 수 없습니다.");
-        }*/
+        }
     }
 
     private void showBottomSheetDialog() {
