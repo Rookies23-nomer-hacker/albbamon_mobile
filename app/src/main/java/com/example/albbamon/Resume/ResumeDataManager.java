@@ -143,9 +143,9 @@ public class ResumeDataManager {
                 portfolioData != null && !portfolioData.isEmpty() ? portfolioData : null,
                 portfolioUrl != null && !portfolioUrl.isEmpty() ? portfolioUrl : null,
                 portfolioName != null && !portfolioName.isEmpty() ? portfolioName : null,
-                resumeImgUrl != null ? resumeImgUrl : "",
-                resumeImgName != null ? resumeImgName : "",
-                resumeImgData != null ? resumeImgData : ""
+                resumeImgData != null && !resumeImgData.isEmpty() ? resumeImgData : null,
+                resumeImgName != null && !resumeImgName.isEmpty() ? resumeImgName : null,
+                resumeImgUrl != null && !resumeImgUrl.isEmpty() ? resumeImgUrl : null
         );
 
         Log.d("DEBUG-DM", "📌 변환된 ResumeRequestDto: " + new Gson().toJson(dto));
