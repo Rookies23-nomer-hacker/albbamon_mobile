@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".mypage.ResultUpdateActivity"
+            android:exported="false" />
+        <activity
             android:name=".mypage.RecruitmentApplyListActivity"
             android:exported="false" />
         <activity
@@ -29,17 +32,14 @@
             android:exported="false" />
         <activity
             android:name=".mypage.ManagementApplyer"
-            android:exported="false" />
-
-<!--        <activity-->
-<!--            android:name=".autologin.Splash"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".autologin.Splash" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".mypage.CeoMypageActivity"
             android:exported="false" />
@@ -61,13 +61,11 @@
         <activity
             android:name=".SignIn"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".InquiryActivity"
