@@ -53,12 +53,17 @@ public class ResumeDetailActivity extends AppCompatActivity {
         // Retrofit API 초기화
         ResumeAPI resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
 
-// 로그인된 유저 ID 가져오기 (UserRepository 활용)
+        // 로그인된 유저 ID 가져오기 (UserRepository 활용)
         userRepository.fetchUserInfo(new UserRepository.UserCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 long userId = userInfo.getId();
                 Log.d("ResumeDetailActivity", "현재 로그인한 사용자 ID: " + userId);
+
+                nameText.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+                phoneText.setText(userInfo.getPhone() != null ? userInfo.getPhone() : "전화번호 없음");
+                emailText.setText(userInfo.getEmail() != null ? userInfo.getEmail() : "이메일 없음");
+
 
                 // API 호출하여 이력서 데이터 가져오기
                 Call<ResumeResponseDto> call = resumeAPI.getResume(userId);

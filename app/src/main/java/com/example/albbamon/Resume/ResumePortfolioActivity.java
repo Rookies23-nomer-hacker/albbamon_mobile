@@ -127,22 +127,6 @@ public class ResumePortfolioActivity extends AppCompatActivity {
         btnFileUpload.setOnClickListener(v -> openFilePicker());
 
         btnSave.setOnClickListener(v -> {
-            /*
-            int fileCount = fileList.size();
-            if (fileCount == 0) {
-                Toast.makeText(this, "업로드할 포트폴리오가 없습니다.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // ✅ 파일 목록을 데이터 매니저에 저장
-            ResumeDataManager.getInstance().setPortfolio(fileList);
-
-            // ✅ ResumeWriteActivity로 파일 개수 전달
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("portfolioContent", fileCount + "개");
-            setResult(RESULT_OK, resultIntent);
-            finish();
-             */
             List<String> uploadedFiles = new ArrayList<>();
 
             // ✅ 파일 업로드 항목만 필터링 (URL 제외)
