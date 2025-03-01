@@ -100,15 +100,9 @@ public class ExperienceView extends AppCompatActivity {
                         date_text.setText(date);
 
                         bbs_userId = bbs.getUserId();
-                        String localPath = bbs.getFile_name();
-                        if (localPath != null){
-                            String localPrefix = "D:/abbamon/albbamon-api-server/src/main/webapp";
-                            String serverPrefix = "http://10.0.2.2:60085";
+                        imageUrl = bbs.getFile_name();
+                        loadServerImage(imageUrl);
 
-                            // ✅ 변환 수행 (localPrefix 부분을 serverPrefix로 대체)
-                            imageUrl = localPath.replace(localPrefix, serverPrefix);
-                            loadServerImage(imageUrl);
-                        }
                         Log.d("API_SUCCESS", "게시글 작성자 ID: " + bbs_userId);
                         Log.d("API_SUCCESS", "파일 경로: " + imageUrl);
                         // API 응답을 받은 후 isMyPost 설정
