@@ -63,7 +63,7 @@ public class ResumeDetailActivity extends AppCompatActivity {
                 // API 호출하여 이력서 데이터 가져오기
                 Call<ResumeResponseDto> call = resumeAPI.getResume(userId);
                 call.enqueue(new Callback<ResumeResponseDto>() {
-                    @Override9087690898
+                    @Override
                     public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             // ✅ JSON 변환 없이 그대로 사용 (서버에서 UTF-8로 변환했으므로)

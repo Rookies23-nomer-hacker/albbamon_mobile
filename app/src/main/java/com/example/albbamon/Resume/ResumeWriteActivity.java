@@ -241,7 +241,7 @@ public class ResumeWriteActivity extends AppCompatActivity {
             return;
         }
 
-        sendResumeRequest(dataManager.getUserId(), resumeData);
+        sendResumeRequest(userId, resumeData);
 //        sendResumeRequest(userId, resumeData);
     }
 

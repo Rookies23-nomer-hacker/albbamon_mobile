@@ -14,6 +14,9 @@ public class ResumeResponseDto {
     private String introduction;
     private String portfolioName;
     private String portfoliourl;
+    private String resume_imgurl;  // ✅ 추가
+    private String resume_img_name;  // ✅ 추가
+    private String resume_img_data;  // ✅ 추가
 
     public Long getUserId() {
         return userId;
@@ -65,4 +68,11 @@ public class ResumeResponseDto {
     public String getPortfoliourl() {
         return portfoliourl;
     }
+    public String getResume_imgurl() { return resume_imgurl; }
+    public String getResume_img_name() { return resume_img_name; }
+    public String getResume_img_data() { return resume_img_data; }
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
 }
