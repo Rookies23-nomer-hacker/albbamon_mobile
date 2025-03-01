@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="포트폴리오 파일을 첨부하세요"
-                    android:padding="40dp"/>
+                    android:padding="20dp"/>
 
                 <Button
                     android:id="@+id/btnFileUpload"
@@ -124,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="50dp"
                 android:visibility="gone">
 
                 <EditText
@@ -165,15 +165,27 @@
                 android:textColor="@color/black"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:layout_marginTop="20dp"/>
-<!--                android:visibility="gone"/> -->
+                android:layout_marginTop="20dp"
+                android:visibility="gone"/>
 
             <!-- 업로드한 포트폴리오 목록 -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerPortfolio"
+                android:id="@+id/fileRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/btnFileUpload"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- 구분선 -->
+            <View
+                android:id="@+id/divider_port"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D7D7D7"
+                android:layout_marginTop="30dp"/>
+
 
 
             <!-- 포트폴리오 등록 유의사항 -->
@@ -185,7 +197,8 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/tvPortfolioDescription"
@@ -194,7 +207,8 @@
                 android:text="파일 및 URL은 최대 10개까지 등록 가능합니다.\n등록 가능 파일: pdf, doc, ppt, txt, zip 등"
                 android:textSize="14sp"
                 android:textColor="@color/gray"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                android:visibility="visible"/>
 
 
         </LinearLayout>

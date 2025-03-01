@@ -27,6 +27,8 @@ public class UserRepository {
     public UserRepository(Context context) {
         this.userAPI = RetrofitClient.getRetrofitInstanceWithSession(context).create(UserAPI.class);
     }
+
+
     public void fetchUserInfo(UserCallback callback) {
         Log.d("UserRepository", "🚀 [API 요청] fetchUserInfo");
 
@@ -86,6 +88,7 @@ public class UserRepository {
             }
         });
     }
+
 
     // ✅ 회원 탈퇴 API 호출 메서드 추가
     public void deleteUser(DeleteUserCallback callback) {

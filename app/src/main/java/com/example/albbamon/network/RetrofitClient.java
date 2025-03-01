@@ -34,7 +34,8 @@ public class RetrofitClient {
             OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
             retrofitWithoutSession = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:60085/")
+                    .baseUrl("http://58.127.241.84:60085")
+                    //.baseUrl("http://10.0.2.2:60085/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -92,7 +93,8 @@ public class RetrofitClient {
                     .build();
 
             retrofitWithSession = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:60085/")
+                    .baseUrl("http://58.127.241.84:60085")
+                    //.baseUrl("http://10.0.2.2:60085/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

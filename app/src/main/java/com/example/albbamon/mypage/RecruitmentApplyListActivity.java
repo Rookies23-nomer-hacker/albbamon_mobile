@@ -15,7 +15,7 @@ import com.example.albbamon.dto.response.GetRecruitmentApplyListResponseDto;
 import com.example.albbamon.model.RecruitmentApply;
 import com.example.albbamon.api.RecruitmentAPI;
 import com.example.albbamon.network.RetrofitClient;
-import com.example.albbamon.model.SuccessResponse;
+import com.example.albbamon.network.SuccessResponse;
 
 
 import java.util.ArrayList;
