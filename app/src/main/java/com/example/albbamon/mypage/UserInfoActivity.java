@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.albbamon.MainActivity;
 import com.example.albbamon.MemberWithdrawalActivity;
 import com.example.albbamon.R;
+import com.example.albbamon.SignIn;
+import com.example.albbamon.autologin.Splash;
 
 public class UserInfoActivity extends AppCompatActivity{
 
@@ -73,12 +75,10 @@ public class UserInfoActivity extends AppCompatActivity{
         editor.remove("cookie"); // 세션 쿠키 삭제
         editor.apply();
 
-        // ✅ 로그아웃 후 MainActivity로 이동
-        Intent intent = new Intent(UserInfoActivity.this, MainActivity.class);
+        // ✅ 로그아웃 후 Splash 이동
+        Intent intent = new Intent(UserInfoActivity.this, SignIn.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 모든 이전 액티비티 제거
         startActivity(intent);
         finish();
     }
-
-
 }
