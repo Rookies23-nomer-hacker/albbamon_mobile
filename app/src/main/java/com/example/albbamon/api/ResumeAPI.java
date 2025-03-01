@@ -9,6 +9,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -19,11 +20,11 @@ public interface ResumeAPI {
     @POST("/api/mobile/resume/profileImage")
     Call<ProfileImageResponseDto> updateProfileImage(@Body ProfileImageRequestDto profileImageRequestDto);
 
-    // ✅ `userId`가 세션에 포함된 상태에서 `resume_id` 가져오기
-    @GET("/api/mobile/myResumeId")
-    Call<Map<String, Object>> getMyResumeId();
-
     // ✅ `resume_id`로 전체 이력서 정보 가져오기
-    @GET("/api/mobile/view")
+    @GET("/api/mobile/resume/view")
     Call<Map<String, Object>> getResume();
+
+    @POST("/api/mobile/resume")
+    Call<Map<String, Object>> getMyResume();
+
 }
