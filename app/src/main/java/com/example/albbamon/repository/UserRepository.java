@@ -128,4 +128,46 @@ public class UserRepository {
         void onSuccess(String message);
         void onFailure(String errorMessage);
     }
+
+    // ceoNum이 null이 아닌지 확인하는 함수
+    public void isUserCeo(UserCeoCallback callback) {
+        fetchUserInfo(new UserCallback() {
+            @Override
+            public void onSuccess(UserInfo userInfo) {
+                if (userInfo == null) {
+                    Log.e("UserRepository", "🚨 사용자 정보가 null입니다!");
+                    callback.onResult(false);
+                    return;
+                }
+
+                // ✅ ceoNum 가져오기
+                String ceoNum = userInfo.getCeoNum();
+
+                // ✅ ceoNum이 null이거나 빈 문자열이면 일반 사용자로 판단
+                boolean isCeo = ceoNum != null && !ceoNum.trim().isEmpty();
+
+                // ✅ 로그 출력 (디버깅 용도)
+                Log.d("UserRepository", "사용자 정보 전체: " + new Gson().toJson(userInfo));
+                Log.d("UserRepository", "사용자 정보 - ceoNum 값: '" + ceoNum + "'");
+                Log.d("UserRepository", "사용자 정보 - ceoNum이 null인가? " + (ceoNum == null));
+                Log.d("UserRepository", "사용자 정보 - ceoNum이 빈 문자열인가? " + (ceoNum != null && ceoNum.trim().isEmpty()));
+                Log.d("UserRepository", "사용자 정보 - isCeo 값: " + isCeo);
+
+                callback.onResult(isCeo);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("UserRepository", "🚨 사용자 정보를 가져오는 데 실패했습니다. 오류: " + errorMessage);
+                callback.onResult(false);
+            }
+        });
+    }
+
+
+    // 콜백 인터페이스 추가
+    public interface UserCeoCallback {
+        void onResult(boolean isCeo);
+    }
+
 }

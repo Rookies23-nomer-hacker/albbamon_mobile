@@ -22,6 +22,7 @@ import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.mypage.CeoMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
+import com.example.albbamon.repository.UserRepository;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
@@ -208,10 +209,18 @@ public class MainActivity extends AppCompatActivity {
 
             if (itemId == R.id.nav_profile) {
                 if (isUserLoggedIn()) {
-                    // ✅ 로그인 상태면 마이페이지로 이동
-                    Intent intent = new Intent(MainActivity.this, CeoMypageActivity.class); //UserMypageActivity
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_left, 0);
+                    UserRepository userRepository = new UserRepository(MainActivity.this);
+
+                    userRepository.isUserCeo(isCeo -> {
+                        Intent intent;
+                        if (isCeo) {
+                            intent = new Intent(MainActivity.this, CeoMypageActivity.class);
+                        } else {
+                            intent = new Intent(MainActivity.this, UserMypageActivity.class);
+                        }
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_left, 0);
+                    });
                 } else {
                     // ✅ 로그인 안 되어 있으면 로그인 화면으로 이동
                     Intent intent = new Intent(MainActivity.this, SignIn.class);
@@ -223,9 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         });
-
-
-
     }
 
     @Override
@@ -257,6 +263,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
+
