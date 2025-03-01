@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.albbamon.MainActivity;
+import com.example.albbamon.MenuActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.adapter.CommunityAdapter;
 import com.example.albbamon.api.CommunityAPI;
@@ -38,7 +40,7 @@ public class ExperienceList extends AppCompatActivity {
     boolean isExtraVisible = false;
     List<CommunityModel> communityList = new ArrayList<>();
     TextView total_bbs;
-    ImageButton searchButton;
+    ImageButton searchButton, menuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class ExperienceList extends AppCompatActivity {
         fab_write_btn = (FloatingActionButton) findViewById(R.id.ex_scroll_write);
         total_bbs = (TextView) findViewById(R.id.totalRec_textView);
         searchButton = findViewById(R.id.searchButton);
-
+        menuButton = findViewById(R.id.menuButton);
         String keyword = getIntent().getStringExtra("keyword");
         if (keyword == null){
             //ListView 데이터 가져와서 보여주기
@@ -60,6 +62,15 @@ public class ExperienceList extends AppCompatActivity {
         }else{
             postSearchList(keyword);
         }
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ExperienceList.this, MenuActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, 0);
+            }
+        });
 
         list_view.setOnItemClickListener((parent, view, position, id) -> {
             // 클릭한 아이템 가져오기

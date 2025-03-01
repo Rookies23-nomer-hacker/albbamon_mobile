@@ -18,20 +18,39 @@ public class ResumeModel {
     private String portfolioName;
     private String resumeImgUrl;
     private String resumeImgName;
+    private String createDate;
+    private String career;
+    private String address;
+    private String workType;
+
+    public ResumeModel(String createDate, String career, String address, String workType) {
+        this.createDate = createDate;
+        this.career = career;
+        this.address = address;
+        this.workType = workType;
+    }
 
     public long getResumeId() {
         return resumeId;
+    public String getCreateDate() {
+        return createDate;
     }
 
     public void setResumeId(long resumeId) {
         this.resumeId = resumeId;
+    public String getCareer() {
+        return career;
     }
 
     public long getUserId() {
         return userId;
+    public String getAddress() {
+        return address;
     }
 
     public void setUserId(long userId) {
         this.userId = userId;
+    public String getWorkType() {
+        return workType;
     }
 }

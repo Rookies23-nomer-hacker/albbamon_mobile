@@ -3,6 +3,7 @@ package com.example.albbamon.mypage;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,15 +43,17 @@ public class UserInfoActivity extends AppCompatActivity{
         EditUserInfoActivity.setOnClickListener(v -> {
             Intent intent = new Intent(UserInfoActivity.this, com.example.albbamon.mypage.EditUserInfoActivity.class);
             intent.putExtra("fragment", "edit_user_info"); // EditUserInfo Fragment 표시
+            Log.d("UserInfoActivity", "Starting EditUserInfoActivity with fragment: change_password");
+
             startActivity(intent);
         });
 
         ChangePassword.setOnClickListener(v -> {
             Intent intent = new Intent(UserInfoActivity.this, EditUserInfoActivity.class);
             intent.putExtra("fragment", "change_password"); // ChangePassword Fragment 표시
+            Log.d("UserInfoActivity", "Starting EditUserInfoActivity with fragment: change_password");
             startActivity(intent);
         });
-
 
         MemberWithdrawalActivity.setOnClickListener(v -> {
             Intent intent = new Intent(UserInfoActivity.this, MemberWithdrawalActivity.class);

@@ -115,8 +115,13 @@
                     android:padding="0dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_system_plus"
-                    android:tint="#000000" />  <!-- foreground 수정 -->
-                <!-- 클릭 효과 추가 -->
+                    android:tint="#000000" />
+
+                <ImageView
+                    android:id="@+id/upload_image"
+                    android:layout_width="111dp"
+                    android:layout_height="54dp"
+                    tools:srcCompat="@tools:sample/avatars" />  <!-- foreground 수정 -->
 
             </LinearLayout>
 

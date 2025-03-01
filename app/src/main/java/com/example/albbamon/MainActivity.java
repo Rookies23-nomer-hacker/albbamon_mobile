@@ -31,6 +31,7 @@ import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.model.RecruitmentResponse;
 import com.example.albbamon.mypage.UserMypageActivity;
+import com.example.albbamon.mypage.CeoMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -275,7 +276,8 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_profile) {
                 if (isUserLoggedIn()) {
                     // ✅ 로그인 상태면 마이페이지로 이동
-                    Intent intent = new Intent(MainActivity.this, UserMypageActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CeoMypageActivity.class);
+//                    Intent intent = new Intent(MainActivity.this, CeoMypageActivity.class); //UserMypageActivity
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_left, 0);
                 } else {
