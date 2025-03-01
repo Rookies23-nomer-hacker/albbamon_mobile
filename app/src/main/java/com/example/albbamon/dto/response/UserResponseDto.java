@@ -21,6 +21,12 @@ public class UserResponseDto {
     @SerializedName("item")
     private String item;
 
+    @SerializedName("pwChkNum")
+    private Integer psChkNum;
+
+    @SerializedName("pwCheck")
+    private Boolean pwCheck;
+
     // ✅ 기본 생성자
     public UserResponseDto() {}
 

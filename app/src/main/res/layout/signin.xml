@@ -139,6 +139,23 @@
 
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+            <CheckBox
+                android:id="@+id/autoLogin"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자동 로그인" />
+
+        </LinearLayout>
         <!-- 로그인 버튼 -->
         <Button
             android:id="@+id/loginBtn"
@@ -149,13 +166,13 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:backgroundTint="#FF501B"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             app:cornerRadius="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:paddingTop="13dp"
-            android:paddingBottom="13dp"/>
+            android:paddingBottom="13dp" />
 
         <!-- 아이디 찾기 / 비밀번호 찾기 / 회원가입 -->
         <LinearLayout
