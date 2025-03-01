@@ -6,6 +6,7 @@ import com.example.albbamon.model.RecruitmentResponse;
 import com.example.albbamon.network.SuccessResponse;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,7 +23,10 @@ public interface RecruitmentAPI {
 
     @Multipart
     @POST("/api/mobile/recruitment")
-    Call<SuccessResponse<Void>> createRecruitment(@Part MultipartBody.Part file, @Part("requestDto") JobPostingModel jobPostingModel);
+    Call<SuccessResponse<Void>> createRecruitment(
+            @Part MultipartBody.Part file, // ✅ 이미지 파일
+            @Part("requestDto") RequestBody jobPosting // ✅ JSON 데이터를 RequestBody로 변환 후 전송
+    );
 
     @GET("/api/recruitment/{id}") // ✅ 단일 공고 조회
     Call<RecruitmentDetailResponse> getRecruitmentDetails(@Path("id") Long id);
