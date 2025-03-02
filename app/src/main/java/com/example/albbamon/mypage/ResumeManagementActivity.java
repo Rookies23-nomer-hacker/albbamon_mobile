@@ -13,7 +13,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.R;
+import com.example.albbamon.api.ResumeAPI;
+import com.example.albbamon.network.RetrofitClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 public class ResumeManagementActivity extends AppCompatActivity {
 
@@ -42,6 +47,14 @@ public class ResumeManagementActivity extends AppCompatActivity {
     }
 
     private void addResumeCard() {
+
+        ResumeAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+
+        Call call = apiService.selectResumeMobile();
+
+
+
+
         LayoutInflater inflater = LayoutInflater.from(this);
         View resumeCard = inflater.inflate(R.layout.resume_card, containerLayout, false);
         containerLayout.addView(resumeCard);
