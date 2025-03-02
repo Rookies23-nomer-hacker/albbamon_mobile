@@ -183,7 +183,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="50dp"
-            android:text="메모 하기"
+            android:text="메인페이지"
             android:backgroundTint="@color/hint_text_color"
             android:textColor="@android:color/black"
             android:padding="12dp"/>

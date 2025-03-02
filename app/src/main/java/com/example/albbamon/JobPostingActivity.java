@@ -1,10 +1,12 @@
 package com.example.albbamon;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -35,12 +38,15 @@ import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.network.SuccessResponse;
 import com.example.albbamon.utils.SpinnerUtils;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +77,7 @@ public class JobPostingActivity extends AppCompatActivity {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                         ivSelectedPhoto.setImageBitmap(bitmap); // 이미지 뷰에 표시
                         fileBitmap = bitmap;
+                        file = convertBitmapToMultipart(this, bitmap, "upload_image");
                     } catch (IOException e) {
                         e.printStackTrace();
                         Toast.makeText(this, "이미지 로드 실패", Toast.LENGTH_SHORT).show();
@@ -127,60 +134,61 @@ public class JobPostingActivity extends AppCompatActivity {
 
     }
 
-    private void submitJobPost(){
+    private void submitJobPost() {
         String title = ((EditText) findViewById(R.id.etTitle)).getText().toString();
         String contents = ((EditText) findViewById(R.id.etContents)).getText().toString();
-
         TextView dueDateView = findViewById(R.id.tvSelectedDate);
         String dueDateText = dueDateView.getText().toString();
 
-
-        // ✅ LocalDate로 변환 후, LocalDateTime으로 변환 (시간 00:00:00 추가)
-        LocalDate dueDate = LocalDate.parse(dueDateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        LocalDateTime dueDateTime = dueDate.atStartOfDay();
-
+        // ✅ LocalDate 변환 후, LocalDateTime으로 변환 (시간 00:00:00 추가)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String formattedDueDate = LocalDate.parse(dueDateText, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 .atStartOfDay()
                 .format(formatter);
 
-
-
-
-
-
-        EditText wageView  = findViewById(R.id.etWageAmount);
+        EditText wageView = findViewById(R.id.etWageAmount);
         Integer wage = Integer.parseInt(wageView.getText().toString());
 
-        file = changeImage(fileBitmap);
-
-        RecruitmentAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
+        // ✅ JobPostingModel 객체 생성
         JobPostingModel jobPostingModel = new JobPostingModel(title, contents, formattedDueDate, wage);
 
-        Log.d("JobPost", "Title: " + title);
-        Log.d("JobPost", "Contents: " + contents);
-        Log.d("JobPost", "Due Date: " + formattedDueDate);
-        Log.d("JobPost", "Wage: " + wage);
+        // ✅ JobPostingModel을 JSON 문자열로 변환
+        RequestBody jobPostingBody = RequestBody.create(
+                new Gson().toJson(jobPostingModel),
+                okhttp3.MediaType.parse("application/json")
+        );
 
+        // ✅ 이미지 파일 처리
+        MultipartBody.Part filePart = null;
+        if (fileBitmap != null) {
+            filePart = changeImage(fileBitmap);
+        }
 
-        Call<SuccessResponse<Void>> call = apiService.createRecruitment(file, jobPostingModel);
+        // ✅ API 호출
+        RecruitmentAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
+        Call<SuccessResponse<Void>> call = apiService.createRecruitment(file, jobPostingBody);
 
         call.enqueue(new Callback<SuccessResponse<Void>>() {
             @Override
             public void onResponse(Call<SuccessResponse<Void>> call, Response<SuccessResponse<Void>> response) {
                 Log.d("API_RESPONSE", "JobPosting 코드: " + response.code());
-
+                if (response.isSuccessful()) {
+                    Toast.makeText(JobPostingActivity.this, "공고 등록 성공!", Toast.LENGTH_SHORT).show();
+                    finish(); // 현재 액티비티 종료
+                } else {
+                    Log.e("API_ERROR", "공고 등록 실패: " + response.errorBody());
+                    Toast.makeText(JobPostingActivity.this, "공고 등록 실패!", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<SuccessResponse<Void>> call, Throwable t) {
-
+                Log.e("API_FAILURE", "네트워크 오류: " + t.getMessage());
+                Toast.makeText(JobPostingActivity.this, "네트워크 오류 발생!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
     }
+
 
 
 
@@ -232,5 +240,24 @@ public class JobPostingActivity extends AppCompatActivity {
 
     }
 
+    public static MultipartBody.Part convertBitmapToMultipart(Context context, Bitmap bitmap, String fileName) {
+        // ✅ 1. Bitmap을 임시 파일로 저장
+        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = new File(filesDir, fileName + ".jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+        } catch (IOException e) {
+            Log.e("ImageUtils", "파일 변환 중 오류 발생", e);
+            return null;
+        }
+
+        // ✅ 2. RequestBody 생성
+        RequestBody requestFile = RequestBody.create(imageFile, MediaType.parse("image/jpeg"));
+
+        // ✅ 3. MultipartBody.Part 생성
+        return MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
+    }
 
 }

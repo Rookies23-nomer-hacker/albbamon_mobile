@@ -1,6 +1,8 @@
 package com.example.albbamon;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,16 @@ public class JobAdapter2 extends RecyclerView.Adapter<JobAdapter2.JobViewHolder>
                 listener.onApplyClick(job.getId());
             }
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RecruitmentViewActivity.class);
+            intent.putExtra("job_id", job.getId());  // ✅ job_id 전달
+            Log.d("NAVIGATION", "Moving to RecruitmentViewActivity with job_id: " + job.getId());
+            context.startActivity(intent);
+        });
+
+
+
     }
 
     @Override

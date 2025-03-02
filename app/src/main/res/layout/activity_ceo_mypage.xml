@@ -87,11 +87,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="이름없음"
+                        android:text="____님"
                         android:textSize="20sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:layout_marginEnd="120dp"/>
+                        android:textFontWeight="1"/>
 
                     <!-- 회원정보 + 설정 아이콘 (클릭 효과 적용) -->
                     <LinearLayout
@@ -134,21 +134,13 @@
                         android:id="@+id/resume_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="구매 내역 없음"
+                        android:text= "구독 중"
                         android:textSize="13sp"
                         android:textColor="@color/gray"
                         android:background="@drawable/status_background"
                         android:backgroundTint="@color/light_gray"
                         android:padding="4dp"
                         android:layout_marginEnd="13dp"/>
-
-                    <TextView
-                        android:id="@+id/payment_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="구매하러 가기"
-                        android:textSize="13sp"
-                        android:textColor="@color/gray"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -166,7 +158,7 @@
 
             <!-- 공고 관리 -->
             <LinearLayout
-                android:id="@+id/layout_recruitment_management"
+                android:id="@+id/layout_resume"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -176,7 +168,7 @@
                 android:focusable="true">
 
                 <TextView
-                    android:id="@+id/count_recruitment_management"
+                    android:id="@+id/txt_resume_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1"
@@ -196,9 +188,9 @@
                 android:layout_height="40dp"
                 android:background="#DDDDDD"/>
 
-            <!-- 공고 등록 -->
+            <!-- 지원현황 -->
             <LinearLayout
-                android:id="@+id/layout_recruitment_post"
+                android:id="@+id/layout_apply"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -208,14 +200,15 @@
                 android:focusable="true">
 
                 <TextView
-                    android:id="@+id/count_recruitment_post"
+                    android:id="@+id/apply_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="6"
+                    android:text="0"
                     android:textSize="18sp"
                     android:textColor="@color/appcolor"
                     android:textStyle="bold"/>
                 <TextView
+                    android:id="@+id/layout_apply_txt"
                     android:text="공고 등록"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -228,9 +221,9 @@
                 android:layout_height="40dp"
                 android:background="#DDDDDD"/>
 
-            <!-- 지원자 관리 -->
+            <!-- 스크랩 -->
             <LinearLayout
-                android:id="@+id/layout_mangement_user"
+                android:id="@+id/layout_scrap"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -240,7 +233,7 @@
                 android:focusable="true">
 
                 <TextView
-                    android:id="@+id/count_management_user"
+                    android:id="@+id/txt_scrap_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3"
@@ -260,9 +253,9 @@
                 android:layout_height="40dp"
                 android:background="#DDDDDD"/>
 
-            <!-- 인재 찾기 -->
+            <!-- 최근본알바 -->
             <LinearLayout
-                android:id="@+id/layout_search_user"
+                android:id="@+id/layout_recent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -272,7 +265,7 @@
                 android:focusable="true">
 
                 <TextView
-                    android:id="@+id/count_search_user"
+                    android:id="@+id/txt_recent_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10"

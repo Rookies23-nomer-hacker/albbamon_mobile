@@ -17,14 +17,23 @@ public class ResumeRequestDto {
     private String portfolioData;
     private String portfoliourl;
     private String portfolioName;
-    private LocalDateTime create_date;
-    private LocalDateTime last_modified_date;
+    private String resume_imgurl;
+    private String resume_img_name;
+    private String resume_img_data;
+
+    public ResumeRequestDto() {
+    }
+
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
 
     public ResumeRequestDto(Long user_id, String school, String status, String personal,
                             String work_place_region, String work_place_city, String industry_occupation,
                             String employmentType, String working_period, String working_day,
-                            String introduction, String portfolioData, String portfoliourl,
-                            LocalDateTime create_date, LocalDateTime last_modified_date) {
+                            String introduction, String portfolioData, String portfoliourl, String portfolioName,
+                            String resume_imgurl, String resume_img_name, String resume_img_data
+                            ) {
         this.user_id = user_id;
         this.school = school;
         this.status = status;
@@ -39,25 +48,9 @@ public class ResumeRequestDto {
         this.portfolioData = portfolioData;
         this.portfoliourl = portfoliourl;
         this.portfolioName = portfolioName;
-        this.create_date = create_date;
-        this.last_modified_date = last_modified_date;
+        this.resume_imgurl = resume_imgurl;
+        this.resume_img_name = resume_img_name;
+        this.resume_img_data = resume_img_data;
     }
 
-    // Getter 추가
-    public Long getUser_id() { return user_id; }
-    public String getSchool() { return school; }
-    public String getStatus() { return status; }
-    public String getPersonal() { return personal; }
-    public String getWork_place_region() { return work_place_region; }
-    public String getWork_place_city() { return work_place_city; }
-    public String getIndustry_occupation() { return industry_occupation; }
-    public String getEmploymentType() { return employmentType; }
-    public String getWorking_period() { return working_period; }
-    public String getWorking_day() { return working_day; }
-    public String getIntroduction() { return introduction; }
-    public String getPortfolioData() { return portfolioData; }
-    public String getPortfoliourl() { return portfoliourl; }
-    public String getPortfolioName() { return portfolioName; }
-    public LocalDateTime getCreate_date() { return create_date; }
-    public LocalDateTime getLast_modified_date() { return last_modified_date; }
 }
