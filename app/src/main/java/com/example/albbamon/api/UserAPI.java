@@ -38,8 +38,13 @@ public interface UserAPI {
     @GET("/api/mobile/user/withdraw")
     Call<SuccessResponse> deleteUser();
 
+    // 자동 로그인
     @GET("/api/mobile/user/autologin")
     Call<ResponseBody> checkCache(@Query("email") String email);
+
+    // 로그아웃
+    @GET("/api/mobile/user/sign-out")
+    Call<Void> signOut();
 
 
     // 아이디 찾기 API 예시 (GET 요청)
