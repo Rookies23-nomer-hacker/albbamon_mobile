@@ -3,6 +3,7 @@ package com.example.albbamon.mypage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +37,24 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruitment_apply_list);
 
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setText("지원서 관리하기");
+
         // Intent로부터 recruitmentId 받아오기
         Intent intent = getIntent();
         recruitmentId = intent.getLongExtra("recruitmentId", 0L); // 버튼 클릭 시 넘겨받은 recruitmentId
+        String recruitmentTitle = intent.getStringExtra("recruitmentTitle"); // 공고 제목
+
+        Log.d("RecruitmentApplyListActivity", "🔍 요청한 recruitmentId: " + recruitmentId);
+        Log.d("RecruitmentApplyListActivity", "📌 요청한 recruitmentTitle: " + recruitmentTitle);
+
+        // 공고 제목 UI에 표시
+        TextView textRecruitmentTitle = findViewById(R.id.textRecruitmentTitle);
+        if (recruitmentTitle != null && !recruitmentTitle.isEmpty()) {
+            textRecruitmentTitle.setText(recruitmentTitle + "의 지원자 목록");
+        } else {
+            textRecruitmentTitle.setText("지원자 목록");
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
