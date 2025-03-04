@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.R;
+import com.example.albbamon.Resume.ResumeDetailActivity;
 import com.example.albbamon.Resume.ResumeWriteActivity;
 import com.example.albbamon.SignIn;
 import com.example.albbamon.api.ResumeAPI;
@@ -129,6 +130,17 @@ public class ResumeManagementActivity extends AppCompatActivity {
                 } else {
                     createDate.setText("날짜 정보 없음");
                 }
+
+                Button btn_detail = findViewById(R.id.btn_detail);
+                btn_detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(ResumeManagementActivity.this, ResumeDetailActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+
             }
 
             @Override
@@ -145,21 +157,6 @@ public class ResumeManagementActivity extends AppCompatActivity {
             }
         });
 
-        //이력서 클릭하기
-        FrameLayout frameButton = findViewById(R.id.frame_button);
-//        frameButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(ResumeManagementActivity.this, ResumeDetailActivity.class);
-////                intent.putExtra("postId", postId); // 이력서 아이디 넣어야됨
-//                startActivity(intent);
-//            }
-//        });
-        if (btnMore != null) {
-            btnMore.setOnClickListener(v -> showBottomSheetDialog());
-        } else {
-            Log.e("ResumeManagement", "btn_more를 찾을 수 없습니다.");
-        }
     }
 
     private void showBottomSheetDialog() {
