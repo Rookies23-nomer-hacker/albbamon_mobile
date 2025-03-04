@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:text="0 / 50,000"
         android:textSize="12sp"
-        android:textColor="#D7D7D7"
+        android:textColor="#FF4444"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etIntro"
         android:layout_marginTop="4dp"/>
