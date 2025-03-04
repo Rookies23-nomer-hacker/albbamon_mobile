@@ -1,14 +1,12 @@
-package com.example.albbamon;
+package com.example.albbamon.sign;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.MainActivity;
+import com.example.albbamon.R;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.model.LoginUserModel;
@@ -30,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.util.Base64;
 
-public class SignIn extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput;
     private Button loginBtn;
@@ -59,7 +59,7 @@ public class SignIn extends AppCompatActivity {
         // 회원가입 버튼 클릭 시 account 화면으로 이동
         TextView textView = findViewById(R.id.signUp);
         textView.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), account.class);
+            Intent intent = new Intent(getApplicationContext(), SignUpIntroActivity.class);
             startActivity(intent);
         });
 
@@ -76,7 +76,7 @@ public class SignIn extends AppCompatActivity {
 
         if (sessionCookie != null && userId != -1 && encodedEmail != null) {
             Log.d("AUTO_LOGIN", "✅ 자동 로그인 수행");
-            Intent intent = new Intent(SignIn.this, MainActivity.class);
+            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -126,14 +126,14 @@ public class SignIn extends AppCompatActivity {
                         // 🚨 비밀번호 검증 실패 여부 확인 (pwChkNum 값이 1 이상이면 실패한 적 있음)
                         if (userResponse.getPwChkNum() != null && userResponse.getPwChkNum() > 0) {
                             Log.e("LOGIN_ERROR", "비밀번호가 틀림 (pwChkNum: " + userResponse.getPwChkNum() + ")");
-                            Toast.makeText(SignIn.this, "로그인 실패: 비밀번호가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignInActivity.this, "로그인 실패: 비밀번호가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
                             return; // 🚨 로그인 중단
                         }
 
                         // 🚨 계정이 잠긴 경우 (pwCheck == true)
                         if (userResponse.getPwCheck() != null && userResponse.getPwCheck()) {
                             Log.e("LOGIN_ERROR", "계정이 잠김 (pwCheck: true)");
-                            Toast.makeText(SignIn.this, "로그인 실패: 계정이 잠겼습니다. 관리자에게 문의하세요.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignInActivity.this, "로그인 실패: 계정이 잠겼습니다. 관리자에게 문의하세요.", Toast.LENGTH_LONG).show();
                             return; // 🚨 로그인 중단
                         }
 
@@ -142,7 +142,7 @@ public class SignIn extends AppCompatActivity {
 
                         if(userResponse.getPwChkNum()>0){
                             pwChkNum += 1;
-                            Toast.makeText(SignIn.this, "로그인 실패(틀린 횟수 :" + pwChkNum + " / 5", Toast.LENGTH_SHORT).show();                        }
+                            Toast.makeText(SignInActivity.this, "로그인 실패(틀린 횟수 :" + pwChkNum + " / 5", Toast.LENGTH_SHORT).show();                        }
 
                         // ✅ userId 가져오기
                         long userId = userResponse.getUserId();
@@ -188,9 +188,9 @@ public class SignIn extends AppCompatActivity {
                         }
 
                         Log.d("API_RESPONSE", "로그인 성공 - userId: " + userId);
-                        Toast.makeText(SignIn.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this, "로그인 성공! ID: " + userId, Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(SignIn.this, MainActivity.class); //MainActivity
+                        Intent intent = new Intent(SignInActivity.this, MainActivity.class); //MainActivity
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 이전 화면 제거
                         startActivity(intent);
                         finish();
@@ -203,7 +203,7 @@ public class SignIn extends AppCompatActivity {
                         // 🚀 서버에서 반환하는 에러 메시지 확인
                         String errorBody = response.errorBody().string();
                         Log.e("API_ERROR", "로그인 실패 - 응답 본문: " + errorBody);
-                        Toast.makeText(SignIn.this, "로그인 실패: " + errorBody, Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignInActivity.this, "로그인 실패: " + errorBody, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("API_ERROR", "에러 본문 읽기 실패", e);
                     }
@@ -213,7 +213,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("API_ERROR", "네트워크 오류 발생: " + t.getMessage(), t);
-                Toast.makeText(SignIn.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignInActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
             }
         });
     }

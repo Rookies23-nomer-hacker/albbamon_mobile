@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.MemberWithdrawalActivity;
 import com.example.albbamon.R;
-import com.example.albbamon.SignIn;
+import com.example.albbamon.sign.SignInActivity;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.network.RetrofitClient;
 
@@ -100,7 +100,7 @@ public class UserInfoActivity extends AppCompatActivity{
                     Log.d("Logout", "SESSION & ECACHE 삭제됨: " + prefs.getAll() + ", " + eCache.getAll());
 
                     // 로그아웃 후 SignIn 이동
-                    Intent intent = new Intent(UserInfoActivity.this, SignIn.class);
+                    Intent intent = new Intent(UserInfoActivity.this, SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 모든 이전 액티비티 제거
                     startActivity(intent);
                     finish();

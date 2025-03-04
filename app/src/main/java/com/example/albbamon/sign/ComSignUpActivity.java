@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.sign;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -24,6 +24,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.R;
 import com.example.albbamon.api.SignUpAPI;
 import com.example.albbamon.model.SignUpModel;
 import com.example.albbamon.network.RetrofitClient;
@@ -32,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class comAccount extends AppCompatActivity {
+public class ComSignUpActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput, phoneInput, nameInput, ceoNumInput, companyInput;
     private CheckBox allAgreeCheckbox, agree1, agree2, agree3;
@@ -277,17 +278,17 @@ public class comAccount extends AppCompatActivity {
             @Override
             public void onResponse(Call<SignUpModel> call, Response<SignUpModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(comAccount.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComSignUpActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(comAccount.this, "회원가입 실패: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ComSignUpActivity.this, "회원가입 실패: " + response.code(), Toast.LENGTH_SHORT).show();
                     Log.e("API_ERROR", "서버 응답 실패: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<SignUpModel> call, Throwable t) {
-                Toast.makeText(comAccount.this, "네트워크 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ComSignUpActivity.this, "네트워크 오류 발생: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("API_ERROR", "Error: " + t.getMessage());
                 t.printStackTrace(); // 전체 오류 로그 출력
             }
