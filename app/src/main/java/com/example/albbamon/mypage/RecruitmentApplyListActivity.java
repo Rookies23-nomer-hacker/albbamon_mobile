@@ -51,7 +51,7 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
         // 공고 제목 UI에 표시
         TextView textRecruitmentTitle = findViewById(R.id.textRecruitmentTitle);
         if (recruitmentTitle != null && !recruitmentTitle.isEmpty()) {
-            textRecruitmentTitle.setText(recruitmentTitle + "의 지원자 목록");
+            textRecruitmentTitle.setText(" \"" + recruitmentTitle + " \"" + "의 지원자 목록");
         } else {
             textRecruitmentTitle.setText("지원자 목록");
         }

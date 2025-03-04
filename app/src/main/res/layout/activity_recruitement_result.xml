@@ -457,12 +457,12 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="#FF0105"
                 android:text="불합격"
-                android:textColor="@color/black"
                 android:textSize="16sp"
+                android:textColor="@color/white"
+                app:strokeColor="#FF0105"
                 app:cornerRadius="8dp"
-                app:strokeColor="#DDDDDD"
                 app:strokeWidth="1dp" />
 
             <!-- 확인 버튼 -->
@@ -472,9 +472,10 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:backgroundTint="@color/appcolor"
                 android:text="합격"
+                android:backgroundTint="#00A1EF"
                 android:textColor="@color/white"
+                app:strokeColor="#00A1EF"
                 android:textSize="16sp"
                 app:cornerRadius="8dp" />
 
