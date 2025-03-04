@@ -34,6 +34,8 @@ public class MyRecruitmentListActivity extends AppCompatActivity {
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("공고관리");
 
+        findViewById(R.id.back).setOnClickListener(v -> finish()); // 현재 액티비티 종료
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

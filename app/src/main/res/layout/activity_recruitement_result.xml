@@ -453,7 +453,7 @@
 
             <!-- 불합격 버튼 -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/passButton"
+                android:id="@+id/failButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
@@ -467,7 +467,7 @@
 
             <!-- 확인 버튼 -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/failButton"
+                android:id="@+id/passButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
