@@ -1,5 +1,6 @@
 package com.example.albbamon.api;
 
+import com.example.albbamon.model.RecruitmentCountResponse;
 import com.example.albbamon.model.RecruitmentDetailResponse;
 import com.example.albbamon.model.JobPostingModel;
 import com.example.albbamon.model.RecruitmentResponse;
@@ -52,6 +53,10 @@ public interface RecruitmentAPI {
             @Body UpdateApplyStatusRequestDto requestDto
     );
 
+    @GET("/api/mobile/recruitment/count")
+    Call<RecruitmentCountResponse> getMyApplyCount(
+            @Query("userId") long userId
+    );
 }
 
 
