@@ -62,7 +62,7 @@ public class UserResponseDto {
     public void setUserId(long userId) { this.userId = userId; }
     public void setEmail(String email) { this.email = email; }
     public void setName(String name) { this.name = name;}
-    public void setCeoNum(String ceoNum) { this.ceoNum = ceoNum; }
-    public void setCompany(String company) { this.company = company; }
+//    public void setCeoNum(String ceoNum) { this.ceoNum = ceoNum; }
+//    public void setCompany(String company) { this.company = company; }
     public void setItem(String item) { this.item = item; }
 }

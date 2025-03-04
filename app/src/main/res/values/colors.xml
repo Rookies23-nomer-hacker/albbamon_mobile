@@ -5,6 +5,7 @@
     <color name="appcolor">#FF501B</color>
     <color name="gray">#6A6A6A</color>
     <color name="light_gray">#F6F6F6</color>
+    <color name="background_gray">#D7D7D7</color>
     <color name="hint_text_color">#BDBDBD</color> <!-- 더 연한 회색 -->
     <color name="apply_button_color">#FFFF501B</color>
     <color name="orange_background_color">#FFEBCD</color>

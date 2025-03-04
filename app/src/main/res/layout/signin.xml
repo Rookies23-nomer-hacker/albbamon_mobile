@@ -149,7 +149,8 @@
                 android:id="@+id/autoLogin"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp"
+                android:checked="true"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

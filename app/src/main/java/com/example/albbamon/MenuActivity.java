@@ -114,7 +114,7 @@ public class MenuActivity extends AppCompatActivity {
                 menuList.add(new MenuModel("이력서관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("이력서작성", R.drawable.sample_job));
                 menuList.add(new MenuModel("지원현황", R.drawable.ico_favorite_off));
-                menuList.add(new MenuModel("포트폴리오관리", R.drawable.sample_job));
+                menuList.add(new MenuModel("포트폴리오관리", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("공고관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("공고등록", R.drawable.sample_job));
                 break;
@@ -132,7 +132,7 @@ public class MenuActivity extends AppCompatActivity {
                 menuList.add(new MenuModel("알바후기", R.drawable.ico_favorite_off));
                 break;
             case 4: // 고객센터
-                menuList.add(new MenuModel("공지사항", R.drawable.sample_job));
+                menuList.add(new MenuModel("공지사항", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("문의하기", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("자주 묻는 질문", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("이용가이드", R.drawable.ico_favorite_off));
