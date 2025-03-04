@@ -83,29 +83,28 @@ public class ResumeManagementActivity extends AppCompatActivity {
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                Log.e("nocard", "이력서 조회 실패! 응답 코드: " + response.code());
-                if (!response.isSuccessful()) {
-                    Log.e("nocard", "이력서 조회 실패! 응답 코드: " + response.code());
-                    Toast.makeText(ResumeManagementActivity.this, "이력서 조회 실패!", Toast.LENGTH_SHORT).show();
-                    containerLayout.addView(resumeNoCard);  // 이력서가 없을 경우 기본 화면 표시
+//                Log.d("deleteResume", String.valueOf(response));
+//                Log.d("deleteResume", String.valueOf(response.code()));
+//                Log.d("deleteResume", String.valueOf(response.body()));
+
+                if (!response.isSuccessful() || response.body() == null || response.body().isEmpty()) {
+                    Log.e("nocard", "이력서 없음 응답 코드: " + response.code());
+                    Toast.makeText(ResumeManagementActivity.this, "이력서 없음", Toast.LENGTH_SHORT).show();
+                    containerLayout.addView(resumeNoCard); // 이력서가 없을 경우 기본 화면 표시
+
+                    Button writeResume = findViewById(R.id.btn_create_resume);
+                    writeResume.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(ResumeManagementActivity.this, ResumeWriteActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                     return;
                 }
 
                 Map<String, Object> resumeData = response.body();
 
-                // ✅ body가 null이면 resumeNoCard 추가 후 return
-                if (resumeData == null) {
-                    Log.e(TAG, "이력서 데이터가 null임. 기본 화면 표시");
-                    containerLayout.addView(resumeNoCard);
-                    return;
-                }
-
-                // ✅ resumeData가 비어있으면 resumeNoCard 추가 후 return
-                if (resumeData.isEmpty()) {
-                    Log.d(TAG, "이력서 데이터 없음, 기본 화면 표시");
-                    containerLayout.addView(resumeNoCard);
-                    return;
-                }
 
                 Log.d(TAG, "이력서 목록: " + resumeData.toString());
                 Toast.makeText(ResumeManagementActivity.this, "이력서 조회 성공!", Toast.LENGTH_SHORT).show();
@@ -129,6 +128,13 @@ public class ResumeManagementActivity extends AppCompatActivity {
                     createDate.setText("날짜 정보 없음");
                 }
 
+                btnMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showBottomSheetDialog();
+                    }
+                });
+
                 Button btn_detail = findViewById(R.id.btn_detail);
                 btn_detail.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -145,13 +151,6 @@ public class ResumeManagementActivity extends AppCompatActivity {
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
                 Log.e(TAG, "API 호출 실패: " + t.getMessage());
                 Toast.makeText(ResumeManagementActivity.this, "네트워크 오류 발생!", Toast.LENGTH_SHORT).show();
-                containerLayout.addView(resumeNoCard);  // 네트워크 오류 시 기본 화면 표시
-
-                Button addResumeBtn = resumeNoCard.findViewById(R.id.btn_create_resume);
-                addResumeBtn.setOnClickListener(v -> {
-                    Intent intent = new Intent(ResumeManagementActivity.this, ResumeWriteActivity.class);
-                    startActivity(intent);
-                });
             }
         });
 
@@ -167,29 +166,26 @@ public class ResumeManagementActivity extends AppCompatActivity {
 
         btnDelete.setOnClickListener(v -> {
 
+            // 이력서 삭제 구현
             ResumeAPI appservice = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
-            Call<String> call = appservice.deleteResume();
+            Call<Void> call = appservice.deleteResume();
 
-            call.enqueue(new Callback<String>() {
+            call.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<Void> call, Response<Void> response) {
 
-                    String responseBody = response.body();
-                    Log.d("deleteResume", "API 응답: " + responseBody);
-                    Log.e("deleteResume", "API 실패 - 응답 코드: " + response.code());
-
-
-
-//                    if (response.isSuccessful() && response.body() != null) {
-//
-//                    }
-
-//                    Toast.makeText(this, "이력서 삭제", Toast.LENGTH_SHORT).show();
+                    if (response.isSuccessful()) { // 200 OK 확인
+                        Log.d("deleteResume", "삭제 요청 성공! 응답 코드: " + response.code());
+                        Toast.makeText(ResumeManagementActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                        recreate();
+                    } else {
+                        Log.e("deleteResume", "삭제 실패 - 응답 코드: " + response.code());
+                    }
 
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
                     Log.d("deleteResumeFail", t.getMessage());
                     Log.d("deleteResumeFail", t.getMessage());
                     recreate();

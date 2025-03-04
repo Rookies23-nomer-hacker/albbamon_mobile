@@ -154,8 +154,8 @@ public class SignInActivity extends AppCompatActivity {
                         // ✅ 서버 응답 헤더에서 `Set-Cookie` 가져오기
                         String setCookieHeader = response.headers().get("Set-Cookie");
 
-                        CheckBox autoLoginCheck = findViewById(R.id.autoLogin);
-                        Boolean autoCheck = autoLoginCheck.isChecked();
+//                        CheckBox autoLoginCheck = findViewById(R.id.autoLogin);
+//                        Boolean autoCheck = autoLoginCheck.isChecked();
 
                         if (setCookieHeader != null) {
                             Log.d("SESSION", "서버에서 받은 세션 쿠키: " + setCookieHeader);

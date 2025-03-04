@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -36,8 +38,12 @@ public class ResumeNewJobActivity extends AppCompatActivity {
 
     private TextView tvTitle;
     private Long jobId;
-    private Button applyButton;
-    private String selectedJobTitle = "채용 공고";  // 기본값 설정
+    private int totalPages = 1;  // 총 페이지 개수 (기본값: 1)
+    private LinearLayout paginationLayout; // 동적으로 버튼을 추가할 레이아웃
+    private int currentPage = 1; // ✅ 현재 페이지 번호 (0부터 시작)
+    private final int pageSize = 10; // ✅ 한 페이지당 아이템 개수
+
+    private String selectedJobTitle = "채용 공고"; // 기본값 설정
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +54,16 @@ public class ResumeNewJobActivity extends AppCompatActivity {
         recyclerJobList.setLayoutManager(new LinearLayoutManager(this));
 
         tvTitle = findViewById(R.id.tvTitle);
+        paginationLayout = findViewById(R.id.paginationLayout);
+        if (paginationLayout == null) {
+            Log.e("DEBUG", "paginationLayout이 XML에서 제대로 초기화되지 않았습니다!");
+        }
 
         jobList = new ArrayList<>();
         jobAdapter2 = new JobAdapter2(this, jobList);
         recyclerJobList.setAdapter(jobAdapter2);
 
-        fetchRecruitmentPosts();
+        fetchRecruitmentPosts(); // 초기 데이터 로드
 
         // ✅ 지원하기 버튼 클릭 이벤트
         jobAdapter2.setOnItemClickListener(selectedJobId -> {
@@ -115,39 +125,114 @@ public class ResumeNewJobActivity extends AppCompatActivity {
     }
 
     private void fetchRecruitmentPosts() {
+
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
+        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts(currentPage, pageSize); // ✅ API에는 0부터 전달
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
             public void onResponse(Call<RecruitmentResponse> call, Response<RecruitmentResponse> response) {
-                Log.d("API_RESPONSE", "Response Code: " + response.code());
-
                 if (response.isSuccessful() && response.body() != null) {
                     RecruitmentResponse recruitmentResponse = response.body();
-                    Log.d("API_RESPONSE", "Message: " + recruitmentResponse.getMessage());
-
                     jobList.clear();
 
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
-                        jobList.addAll(recruitmentResponse.getData().getRecruitmentList());
+                        List<RecruitmentModel> newJobs = recruitmentResponse.getData().getRecruitmentList();
+
+                        jobList.addAll(newJobs);
+                    }
+
+                    if (recruitmentResponse.getData().getPageInfo() != null) {
+                        totalPages = recruitmentResponse.getData().getPageInfo().getTotalPages();
                     } else {
-                        Log.e("API_ERROR", "recruitmentList가 비어 있음.");
-                        Toast.makeText(ResumeNewJobActivity.this, "채용 공고 데이터 없음", Toast.LENGTH_SHORT).show();
+                        totalPages = 3;
+                    }
+
+                    if (totalPages < 1) {
+                        totalPages = 1;
                     }
 
                     jobAdapter2.notifyDataSetChanged();
+                    createPaginationButtons();
                 } else {
-                    Log.e("API_ERROR", "Response Failed. Body: " + response.errorBody());
                     Toast.makeText(ResumeNewJobActivity.this, "채용 공고 데이터 로딩 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecruitmentResponse> call, Throwable t) {
-                Log.e("API_FAILURE", "Error: " + t.getMessage());
-                Toast.makeText(ResumeNewJobActivity.this, "채용 공고 API 요청 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResumeNewJobActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void createPaginationButtons() {
+        paginationLayout.removeAllViews(); // 기존 버튼 제거
+
+        int totalGroups = (int) Math.ceil((double) totalPages / 5); // 전체 그룹 수 계산
+        int currentGroup = (currentPage - 1) / 5; // 현재 그룹 계산 (0부터 시작)
+
+        int startPage = currentGroup * 5 + 1;
+        int endPage = Math.min(startPage + 4, totalPages); // 5개까지만 표시
+
+        // ✅ "이전" 버튼 추가 (첫 번째 그룹에서는 비활성화)
+        if (currentGroup > 0) {
+            Button prevButton = new Button(this);
+            prevButton.setText("이전");
+            prevButton.setTextSize(14);
+            prevButton.setPadding(16, 8, 16, 8);
+            prevButton.setBackgroundColor(getResources().getColor(R.color.gray));
+            prevButton.setTextColor(getResources().getColor(R.color.black));
+
+            prevButton.setOnClickListener(v -> {
+                currentPage = startPage - 1; // 이전 그룹의 마지막 페이지로 이동
+                fetchRecruitmentPosts();
+            });
+
+            paginationLayout.addView(prevButton);
+        }
+
+        // ✅ 페이지 버튼 (1~5 또는 6~10 등 그룹 내 5개 버튼)
+        for (int i = startPage; i <= endPage; i++) {
+            Button pageButton = new Button(this);
+            pageButton.setText(String.valueOf(i));
+            pageButton.setTextSize(14);
+            pageButton.setPadding(16, 8, 16, 8);
+
+            if (i == currentPage) {
+                pageButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                pageButton.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                pageButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                pageButton.setTextColor(getResources().getColor(R.color.black));
+            }
+
+            final int selectedPage = i;
+            pageButton.setOnClickListener(v -> {
+                if (currentPage != selectedPage) {
+                    currentPage = selectedPage;
+                    fetchRecruitmentPosts();
+                }
+            });
+
+            paginationLayout.addView(pageButton);
+        }
+
+        // ✅ "다음" 버튼 추가 (마지막 그룹에서는 비활성화)
+        if (endPage < totalPages) {
+            Button nextButton = new Button(this);
+            nextButton.setText("다음");
+            nextButton.setTextSize(14);
+            nextButton.setPadding(16, 8, 16, 8);
+            nextButton.setBackgroundColor(getResources().getColor(R.color.gray));
+            nextButton.setTextColor(getResources().getColor(R.color.black));
+
+            nextButton.setOnClickListener(v -> {
+                currentPage = endPage + 1; // 다음 그룹의 첫 번째 페이지로 이동
+                fetchRecruitmentPosts();
+            });
+
+            paginationLayout.addView(nextButton);
+        }
     }
 }

@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.albbamon.api.RecruitmentAPI;
 import com.example.albbamon.api.ResponseWrapper2;
 import com.example.albbamon.api.ResumeAPI;
@@ -20,6 +22,9 @@ import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.model.ResumeModel;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +41,13 @@ public class RecruitmentViewActivity extends AppCompatActivity {
     private RecruitmentAPI recruitmentAPI;
 
     private Button applyButton;
+
+    private ViewPager2 viewPager;
+    private BannerAdapter2 bannerAdapter;
+    private List<String> bannerImageUrls;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +66,10 @@ public class RecruitmentViewActivity extends AppCompatActivity {
             Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
+
 
         // ✅ Null 체크
         if (tvTitle == null || tvWage == null || tvContents == null) {
@@ -76,14 +92,19 @@ public class RecruitmentViewActivity extends AppCompatActivity {
             Log.e("JOB_ID", "No job_id found in Intent");
         }
 
+        // ✅ onCreate()에서 viewPager 먼저 초기화
+        viewPager = findViewById(R.id.banner_viewpager);
+        bannerImageUrls = new ArrayList<>();
+        bannerAdapter = new BannerAdapter2(this, bannerImageUrls);
+        viewPager.setAdapter(bannerAdapter);  // ✅ 여기서 먼저 어댑터를 연결
+
+
         back_img_btn = findViewById(R.id.back_img_btn);
         back_img_btn.setOnClickListener(view -> finish());
 
         applyButton = findViewById(R.id.apply_button);
 
 
-        resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
-        recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
 
         applyButton.setOnClickListener(v -> applyForJob());
     }
@@ -135,37 +156,35 @@ public class RecruitmentViewActivity extends AppCompatActivity {
 
 
     private void fetchRecruitmentDetails(Long jobId) {
-        RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
         Call<RecruitmentDetailResponse> call = recruitmentAPI.getRecruitmentDetails(jobId);
-
-        Log.d("API_REQUEST", "Fetching details for Job ID: " + jobId);
 
         call.enqueue(new Callback<RecruitmentDetailResponse>() {
             @Override
             public void onResponse(Call<RecruitmentDetailResponse> call, Response<RecruitmentDetailResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    RecruitmentModel job = response.body().getData(); // ✅ "data" 내부의 단일 객체 가져오기
-                    Log.d("API_RESPONSE", "Fetched Job: " + new Gson().toJson(job));
+                    RecruitmentModel job = response.body().getData();
 
                     if (job != null) {
                         tvTitle.setText(job.getTitle());
-                        //tvCompany.setText(job.getCompany() != null ? job.getCompany() : "회사명 없음");
                         tvWage.setText("시급: " + job.getWage() + "원");
                         tvContents.setText(job.getContents() != null ? job.getContents() : "상세 내용 없음");
-                    } else {
-                        Log.e("API_ERROR", "Response body is null");
-                        Toast.makeText(RecruitmentViewActivity.this, "공고 데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+
+                        // ✅ 모집공고 이미지 추가
+                        bannerImageUrls.clear();
+                        if (job.getFile() != null && !job.getFile().isEmpty()) {
+                            bannerImageUrls.add(job.getFile()); // ✅ API에서 불러온 이미지 추가
+                        } else {
+                            bannerImageUrls.add("android.resource://" + getPackageName() + "/" + R.drawable.img_alrimi); // ✅ 기본 이미지 추가
+                        }
+                        bannerAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    Log.e("API_ERROR", "Response Failed. Code: " + response.code());
-                    Log.e("API_ERROR", "Response Error Body: " + response.errorBody());
                     Toast.makeText(RecruitmentViewActivity.this, "공고 데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecruitmentDetailResponse> call, Throwable t) {
-                Log.e("API_FAILURE", "Error: " + t.getMessage());
                 Toast.makeText(RecruitmentViewActivity.this, "네트워크 오류 발생!", Toast.LENGTH_SHORT).show();
             }
         });
