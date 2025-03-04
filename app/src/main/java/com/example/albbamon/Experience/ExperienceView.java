@@ -46,7 +46,7 @@ public class ExperienceView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_experience_view);
 
         postId = getIntent().getLongExtra("postId", -1);

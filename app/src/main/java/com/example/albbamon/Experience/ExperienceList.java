@@ -54,7 +54,7 @@ public class ExperienceList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_experience_list);
 
         list_view = (ListView) findViewById(R.id.ex_list);
@@ -68,6 +68,7 @@ public class ExperienceList extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         pageNumbersContainer = findViewById(R.id.pageNumbersContainer);
         paginationLayout = findViewById(R.id.paginationLayout);
+
         size = 10;
         page = 0;
         String keyword = getIntent().getStringExtra("keyword");
@@ -86,8 +87,6 @@ public class ExperienceList extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, 0);
             }
         });
-
-
 
         list_view.setOnItemClickListener((parent, view, position, id) -> {
             // 클릭한 아이템 가져오기
