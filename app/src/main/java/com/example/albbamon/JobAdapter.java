@@ -60,14 +60,16 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 
         // 🔥 file 값이 NULL이면 기본 이미지(b_logo) 표시
         if (job.getImageUrl() == null || job.getImageUrl().isEmpty()) {
+            Log.d("JobAdapter", "❌ 이미지 없음, 기본 이미지 사용");
             holder.jobImage.setImageResource(R.drawable.b_logo);
         } else {
+            Log.d("JobAdapter", "🔥 이미지 로드 시도: " + job.getImageUrl());
+
             Glide.with(holder.itemView.getContext())
                     .load(job.getImageUrl())
-                    .placeholder(R.drawable.b_logo) // 로딩 중 기본 이미지
-                    .error(R.drawable.b_logo)
-                    .skipMemoryCache(true) // 🔥 캐시 비활성화 (테스트용)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)// 에러 시 기본 이미지
+                    .placeholder(R.drawable.b_logo) // ✅ 로딩 중 기본 이미지
+                    .error(R.drawable.b_logo) // ✅ 에러 시 기본 이미지
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // ✅ 캐싱 활성화
                     .into(holder.jobImage);
         }
 
@@ -75,14 +77,14 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             Log.d("JobAdapter", "🔥 클릭된 아이템: " + job.getTitle() + ", ID: " + job.getId());
 
             if (listener != null) {
-                Log.d("JobAdapter",     "✅ onItemClick 실행");
+                Log.d("JobAdapter", "✅ onItemClick 실행");
                 listener.onItemClick(position);
             } else {
                 Log.e("JobAdapter", "❌ onItemClickListener가 null 상태!");
             }
         });
-
     }
+
 
 
 
