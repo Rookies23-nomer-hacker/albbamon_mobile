@@ -108,12 +108,13 @@ public class UserMypageActivity extends AppCompatActivity {
         });
 
         // X 버튼 클릭 시 MainActivity로 이동
-        closeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(UserMypageActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
+//        closeButton.setOnClickListener(v -> {
+//            Intent intent = new Intent(UserMypageActivity.this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//            finish();
+//        });
+        closeButton.setOnClickListener(v -> finish());
 
         userInfoRoute.setOnClickListener(v -> {
             Intent intent = new Intent(UserMypageActivity.this, UserInfoActivity.class);

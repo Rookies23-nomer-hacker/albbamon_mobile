@@ -65,12 +65,13 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         // X 버튼 클릭 시 홈으로 이동
-        btnClose.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        });
+//        btnClose.setOnClickListener(v -> {
+//            Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            finish();
+//        });
+        btnClose.setOnClickListener(v -> finish());
 
         // 좌측 카테고리 RecyclerView 설정
         categoryRecyclerView = findViewById(R.id.category_recycler_view);
