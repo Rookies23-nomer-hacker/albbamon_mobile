@@ -28,6 +28,9 @@ public interface ResumeAPI {
             @Query("userId") long userId
     );
 
+    @GET("/api/resume/view")
+    Call<Map<String, Object>> getResumeById(@Query("resume_id") long resumeId);
+
     @GET("/api/resume/{userId}")
     Call<ResponseWrapper2<ResumeModel>> getResumeByUserId(@Path("userId") long userId);
 

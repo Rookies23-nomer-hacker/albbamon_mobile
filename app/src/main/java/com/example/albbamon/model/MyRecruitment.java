@@ -19,12 +19,9 @@ public class MyRecruitment {
         this.createDate = createDate;
         this.dueDate = dueDate;
         this.company = company;
-
-        Log.d("MyRecruitment", "🔥 MyRecruitment 객체 생성됨 -> recruitmentId: " + id);
     }
 
     public Long getRecruitmentId() {
-        Log.d("MyRecruitment", "🔍 getRecruitmentId() 호출됨: " + id);
         return id; }
 
     public String getTitle() { return title; }

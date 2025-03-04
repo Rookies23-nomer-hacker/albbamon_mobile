@@ -37,7 +37,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -429,6 +428,58 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customTwoButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <View
+            android:id="@+id/view_divider_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray" />
+
+        <!-- 버튼 레이아웃 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center">
+
+            <!-- 불합격 버튼 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/passButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:text="불합격"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="#DDDDDD"
+                app:strokeWidth="1dp" />
+
+            <!-- 확인 버튼 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/failButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/appcolor"
+                android:text="합격"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

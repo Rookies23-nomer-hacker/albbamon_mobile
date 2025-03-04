@@ -59,7 +59,7 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new RecruitmentApplyAdapter(applyList, this);
+        adapter = new RecruitmentApplyAdapter(this, recruitmentId, applyList);
         recyclerView.setAdapter(adapter);
 
         loadApplyList();
