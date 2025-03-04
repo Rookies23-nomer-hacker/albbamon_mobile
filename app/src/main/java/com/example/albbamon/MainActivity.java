@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         fetchCommunityPosts();
-        fetchRecruitmentPosts();
+        fetchRecruitmentPosts(1 );
         fetchPremiumRecruitmentPosts();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -392,9 +392,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void fetchRecruitmentPosts() {
+    private void fetchRecruitmentPosts(int page) {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
+        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts(1, 10);
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override

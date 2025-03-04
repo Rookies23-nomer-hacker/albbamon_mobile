@@ -26,7 +26,10 @@ import retrofit2.http.Part;
 
 public interface RecruitmentAPI {
     @GET("/api/recruitment/list")  // ✅ 전체 JSON 객체를 받도록 수정
-    Call<RecruitmentResponse> getRecruitmentPosts();
+    Call<RecruitmentResponse> getRecruitmentPosts(
+        @Query("page") int page,
+        @Query("size") int size
+    );
 
     @GET("api/mobile/recruitment/list/my")
     Call<SuccessResponse<GetRecruitmentResponseDto>> getMyRecruitments();
