@@ -21,6 +21,7 @@ import com.example.albbamon.network.SuccessResponse;
 import com.example.albbamon.repository.UserRepository;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -75,6 +76,8 @@ public class RecruitementResultActivity extends AppCompatActivity {
     private void loadResumeData() {
         ResumeAPI resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
 
+        Log.d("RecruitementResultActivity", "📌 resume_id 요청: " + applyId);
+
         Call<Map<String, Object>> call = resumeAPI.getResumeById(applyId);
 
         call.enqueue(new Callback<Map<String, Object>>() {
@@ -82,18 +85,25 @@ public class RecruitementResultActivity extends AppCompatActivity {
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Object> resume = response.body();
+                    Log.d("RecruitementResultActivity", "✅ 이력서 데이터 수신: " + resume.toString());
                     updateUI(resume);
                 } else {
-                    Log.e("RecruitementResultActivity", "서버 응답이 null입니다.");
+                    Log.e("RecruitementResultActivity", "❌ 서버 응답 실패: " + response.code());
+                    try {
+                        Log.e("RecruitementResultActivity", "오류 메시지: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                Log.e("RecruitementResultActivity", "API 호출 실패: " + t.getMessage());
+                Log.e("RecruitementResultActivity", "🚨 API 호출 실패: " + t.getMessage());
             }
         });
     }
+
 
     private void updateUI(Map<String, Object> resume) {
         String school = (String) resume.get("school");
