@@ -84,21 +84,23 @@ public class CeoMypageActivity extends AppCompatActivity {
             finish();
         });
 
-        // 공고 관리 페이지
+        // 회원정보 페이지
         userInfoRoute.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, ManagementApplyer.class);
+            Intent intent = new Intent(CeoMypageActivity.this, UserInfoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
 
+        // 공고 관리 페이지
         resumeManagement.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, MyJobPostActivity.class);
+            Intent intent = new Intent(CeoMypageActivity.this, MyRecruitmentListActivity.class); //ManagementApplyer
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
 
+        // 지원서 관리 페이지
         layoutApply.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, ApplicationStatusActivity.class);
+            Intent intent = new Intent(CeoMypageActivity.this, RecruitmentApplyListActivity.class);//MyJobPostActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
