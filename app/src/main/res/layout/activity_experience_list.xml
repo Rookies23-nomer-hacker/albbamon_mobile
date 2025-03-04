@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
-        
+
         <LinearLayout
             android:id="@+id/paginationLayout"
             android:layout_width="match_parent"
@@ -94,10 +94,12 @@
 
             <Button
                 android:id="@+id/btnPrev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="◀"
-                android:enabled="false"/>
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:enabled="false"
+                android:drawableStart="@drawable/line_arrow_left_deactive"
+                android:drawablePadding="8dp"/>
 
             <LinearLayout
                 android:id="@+id/pageNumbersContainer"
@@ -108,9 +110,11 @@
 
             <Button
                 android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="▶"/>
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/line_arrow_right_active"
+                android:drawablePadding="8dp"/>
         </LinearLayout>
     </LinearLayout>
 
