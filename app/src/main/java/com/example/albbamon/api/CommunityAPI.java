@@ -21,6 +21,11 @@ import retrofit2.http.Path;
 public interface CommunityAPI {
     // 게시글 리스트 가져오기
     @GET("/api/post/list")
+    Call<PostListResponse> getAllPosts(
+            @Query("size") int size,
+            @Query("page") int page
+    );
+    @GET("/api/post/list")
     Call<List<CommunityModel>> getPosts();
 
     //getAllPosts
