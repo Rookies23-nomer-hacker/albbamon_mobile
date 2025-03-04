@@ -167,20 +167,20 @@ public class SignIn extends AppCompatActivity {
                             editor.putLong("userId", userId); // ✅ userId 저장
                             editor.apply();
 
-                            if (autoCheck){
-                                SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
-                                SharedPreferences.Editor cacheEditor = eCache.edit();
-                                String encodedEmail = Base64.encodeToString(email.getBytes(), Base64.NO_WRAP);
 
-                                Log.d("API_RESPONSE", encodedEmail);
+                            SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
+                            SharedPreferences.Editor cacheEditor = eCache.edit();
+                            String encodedEmail = Base64.encodeToString(email.getBytes(), Base64.NO_WRAP);
 
-                                cacheEditor.putString("email", encodedEmail); //email 캐시 저장
-                                cacheEditor.apply();
-                                Log.d("auto", "이메일 저장 완료");
+                            Log.d("API_RESPONSE", encodedEmail);
 
-                                String savedEmail = eCache.getString("email", "default_value");
-                                Log.d("auto", "저장된 이메일 확인: " + savedEmail);
-                            }
+                            cacheEditor.putString("email", encodedEmail); //email 캐시 저장
+                            cacheEditor.apply();
+                            Log.d("auto", "이메일 저장 완료");
+
+                            String savedEmail = eCache.getString("email", "default_value");
+                            Log.d("auto", "저장된 이메일 확인: " + savedEmail);
+
 
                             Log.d("SESSION", "세션 쿠키 저장 완료");
                         } else {
