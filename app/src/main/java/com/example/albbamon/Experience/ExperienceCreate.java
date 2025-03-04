@@ -1,7 +1,6 @@
 package com.example.albbamon.Experience;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,7 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.albbamon.R;
-import com.example.albbamon.SignIn;
+import com.example.albbamon.sign.SignInActivity;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.network.RetrofitClient;
 
@@ -63,7 +62,7 @@ public class ExperienceCreate extends AppCompatActivity {
 
         if (userId == -1) {
             Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(ExperienceCreate.this, SignIn.class));
+            startActivity(new Intent(ExperienceCreate.this, SignInActivity.class));
             finish();
             return;
         }

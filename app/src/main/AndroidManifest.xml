@@ -71,7 +71,7 @@
             android:name=".Experience.ExperienceList"
             android:exported="false" />
         <activity
-            android:name=".SignIn"
+            android:name=".sign.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,9 +86,7 @@
         <activity
             android:name=".mypage.ProfileEditActivity"
             android:exported="false" /> <!-- 다른 Activity -->
-        <activity
-            android:name=".activity_oh"
-            android:exported="false" /> <!-- 메인 Activity -->
+
         <!-- 🚀 MainActivity를 다시 추가 -->
         <activity
             android:name=".MainActivity"
@@ -100,13 +98,13 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".comAccount"
+            android:name=".sign.ComSignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".perAccount"
+            android:name=".sign.PerSignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".account"
+            android:name=".sign.SignUpIntroActivity"
             android:exported="false" />
         <activity android:name=".mypage.UserMypageActivity" />
         <activity android:name=".mypage.UserInfoActivity" />

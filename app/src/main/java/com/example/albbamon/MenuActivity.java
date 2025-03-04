@@ -65,12 +65,13 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         // X 버튼 클릭 시 홈으로 이동
-        btnClose.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        });
+//        btnClose.setOnClickListener(v -> {
+//            Intent intent = new Intent(MenuActivity.this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            finish();
+//        });
+        btnClose.setOnClickListener(v -> finish());
 
         // 좌측 카테고리 RecyclerView 설정
         categoryRecyclerView = findViewById(R.id.category_recycler_view);
@@ -114,7 +115,7 @@ public class MenuActivity extends AppCompatActivity {
                 menuList.add(new MenuModel("이력서관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("이력서작성", R.drawable.sample_job));
                 menuList.add(new MenuModel("지원현황", R.drawable.ico_favorite_off));
-                menuList.add(new MenuModel("포트폴리오관리", R.drawable.sample_job));
+                menuList.add(new MenuModel("포트폴리오관리", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("공고관리", R.drawable.sample_job));
                 menuList.add(new MenuModel("공고등록", R.drawable.sample_job));
                 break;
@@ -132,7 +133,7 @@ public class MenuActivity extends AppCompatActivity {
                 menuList.add(new MenuModel("알바후기", R.drawable.ico_favorite_off));
                 break;
             case 4: // 고객센터
-                menuList.add(new MenuModel("공지사항", R.drawable.sample_job));
+                menuList.add(new MenuModel("공지사항", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("문의하기", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("자주 묻는 질문", R.drawable.ico_favorite_off));
                 menuList.add(new MenuModel("이용가이드", R.drawable.ico_favorite_off));

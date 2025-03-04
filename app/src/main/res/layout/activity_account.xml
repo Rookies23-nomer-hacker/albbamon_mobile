@@ -9,7 +9,7 @@
     android:clickable="false"
     android:focusable="false"
     android:background="#F8F8F8"
-    tools:context="com.example.albbamon.account">
+    tools:context="com.example.albbamon.sign.SignUpIntroActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutTop"
