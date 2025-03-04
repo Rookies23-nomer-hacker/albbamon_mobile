@@ -18,10 +18,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.albbamon.Experience.ExperienceUpdate;
-import com.example.albbamon.Experience.ExperienceView;
 import com.example.albbamon.R;
 import com.example.albbamon.Resume.ResumeWriteActivity;
+import com.example.albbamon.SignIn;
 import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -172,7 +171,36 @@ public class ResumeManagementActivity extends AppCompatActivity {
         LinearLayout btnEmail = bottomSheetView.findViewById(R.id.btn_email);
 
         btnDelete.setOnClickListener(v -> {
-            Toast.makeText(this, "이력서 삭제", Toast.LENGTH_SHORT).show();
+
+            ResumeAPI appservice = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+            Call<String> call = appservice.deleteResume();
+
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+
+                    String responseBody = response.body();
+                    Log.d("deleteResume", "API 응답: " + responseBody);
+                    Log.e("deleteResume", "API 실패 - 응답 코드: " + response.code());
+
+
+
+//                    if (response.isSuccessful() && response.body() != null) {
+//
+//                    }
+
+//                    Toast.makeText(this, "이력서 삭제", Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.d("deleteResumeFail", t.getMessage());
+                    Log.d("deleteResumeFail", t.getMessage());
+                    recreate();
+                }
+            });
+
             bottomSheetDialog.dismiss();
         });
 
@@ -199,5 +227,6 @@ public class ResumeManagementActivity extends AppCompatActivity {
             return inputDate; // 변환 실패 시 원본 반환
         }
     }
+
 
 }
