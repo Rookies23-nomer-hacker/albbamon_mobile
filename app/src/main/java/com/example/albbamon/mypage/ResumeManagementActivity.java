@@ -181,6 +181,7 @@ public class ResumeManagementActivity extends AppCompatActivity {
                     } else {
                         Log.e("deleteResume", "삭제 실패 - 응답 코드: " + response.code());
                     }
+
                 }
 
                 @Override
