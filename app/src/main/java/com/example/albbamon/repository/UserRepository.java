@@ -167,6 +167,7 @@ public class UserRepository {
 
                 // ✅ ceoNum 가져오기
                 String ceoNum = userInfo.getCeoNum();
+                Log.e("UserRepository", "CEO : "+ ceoNum);
 
                 // ✅ ceoNum이 null이거나 빈 문자열이면 일반 사용자로 판단
                 boolean isCeo = ceoNum != null && !ceoNum.trim().isEmpty();

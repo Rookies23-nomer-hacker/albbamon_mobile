@@ -122,6 +122,20 @@ public class SignIn extends AppCompatActivity {
                         Gson gson = new Gson();
                         UserResponseDto userResponse = gson.fromJson(responseBodyString, UserResponseDto.class);
 
+                        // 🚨 비밀번호 검증 실패 여부 확인 (pwChkNum 값이 1 이상이면 실패한 적 있음)
+                        if (userResponse.getPwChkNum() != null && userResponse.getPwChkNum() > 0) {
+                            Log.e("LOGIN_ERROR", "비밀번호가 틀림 (pwChkNum: " + userResponse.getPwChkNum() + ")");
+                            Toast.makeText(SignIn.this, "로그인 실패: 비밀번호가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
+                            return; // 🚨 로그인 중단
+                        }
+
+                        // 🚨 계정이 잠긴 경우 (pwCheck == true)
+                        if (userResponse.getPwCheck() != null && userResponse.getPwCheck()) {
+                            Log.e("LOGIN_ERROR", "계정이 잠김 (pwCheck: true)");
+                            Toast.makeText(SignIn.this, "로그인 실패: 계정이 잠겼습니다. 관리자에게 문의하세요.", Toast.LENGTH_LONG).show();
+                            return; // 🚨 로그인 중단
+                        }
+
                         // ✅ userId 가져오기
                         long userId = userResponse.getUserId();
                         String email = userResponse.getEmail();

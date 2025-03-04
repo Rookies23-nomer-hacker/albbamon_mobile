@@ -14,7 +14,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
+import com.example.albbamon.api.RecruitmentAPI;
 import com.example.albbamon.api.ResumeAPI;
+import com.example.albbamon.model.RecruitmentCountResponse;
+import com.example.albbamon.model.RecruitmentResponse;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.repository.UserRepository;
@@ -29,6 +32,8 @@ public class CeoMypageActivity extends AppCompatActivity {
     private ImageView profileImg;
     private TextView userName;
     private ResumeAPI resumeAPI;
+    private TextView recruitmentCountTextView;
+    private RecruitmentAPI recruitmentAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class CeoMypageActivity extends AppCompatActivity {
         // UI 요소 초기화
         profileImg = findViewById(R.id.profile_img);
         userName = findViewById(R.id.user_name);
+        recruitmentCountTextView = findViewById(R.id.recruitment_count_text_view);
 
         ImageView closeButton = findViewById(R.id.close_button);
         LinearLayout userInfoRoute = findViewById(R.id.user_info_section);
@@ -49,6 +55,7 @@ public class CeoMypageActivity extends AppCompatActivity {
 
         // ✅ Retrofit 인스턴스 생성
         resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
 
         // ✅ UserRepository 초기화
         UserRepository userRepository = new UserRepository(this);
@@ -59,6 +66,9 @@ public class CeoMypageActivity extends AppCompatActivity {
             public void onSuccess(UserInfo userInfo) {
                 // 사용자 정보 출력
                 userName.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+                Log.e("UserMypage", "fetchApplyCount s");
+                fetchApplyCount(userInfo.getId());
+                Log.e("UserMypage", "fetchApplyCount e");
             }
             @Override
             public void onFailure(String errorMessage) {
@@ -84,21 +94,23 @@ public class CeoMypageActivity extends AppCompatActivity {
             finish();
         });
 
-        // 공고 관리 페이지
+        // 회원정보 페이지
         userInfoRoute.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, ManagementApplyer.class);
+            Intent intent = new Intent(CeoMypageActivity.this, UserInfoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
 
+        // 공고 관리 페이지
         resumeManagement.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, MyJobPostActivity.class);
+            Intent intent = new Intent(CeoMypageActivity.this, MyRecruitmentListActivity.class); //ManagementApplyer
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
 
+        // 지원서 관리 페이지
         layoutApply.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, ApplicationStatusActivity.class);
+            Intent intent = new Intent(CeoMypageActivity.this, RecruitmentApplyListActivity.class);//MyJobPostActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
@@ -130,6 +142,26 @@ public class CeoMypageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
                 Log.e("UserMypage", "API 호출 실패: " + t.getMessage());
+            }
+        });
+    }
+
+    // ✅ 공고 개수 조회 메서드 추가
+    private void fetchApplyCount(long userId) {
+        recruitmentAPI.getMyApplyCount(userId).enqueue(new Callback<RecruitmentCountResponse>() {
+            @Override
+            public void onResponse(Call<RecruitmentCountResponse> call, Response<RecruitmentCountResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    int count = response.body().getData().getCount(); // ✅ "data.count" 가져오기
+                    recruitmentCountTextView.setText("공고 개수: " + count);
+                } else {
+                    Log.e("Recruitment", "공고 개수 불러오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecruitmentCountResponse> call, Throwable t) {
+                Log.e("Recruitment", "API 호출 실패: " + t.getMessage());
             }
         });
     }

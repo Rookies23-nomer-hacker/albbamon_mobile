@@ -2,7 +2,9 @@ package com.example.albbamon;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,13 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.albbamon.Experience.ExperienceList;
 
 
+import com.example.albbamon.Resume.ResumeDetailActivity;
 import com.example.albbamon.Resume.ResumeNewJobActivity;
 import com.example.albbamon.Resume.ResumePortfolioActivity;
 import com.example.albbamon.Resume.ResumeWriteActivity;
+import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.mypage.ResumeManagementActivity;
+import com.example.albbamon.network.RetrofitClient;
+import com.example.albbamon.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -29,6 +39,10 @@ public class MenuActivity extends AppCompatActivity {
 
     private List<String> categoryList;
     private List<MenuModel> menuList;
+    private UserRepository userRepository;
+    private ResumeAPI resumeAPI;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +153,8 @@ public class MenuActivity extends AppCompatActivity {
                     intent = new Intent(MenuActivity.this, ResumeManagementActivity.class);
                     break;
                 case "이력서작성":
-                    intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
-                    break;
+                    checkResumeAndNavigate();
+                    return;
                 case "공고등록":
                     intent = new Intent(MenuActivity.this, JobPostingActivity.class);
                     break;
@@ -156,4 +170,49 @@ public class MenuActivity extends AppCompatActivity {
         });
         menuRecyclerView.setAdapter(menuAdapter);
     }
+
+    /**
+     * ✅ 이력서 존재 여부 확인 후 액티비티 이동 함수
+     */
+    private void checkResumeAndNavigate() {
+        if (userRepository == null) {
+            userRepository = new UserRepository(this);
+        }
+        long userId = userRepository.getUserId();
+
+        if (resumeAPI == null) {
+            resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        }
+
+        resumeAPI.checkResumeExists(userId).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    boolean exists = response.body(); // 서버 응답값 (true or false)
+                    Log.d("MenuActivity", "이력서 존재 여부: " + exists);
+
+                    if (exists) {
+                        // ✅ 이력서가 존재하면 이동 차단 및 메시지 표시
+                        Toast.makeText(MenuActivity.this, "이력서가 이미 존재합니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MenuActivity.this, ResumeDetailActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // ✅ 이력서가 없으면 작성 액티비티로 이동
+                        Intent intent = new Intent(MenuActivity.this, ResumeWriteActivity.class);
+                        startActivity(intent);
+                    }
+                } else {
+                    Log.e("MenuActivity", "이력서 존재 여부 체크 실패");
+                    Toast.makeText(MenuActivity.this, "이력서 확인 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("MenuActivity", "API 호출 실패: " + t.getMessage());
+                Toast.makeText(MenuActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

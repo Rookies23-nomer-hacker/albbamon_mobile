@@ -16,12 +16,12 @@ import com.example.albbamon.MemberWithdrawalActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.SignIn;
 import com.example.albbamon.api.UserAPI;
-import com.example.albbamon.autologin.Splash;
 import com.example.albbamon.network.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class UserInfoActivity extends AppCompatActivity{
 
@@ -122,4 +122,6 @@ public class UserInfoActivity extends AppCompatActivity{
 
 
     }
+
+
 }

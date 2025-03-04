@@ -1,5 +1,6 @@
 package com.example.albbamon.api;
 
+import com.example.albbamon.model.RecruitmentCountResponse;
 import com.example.albbamon.model.RecruitmentDetailResponse;
 import com.example.albbamon.model.JobPostingModel;
 import com.example.albbamon.model.RecruitmentResponse;
@@ -24,19 +25,21 @@ public interface RecruitmentAPI {
     @GET("/api/recruitment/list")  // ✅ 전체 JSON 객체를 받도록 수정
     Call<RecruitmentResponse> getRecruitmentPosts();
 
+    @GET("api/mobile/recruitment/list/my")
+    Call<SuccessResponse<GetRecruitmentResponseDto>> getMyRecruitments();
+
+    @GET("/api/recruitment/{id}") // ✅ 단일 공고 조회
+    Call<RecruitmentDetailResponse> getRecruitmentDetails(@Path("id") Long id);
+
+    @GET("api/recruitment/{recruitmentId}/apply")
+    Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> getRecruitmentApplyList(@Path("recruitmentId") Long recruitmentId);
+
     @Multipart
     @POST("/api/mobile/recruitment")
     Call<SuccessResponse<Void>> createRecruitment(
             @Part MultipartBody.Part file, // ✅ 이미지 파일
             @Part("requestDto") RequestBody jobPosting // ✅ JSON 데이터를 RequestBody로 변환 후 전송
     );
-    @GET("api/mobile/recruitment/list/my")
-    Call<SuccessResponse<GetRecruitmentResponseDto>> getMyRecruitments();
-
-    @GET("/api/recruitment/{id}") // ✅ 단일 공고 조회
-    Call<RecruitmentDetailResponse> getRecruitmentDetails(@Path("id") Long id);
-    @GET("api/recruitment/{recruitmentId}/apply")
-    Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> getRecruitmentApplyList(@Path("recruitmentId") Long recruitmentId);
 
     @POST("/api/mobile/recruitment/{recruitmentId}/apply")
     Call<ResponseWrapper2<Void>> applyForJob(
@@ -50,6 +53,10 @@ public interface RecruitmentAPI {
             @Body UpdateApplyStatusRequestDto requestDto
     );
 
+    @GET("/api/mobile/recruitment/count")
+    Call<RecruitmentCountResponse> getMyApplyCount(
+            @Query("userId") long userId
+    );
 }
 
 

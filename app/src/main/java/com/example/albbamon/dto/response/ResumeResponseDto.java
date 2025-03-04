@@ -12,7 +12,7 @@ public class ResumeResponseDto {
     private String working_period;
     private String working_day;
     private String introduction;
-    private String portfolioName;
+    private String portfolioname;
     private String portfoliourl;
     private String resume_imgurl;  // ✅ 추가
     private String resume_img_name;  // ✅ 추가
@@ -62,7 +62,7 @@ public class ResumeResponseDto {
     }
 
     public String getPortfolioName() {
-        return portfolioName;
+        return portfolioname;
     }
 
     public String getPortfoliourl() {
