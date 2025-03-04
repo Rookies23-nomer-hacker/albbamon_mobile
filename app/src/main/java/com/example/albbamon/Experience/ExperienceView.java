@@ -108,24 +108,8 @@ public class ExperienceView extends AppCompatActivity {
                         date_text.setText(date);
 
                         bbs_userId = bbs.getUserId();
-                        String localPath = bbs.getFile_name();
-
-                        if (localPath != null && !localPath.isEmpty()) {
-                            String localPrefix = "D:/abbamon/albbamon-api-server/src/main/webapp";
-                            String serverPrefix = "http://192.168.0.242:60085"; // ✅ 올바른 서버 URL 적용
-
-                            // ✅ 변환 수행 (localPrefix 부분을 serverPrefix로 대체)
-                            imageUrl = localPath.replace(localPrefix, serverPrefix);
-
-                            // ✅ 이미지 URL이 정상적인지 로그 출력
-                            Log.d("API_SUCCESS", "파일 경로 변환됨: " + imageUrl);
-
-                            // ✅ Glide로 이미지 로드
-                            loadServerImage(imageUrl);
-                        } else {
-                            Log.d("API_SUCCESS", "이미지 없음: 기본 이미지 유지");
-                            img_view.setVisibility(View.GONE);
-                        }
+                        imageUrl = bbs.getFile_name();
+                        loadServerImage(imageUrl);
 
                         Log.d("API_SUCCESS", "게시글 작성자 ID: " + bbs_userId);
 
@@ -149,43 +133,18 @@ public class ExperienceView extends AppCompatActivity {
         });
     }
 
-
     //이미지 view 함수
-    // 이미지 로드 함수 (Glide)
     private void loadServerImage(String imageUrl) {
         if (imageUrl != null && !imageUrl.isEmpty()) {
-            Log.d("Glide", "🔥 이미지 로드 시도: " + imageUrl);
-
             Glide.with(this)
                     .load(imageUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL) // ✅ 캐싱 활성화
-                    .placeholder(R.drawable.b_logo) // ✅ 로딩 중 기본 이미지
-                    .error(R.drawable.b_logo) // ✅ 에러 발생 시 기본 이미지
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            Log.e("Glide", "❌ 이미지 로드 실패: " + (e != null ? e.getMessage() : "Unknown error"));
-                            img_view.setVisibility(View.GONE);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            Log.d("Glide", "✅ 이미지 로드 성공!");
-                            img_view.setVisibility(View.VISIBLE);
-                            return false;
-                        }
-                    })
-                    .into(img_view);
-        } else {
-            Log.e("Glide", "❌ 이미지 URL이 null 또는 비어 있음!");
-            img_view.setVisibility(View.GONE);
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // 캐싱 전략 사용 (속도 향상)
+//                    .placeholder(R.drawable.) // 로딩 중 표시할 이미지
+//                    .error(R.drawable.) // 에러 발생 시 표시할 이미지
+                    .into(img_view); // ImageView에 적용
+            img_view.setVisibility(View.VISIBLE);
         }
     }
-
-
-
-
 
     // ✅ BottomSheetDialog 표시
     private void showBottomSheetDialog() {

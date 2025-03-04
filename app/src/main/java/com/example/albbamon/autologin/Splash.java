@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.MainActivity;
-import com.example.albbamon.R;
-import com.example.albbamon.SignIn;
+import com.example.albbamon.sign.SignInActivity;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.network.RetrofitClient;
@@ -129,7 +127,7 @@ public class Splash extends AppCompatActivity {
     }
 
     private void navigateToSignIn() {
-        Intent intent = new Intent(Splash.this, SignIn.class);
+        Intent intent = new Intent(Splash.this, SignInActivity.class);
         startActivity(intent);
         finish(); // 스플래시 화면 종료
     }

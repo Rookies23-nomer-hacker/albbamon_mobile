@@ -8,12 +8,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.albbamon.MainActivity;
 import com.example.albbamon.MemberWithdrawalActivity;
 import com.example.albbamon.R;
+import com.example.albbamon.sign.SignInActivity;
+import com.example.albbamon.api.UserAPI;
+import com.example.albbamon.network.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class UserInfoActivity extends AppCompatActivity{
 
@@ -67,17 +75,52 @@ public class UserInfoActivity extends AppCompatActivity{
     }
 
     private void logout() {
-        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove("userId"); // userId 삭제
-        editor.remove("cookie"); // 세션 쿠키 삭제
-        editor.apply();
 
-        // ✅ 로그아웃 후 MainActivity로 이동
-        Intent intent = new Intent(UserInfoActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 모든 이전 액티비티 제거
-        startActivity(intent);
-        finish();
+        UserAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(UserAPI.class);
+        Call<Void> call = apiService.signOut();
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Logout", "로그아웃 성공");
+
+                    SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.remove("userId"); // userId 삭제
+                    editor.remove("cookie"); // 세션 쿠키 삭제
+                    editor.clear();
+                    editor.commit();
+
+                    // 자동 로그인 정보 삭제
+                    SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
+                    SharedPreferences.Editor cacheEditor = eCache.edit();
+                    cacheEditor.clear(); // 캐시데이터 전체 삭제
+                    cacheEditor.commit();
+                    Log.d("Logout", "SESSION & ECACHE 삭제됨: " + prefs.getAll() + ", " + eCache.getAll());
+
+                    // 로그아웃 후 SignIn 이동
+                    Intent intent = new Intent(UserInfoActivity.this, SignInActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 모든 이전 액티비티 제거
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    Log.e("Logout", "로그아웃 실패! 응답 코드: " + response.code());
+                    Toast.makeText(UserInfoActivity.this, "로그아웃 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Logout", "API 호출 실패: " + t.getMessage());
+                Toast.makeText(UserInfoActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
     }
 
 

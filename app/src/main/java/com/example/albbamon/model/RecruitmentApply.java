@@ -19,7 +19,7 @@ public class RecruitmentApply {
     private String portfolioName;
     private String resumeImgUrl;
     private String resumeImgName;
-    private LocalDateTime createDate;
+    private String createDate;
     private String applyStatus;
 
     // 생성자
@@ -27,7 +27,7 @@ public class RecruitmentApply {
                             String workPlaceRegion, String workPlaceCity, String industryOccupation,
                             String employmentType, String workingPeriod, String workingDay,
                             String introduction, String portfolioUrl, String portfolioName,
-                            String resumeImgUrl, String resumeImgName, LocalDateTime createDate,
+                            String resumeImgUrl, String resumeImgName, String createDate,
                             String applyStatus) {
         this.applyId = applyId;
         this.userName = userName;
@@ -66,6 +66,6 @@ public class RecruitmentApply {
     public String getPortfolioName() { return portfolioName; }
     public String getResumeImgUrl() { return resumeImgUrl; }
     public String getResumeImgName() { return resumeImgName; }
-    public LocalDateTime getCreateDate() { return createDate; }
+    public String getCreateDate() { return createDate; }
     public String getApplyStatus() { return applyStatus; }
 }

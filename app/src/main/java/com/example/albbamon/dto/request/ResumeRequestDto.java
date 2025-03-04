@@ -21,6 +21,13 @@ public class ResumeRequestDto {
     private String resume_img_name;
     private String resume_img_data;
 
+    public ResumeRequestDto() {
+    }
+
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
+
     public ResumeRequestDto(Long user_id, String school, String status, String personal,
                             String work_place_region, String work_place_city, String industry_occupation,
                             String employmentType, String working_period, String working_day,

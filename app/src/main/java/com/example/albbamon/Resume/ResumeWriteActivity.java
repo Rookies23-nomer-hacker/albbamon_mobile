@@ -234,15 +234,15 @@ public class ResumeWriteActivity extends AppCompatActivity {
 
         ResumeRequestDto resumeData = dataManager.toResumeRequestDto();
 
-        //long userId = userRepository.getUserId();
-        //Log.d("DEBUG", "📌 가져온 userId: " + userId);
+        long userId = userRepository.getUserId();
+        Log.d("DEBUG", "📌 가져온 userId: " + userId);
 
         if (resumeAPI == null) { // ✅ resumeAPI가 null인지 체크
             Log.e("ERROR", "❌ resumeAPI가 null입니다. Retrofit 초기화 확인 필요.");
             return;
         }
 
-        sendResumeRequest(dataManager.getUserId(), resumeData);
+        sendResumeRequest(userId, resumeData);
 //        sendResumeRequest(userId, resumeData);
     }
 

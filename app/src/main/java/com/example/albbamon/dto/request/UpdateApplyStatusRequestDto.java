@@ -3,10 +3,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class UpdateApplyStatusRequestDto {
-    @SerializedName("statusAsEnum")
     private String statusAsEnum;
-
-    @SerializedName("status")
     private String status;
 
     public UpdateApplyStatusRequestDto(String statusAsEnum, String status) {

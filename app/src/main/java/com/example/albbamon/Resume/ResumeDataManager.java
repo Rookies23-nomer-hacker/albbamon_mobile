@@ -24,10 +24,10 @@ public class ResumeDataManager {
     private String workingPeriod;
     private String workingDay;
     private String introduction;
-    private String portfolioData;
-    private String portfolioUrl;
-    private String portfolioName;
-    private List<String> portfolioList;
+    private String portfolioData = null;
+    private String portfolioUrl = null;
+    private String portfolioName = null;
+    private List<String> portfolioList = null;
 
     private String resumeImgUrl = null;  // ✅ null 가능하도록 초기값 설정
     private String resumeImgName = null;  // ✅ null 가능
@@ -140,12 +140,12 @@ public class ResumeDataManager {
         ResumeRequestDto dto = new ResumeRequestDto(
                 null, school, status, personal, workPlaceRegion, workPlaceCity, industryOccupation,
                 employmentType, workingPeriod, workingDay, introduction,
-                portfolioData != null ? portfolioData : "",
-                portfolioUrl != null ? portfolioUrl : "",
-                portfolioName != null ? portfolioName : "",
-                resumeImgUrl != null ? resumeImgUrl : "",
-                resumeImgName != null ? resumeImgName : "",
-                resumeImgData != null ? resumeImgData : ""
+                portfolioData != null && !portfolioData.isEmpty() ? portfolioData : null,
+                portfolioUrl != null && !portfolioUrl.isEmpty() ? portfolioUrl : null,
+                portfolioName != null && !portfolioName.isEmpty() ? portfolioName : null,
+                resumeImgData != null && !resumeImgData.isEmpty() ? resumeImgData : null,
+                resumeImgName != null && !resumeImgName.isEmpty() ? resumeImgName : null,
+                resumeImgUrl != null && !resumeImgUrl.isEmpty() ? resumeImgUrl : null
         );
 
         Log.d("DEBUG-DM", "📌 변환된 ResumeRequestDto: " + new Gson().toJson(dto));
