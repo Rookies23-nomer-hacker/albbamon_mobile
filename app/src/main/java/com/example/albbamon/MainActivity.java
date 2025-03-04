@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchPremiumRecruitmentPosts() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
+        Call<RecruitmentResponse> call = recruitmentAPI.getAllRecruitmentPosts(); // ✅ 새로운 API 호출
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
                     RecruitmentResponse recruitmentResponse = response.body();
                     Log.d("API_RESPONSE", "Message: " + recruitmentResponse.getMessage());
 
-                    allJobsSpecial.clear();
+                    allJobsSpecial.clear(); // 기존 데이터 초기화
 
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
                         List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
@@ -470,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
                         int count = 0;
 
                         for (RecruitmentModel job : jobList) {
-                            if ("Y".equals(job.getItem())) {
+                            if ("Y".equalsIgnoreCase(job.getItem())) { // ✅ item = "Y" 체크
                                 Log.d("API_RESPONSE", "✅ Premium Job Found: " + job.getTitle());
 
                                 // 🔥 이미지 URL 설정 (없으면 기본 이미지)
@@ -486,12 +486,12 @@ public class MainActivity extends AppCompatActivity {
                                 ));
 
                                 count++;
-                                if (count >= maxItems) break;
+                                if (count >= maxItems) break; // 🔥 최대 5개까지만 추가
                             }
                         }
 
                         Log.d("API_RESPONSE", "Final Premium Job Count: " + allJobsSpecial.size());
-                        recruitmentAdapter.notifyDataSetChanged();
+                        jobAdapterSpecial.notifyDataSetChanged(); // ✅ RecyclerView 업데이트
                     } else {
                         Log.e("API_ERROR", "프리미엄 공고 없음.");
                         Toast.makeText(MainActivity.this, "프리미엄 공고 데이터 없음", Toast.LENGTH_SHORT).show();
@@ -509,6 +509,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 }

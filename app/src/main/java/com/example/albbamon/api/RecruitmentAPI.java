@@ -58,6 +58,10 @@ public interface RecruitmentAPI {
     Call<RecruitmentCountResponse> getMyApplyCount(
             @Query("userId") long userId
     );
+
+    @GET("/api/mobile/recruitment/list")
+    Call<RecruitmentResponse> getAllRecruitmentPosts();  // ✅ 새로운 API 추가
+
 }
 
 
