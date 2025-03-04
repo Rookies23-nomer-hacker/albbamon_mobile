@@ -11,6 +11,8 @@ import okhttp3.RequestBody;
 import com.example.albbamon.dto.request.UpdateApplyStatusRequestDto;
 import com.example.albbamon.dto.response.GetRecruitmentResponseDto;
 import com.example.albbamon.dto.response.GetRecruitmentApplyListResponseDto;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -46,10 +48,10 @@ public interface RecruitmentAPI {
             @Path("recruitmentId") long recruitmentId,
             @Query("userId") long userId);
 
-    @POST("api/recruitment/{recruitmentId}/apply/{applyId}/status")
-    Call<String> updateApplyStatus(
-            @Path("recruitmentId") Long recruitmentId,
-            @Path("applyId") Long applyId,
+    @POST("recruitment/{recruitmentId}/apply/{applyId}/status")
+    Call<ResponseBody> updateApplyStatus(
+            @Path("recruitmentId") long recruitmentId,
+            @Path("applyId") long applyId,
             @Body UpdateApplyStatusRequestDto requestDto
     );
 

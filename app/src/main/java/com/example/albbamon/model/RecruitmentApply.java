@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class RecruitmentApply {
     private Long applyId;
+    private Long resumeId;
     private String userName;
     private String school;
     private String status;
@@ -23,13 +24,14 @@ public class RecruitmentApply {
     private String applyStatus;
 
     // 생성자
-    public RecruitmentApply(Long applyId, String userName, String school, String status, String personal,
+    public RecruitmentApply(Long applyId, Long resumeId, String userName, String school, String status, String personal,
                             String workPlaceRegion, String workPlaceCity, String industryOccupation,
                             String employmentType, String workingPeriod, String workingDay,
                             String introduction, String portfolioUrl, String portfolioName,
                             String resumeImgUrl, String resumeImgName, String createDate,
                             String applyStatus) {
         this.applyId = applyId;
+        this.resumeId = resumeId;
         this.userName = userName;
         this.school = school;
         this.status = status;
@@ -51,6 +53,7 @@ public class RecruitmentApply {
 
     // Getter and Setter methods
     public Long getApplyId() { return applyId; }
+    public Long getresumeId() { return resumeId; }
     public String getUserName() { return userName; }
     public String getSchool() { return school; }
     public String getStatus() { return status; }
