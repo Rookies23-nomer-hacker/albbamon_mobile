@@ -1,21 +1,22 @@
 package com.example.albbamon.dto.request;
+
 import com.google.gson.annotations.SerializedName;
 
-
 public class UpdateApplyStatusRequestDto {
-    private String statusAsEnum;
+    @SerializedName("status")
     private String status;
 
-    public UpdateApplyStatusRequestDto(String statusAsEnum, String status) {
-        this.statusAsEnum = statusAsEnum;
-        this.status = status;
-    }
-
-    public String getStatusAsEnum() {
-        return statusAsEnum;
+    public UpdateApplyStatusRequestDto(String status) {
+        // ✅ status가 null이면 기본값을 "PENDING"으로 설정
+        this.status = (status != null) ? status.toUpperCase() : "WAITING";
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        // ✅ status가 null이 아니면 대문자로 변환
+        this.status = (status != null) ? status.toUpperCase() : "WAITING";
     }
 }
