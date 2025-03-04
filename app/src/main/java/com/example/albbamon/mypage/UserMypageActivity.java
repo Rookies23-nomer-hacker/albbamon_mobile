@@ -83,7 +83,12 @@ public class UserMypageActivity extends AppCompatActivity {
 
                     Log.d("count_resume", "응답 데이터 개수: " + size);
                     // 응답이 무조건 map 형태로 오고, 1개의 이력서만 저장 가능하기에 1로 하드코딩
-                    count_resume.setText("1");
+                    if(size>0){
+                        count_resume.setText("1");
+                    }else{
+                        count_resume.setText("0");
+                    }
+
 
                 } else {
                     Log.e("count_resume", "서버 응답 실패: " + response.errorBody());
@@ -93,7 +98,7 @@ public class UserMypageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
                 Log.d("count_resume", "응답 데이터 개수: 는 0개이자 서버오류");
-                count_resume.setText("0");
+//                count_resume.setText("0");
             }
         });
 
