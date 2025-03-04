@@ -35,6 +35,9 @@ public interface UserAPI {
     @POST("/api/user/sign-in")
     Call<ResponseBody> signIn(@Body LoginUserModel login);
 
+    @GET("/api/mobile/user/sign-out")
+    Call<ResponseBody> signOut(@Header("Cookie") String sessionCookie);
+
     @GET("/api/mobile/user/withdraw")
     Call<SuccessResponse> deleteUser();
 

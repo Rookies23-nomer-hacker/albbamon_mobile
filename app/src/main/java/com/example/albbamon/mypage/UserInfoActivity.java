@@ -14,7 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.albbamon.MemberWithdrawalActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.SignIn;
-import com.example.albbamon.autologin.Splash;
+import com.example.albbamon.api.UserAPI;
+import com.example.albbamon.network.RetrofitClient;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserInfoActivity extends AppCompatActivity{
 
@@ -69,21 +75,56 @@ public class UserInfoActivity extends AppCompatActivity{
 
     private void logout() {
         SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove("userId"); // userId 삭제
-        editor.remove("cookie"); // 세션 쿠키 삭제
-        editor.apply();
+        String sessionCookie = prefs.getString("cookie", null);
 
-        // ✅ 자동 로그인 정보 삭제
-        SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
-        SharedPreferences.Editor cacheEditor = eCache.edit();
-        cacheEditor.remove("email"); // ✅ 이메일 삭제
-        cacheEditor.apply();
+        if (sessionCookie == null) {
+            Log.e("LOGOUT", "🚨 로그아웃 실패: 세션 쿠키 없음");
+            return;
+        }
 
-        // ✅ 로그아웃 후 Splash 이동
-        Intent intent = new Intent(UserInfoActivity.this, SignIn.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 모든 이전 액티비티 제거
-        startActivity(intent);
-        finish();
+        UserAPI apiService = RetrofitClient.getRetrofitInstance().create(UserAPI.class);
+
+        // ✅ 로그아웃 API 요청에 JSESSIONID 포함
+        Call<ResponseBody> call = apiService.signOut(sessionCookie);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d("LOGOUT", "✅ 서버 로그아웃 성공");
+
+                    // ✅ 서버에서 새로운 JSESSIONID를 발급했는지 확인
+                    String newSessionCookie = response.headers().get("Set-Cookie");
+                    if (newSessionCookie != null) {
+                        Log.d("LOGOUT", "🚨 새로운 세션 쿠키 감지: " + newSessionCookie);
+                    }
+
+                    // ✅ SharedPreferences에서 세션 정보 완전히 삭제
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.clear();
+                    editor.apply();
+
+                    // ✅ 자동 로그인 정보 삭제
+                    SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
+                    SharedPreferences.Editor cacheEditor = eCache.edit();
+                    cacheEditor.clear();
+                    cacheEditor.apply();
+
+                    // ✅ 로그아웃 후 로그인 화면 이동
+                    Intent intent = new Intent(UserInfoActivity.this, SignIn.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Log.e("LOGOUT", "🚨 서버 로그아웃 실패: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("LOGOUT", "🚨 네트워크 오류: " + t.getMessage());
+            }
+        });
     }
+
+
 }
