@@ -1,5 +1,9 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.albbamon.mypage.ApplicationStatusActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -53,7 +57,7 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <!-- 🔹 탭을 검색창 바로 아래 배치 -->
+        <!-- 탭 (상위) -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -67,13 +71,14 @@
             app:tabRippleColor="@null"
             app:tabTextColor="@color/gray"
             app:tabSelectedTextColor="@color/black"
-            app:tabPaddingBottom="8dp"/>
+            app:tabPaddingBottom="8dp" />
 
-        <!-- 🔹 ViewPager2를 탭 바로 아래 배치 -->
+        <!-- ViewPager2를 탭 바로 아래 배치 -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
     </LinearLayout>
 </ScrollView>

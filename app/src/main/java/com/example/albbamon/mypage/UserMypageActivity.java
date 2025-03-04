@@ -15,8 +15,10 @@ import com.bumptech.glide.Glide;
 import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
+import com.example.albbamon.model.ApplyCountResponse;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.model.UserInfo;
+import com.example.albbamon.network.SupportStatusService;
 import com.example.albbamon.repository.UserRepository;
 
 import java.util.Map;
@@ -29,6 +31,7 @@ public class UserMypageActivity extends AppCompatActivity {
     private ImageView profileImg;
     private TextView userName;
     private ResumeAPI resumeAPI;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,29 @@ public class UserMypageActivity extends AppCompatActivity {
             @Override
             public void onFailure(String errorMessage) {
                 Log.e("UserMypage", errorMessage);
+            }
+        });
+
+        SupportStatusService appService = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
+        Call<ApplyCountResponse> call = appService.getMyApplyCount();
+
+        call.enqueue(new Callback<ApplyCountResponse>() {
+            @Override
+            public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    String count = response.body().getData();
+
+                    TextView applyCount = findViewById(R.id.apply_count);
+                    applyCount.setText(count);
+
+
+
+            }}
+
+            @Override
+            public void onFailure(Call<ApplyCountResponse> call, Throwable t) {
+
             }
         });
 

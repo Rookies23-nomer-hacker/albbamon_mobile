@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,51 +15,101 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-
-        <!-- 회사명 -->
-        <TextView
-            android:id="@+id/tvCompanyName"
+        <!-- 상단: 회사명 + 등록시간 + 즐겨찾기 아이콘 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="회사명"
-            android:textSize="16sp"
-            android:textColor="#666666"
-            android:layout_marginTop="4dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvCompanyName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvTimeAgo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#2196F3"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_favorite_border"
+                android:tint="#999999"/>
+        </LinearLayout>
 
         <!-- 채용 제목 -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="채용 제목"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#333333"/>
+            android:textColor="#222222"
+            android:layout_marginTop="4dp"/>
 
-        <!-- 급여 -->
+        <!-- 근무 조건 (시간, 기간) -->
         <TextView
-            android:id="@+id/tvSalary"
+            android:id="@+id/tvWorkingHours"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="급여"
             android:textSize="14sp"
-            android:textColor="#FF5722"
+            android:textColor="#777777"
             android:layout_marginTop="2dp"/>
 
-
-        <!-- 지원하기 버튼 -->
-        <Button
-            android:id="@+id/btnApply"
-            android:layout_width="wrap_content"
+        <!-- 급여 및 위치 정보 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="지원하기"
-            android:textSize="12sp"
-            android:textColor="#F5F5F5"
-            android:backgroundTint="@color/appcolor"
-            android:padding="6dp"
-            android:layout_marginStart="5dp"
-            android:layout_gravity="end"
-            android:elevation="2dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp">
+
+            <TextView
+                android:id="@+id/tvSalary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#FF5722"/>
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#777777"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+        <!-- 하단: 지원하기 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="지원하기"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/appcolor"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="20dp"
+                android:elevation="3dp"
+                app:cornerRadius="20dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

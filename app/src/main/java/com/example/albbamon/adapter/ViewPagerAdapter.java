@@ -7,14 +7,20 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.List;
 
-class ViewmyPagerAdapter extends FragmentStateAdapter {
-    private final List<Fragment> fragmentList;
-    private final List<String> tabTitles;
+/**
+ * TabLayout + ViewPager2 용 공용 어댑터
+ */
+public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    public ViewmyPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<Fragment> fragments, List<String> titles) {
-        super(fragmentActivity);
+    private final List<Fragment> fragmentList;
+    private final List<String> titleList;
+
+    public ViewPagerAdapter(@NonNull FragmentActivity fa,
+                            @NonNull List<Fragment> fragments,
+                            @NonNull List<String> titles) {
+        super(fa);
         this.fragmentList = fragments;
-        this.tabTitles = titles;
+        this.titleList = titles;
     }
 
     @NonNull
@@ -29,6 +35,6 @@ class ViewmyPagerAdapter extends FragmentStateAdapter {
     }
 
     public String getTabTitle(int position) {
-        return tabTitles.get(position);
+        return titleList.get(position);
     }
 }
