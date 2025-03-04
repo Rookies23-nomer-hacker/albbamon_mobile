@@ -91,7 +91,7 @@
                         android:textSize="20sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:layout_marginEnd="120dp"/>
+                        android:textFontWeight="1"/>
 
                     <!-- 회원정보 + 설정 아이콘 (클릭 효과 적용) -->
                     <LinearLayout

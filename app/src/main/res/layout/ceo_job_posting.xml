@@ -72,8 +72,8 @@
             <ImageView
                 android:id="@+id/ivSelectedPhoto"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
+                android:layout_height="300dp"
+                android:scaleType="fitCenter"
                 android:background="@color/gray"
                 android:contentDescription="선택한 사진 미리보기"/>
 
@@ -107,7 +107,7 @@
                 android:padding="12dp"
                 android:background="@drawable/edittext_border"/>
 
-            <!-- 하는 일 선택 -->
+            <!-- 공고 상세 내용 입력 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -118,6 +118,7 @@
                 android:layout_marginTop="20dp"/>
 
             <EditText
+                android:id="@+id/etContents"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:hint="공고 상세 내용을 입력하세요."
