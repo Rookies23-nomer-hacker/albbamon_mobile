@@ -166,6 +166,7 @@ public class ResumeManagementActivity extends AppCompatActivity {
 
         btnDelete.setOnClickListener(v -> {
 
+            // 이력서 삭제 구현
             ResumeAPI appservice = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
             Call<Void> call = appservice.deleteResume();
 
@@ -180,9 +181,6 @@ public class ResumeManagementActivity extends AppCompatActivity {
                     } else {
                         Log.e("deleteResume", "삭제 실패 - 응답 코드: " + response.code());
                     }
-
-
-
                 }
 
                 @Override
