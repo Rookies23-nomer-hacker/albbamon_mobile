@@ -23,7 +23,7 @@ import com.example.albbamon.network.SupportStatusService;
 import com.example.albbamon.utils.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.example.albbamon.model.ApplyCountResponse;  // 수정된 부분
+import com.example.albbamon.model.ApplyCountResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +39,22 @@ public class OnlineSupportFragment extends Fragment {
     private ViewPager2 subViewPager;
     private ViewPagerAdapter subAdapter;
 
-    // 하위 탭에 사용될 숫자 배열 및 제목
-    private int[] tabNumbers = {0, 0, 0, 0, 0};
+    // 🔥 전달받은 지원 개수를 저장하는 변수
+    private int receivedApplyCount = -1;
+
+    // 하위 탭 제목
     private final String[] tabTitles = {"전체", "지원완료", "면접", "합격", "불합격/취소"};
+
+    /**
+     * ✅ 새로운 인스턴스를 생성하면서 데이터를 전달할 수 있도록 처리
+     */
+    public static OnlineSupportFragment newInstance(int applyCount) {
+        OnlineSupportFragment fragment = new OnlineSupportFragment();
+        Bundle args = new Bundle();
+        args.putInt("apply_count", applyCount);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -53,6 +66,12 @@ public class OnlineSupportFragment extends Fragment {
         subViewPager = view.findViewById(R.id.subViewPager);
         subViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
+        // ✅ Bundle에서 `apply_count` 데이터 가져오기
+        if (getArguments() != null) {
+            receivedApplyCount = getArguments().getInt("apply_count", -1);
+            Log.d("OnlineSupportFragment", "전달받은 applyCount: " + receivedApplyCount);
+        }
+
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new AllSupportFragment());
         fragments.add(new ApplyCompleteFragment());
@@ -63,46 +82,49 @@ public class OnlineSupportFragment extends Fragment {
         subAdapter = new ViewPagerAdapter(requireActivity(), fragments, Arrays.asList(tabTitles));
         subViewPager.setAdapter(subAdapter);
 
-        Log.d("applylast", "setupTabLayout() 실행될 차례");
-
         setupTabLayout();
-        Log.d("applylast", "fetchSupportCounts 실행될 차례");
-        fetchSupportCounts();
-        Log.d("applylast", "fetchSupportCounts 실행된 후");
+
+        // ✅ 전달된 데이터가 있으면 즉시 적용, 없으면 API 요청
+        if (receivedApplyCount != -1) {
+            setTabNumber(1, receivedApplyCount);
+        } else {
+            fetchSupportCounts();
+        }
 
         return view;
     }
 
     /**
-     * Retrofit을 통해 서버에서 지원현황 데이터를 받아와 탭 숫자 배열을 업데이트합니다.
+     * ✅ Retrofit을 통해 서버에서 지원현황 데이터를 받아와 탭 UI를 업데이트합니다.
      */
     private void fetchSupportCounts() {
         Log.d("DEBUG", "fetchSupportCounts() 호출됨-------");
         SupportStatusService apiService = RetrofitClient.getRetrofitInstanceWithSession(getContext()).create(SupportStatusService.class);
         Call<ApplyCountResponse> call = apiService.getMyApplyCount();
+
         call.enqueue(new Callback<ApplyCountResponse>() {
             @Override
             public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
-                Log.d("applylast", "여기는 onresponse");
+                Log.d("applylast", "여기는 onResponse");
                 if (response.isSuccessful() && response.body() != null) {
                     ApplyCountResponse counts = response.body();
                     Log.d("API_RESPONSE", "지원현황 데이터: " + counts.toString());
 
-                    // getData() 사용 안 하고 count 값 직접 사용
-//                    tabNumbers[0] = counts.getCount();
+                    try {
+                        int count = Integer.parseInt(counts.getData());
+                        setTabNumber(1, count);
+                    } catch (NumberFormatException e) {
+                        Log.e("applyCountError", "API 응답 변환 오류: " + e.getMessage());
+                    }
 
-                    // 탭 UI를 갱신합니다.
-                    setupTabLayout();
                 } else {
-                    Log.e("API_ERROR", "응답 실패: code=" + response.code() +
-                            ", message=" + response.message());
+                    Log.e("API_ERROR", "응답 실패: code=" + response.code() + ", message=" + response.message());
                     Toast.makeText(getContext(), "지원현황 로드 실패", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<ApplyCountResponse> call, Throwable t) {
-                Log.d("applylast", "여기는 onfail");
-
                 Log.e("API_ERROR", "API 호출 실패: " + t.getMessage());
                 Toast.makeText(getContext(), "네트워크 오류", Toast.LENGTH_SHORT).show();
             }
@@ -110,7 +132,7 @@ public class OnlineSupportFragment extends Fragment {
     }
 
     /**
-     * TabLayout과 ViewPager2를 연결하여 하위 탭을 구성합니다.
+     * ✅ TabLayout과 ViewPager2를 연결하여 하위 탭을 구성합니다.
      */
     private void setupTabLayout() {
         Log.d("DEBUG", "setupTabLayout() 호출됨");
@@ -119,50 +141,21 @@ public class OnlineSupportFragment extends Fragment {
             TextView tabNumber = customView.findViewById(R.id.tab_number);
             TextView tabText = customView.findViewById(R.id.tab_text);
 
-            tabNumber.setText(String.valueOf(tabNumbers[position]));
+            tabNumber.setText("0");  // 기본값 설정
             tabText.setText(tabTitles[position]);
 
-            int color = (position == 0)
-                    ? ContextCompat.getColor(requireContext(), R.color.appcolor)
+            int color = (position == 0) ? ContextCompat.getColor(requireContext(), R.color.appcolor)
                     : ContextCompat.getColor(requireContext(), android.R.color.black);
             tabNumber.setTextColor(color);
             tabText.setTextColor(color);
 
             tab.setCustomView(customView);
-            Log.d("DEBUG", "Tab " + position + " 설정됨: 숫자 = " + tabNumbers[position] + ", 제목 = " + tabTitles[position]);
         }).attach();
-
-        subTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View customView = tab.getCustomView();
-                if (customView != null) {
-                    TextView tabNumber = customView.findViewById(R.id.tab_number);
-                    TextView tabText = customView.findViewById(R.id.tab_text);
-                    int color = ContextCompat.getColor(requireContext(), R.color.appcolor);
-                    tabNumber.setTextColor(color);
-                    tabText.setTextColor(color);
-                    Log.d("DEBUG", "Tab 선택됨: " + tabText.getText());
-                }
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View customView = tab.getCustomView();
-                if (customView != null) {
-                    TextView tabNumber = customView.findViewById(R.id.tab_number);
-                    TextView tabText = customView.findViewById(R.id.tab_text);
-                    int color = ContextCompat.getColor(requireContext(), android.R.color.black);
-                    tabNumber.setTextColor(color);
-                    tabText.setTextColor(color);
-                    Log.d("DEBUG", "Tab 선택 해제됨: " + tabText.getText());
-                }
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                Log.d("DEBUG", "Tab 재선택됨");
-            }
-        });
     }
+
+    /**
+     * ✅ 특정 탭의 숫자를 업데이트하는 메서드
+     */
     public void setTabNumber(int position, int value) {
         if (subTabLayout == null || subTabLayout.getTabAt(position) == null) {
             Log.e("setTabNumber", "subTabLayout 또는 해당 position의 탭이 초기화되지 않음.");
@@ -184,11 +177,8 @@ public class OnlineSupportFragment extends Fragment {
             Log.d("setTabNumber", "탭 번호 업데이트됨: " + position + " -> " + value);
         }
 
-
         // UI 갱신을 위해 강제 업데이트
         tab.setCustomView(null); // 기존 CustomView를 제거
         tab.setCustomView(customView); // 새로운 CustomView를 설정
     }
-
-
 }

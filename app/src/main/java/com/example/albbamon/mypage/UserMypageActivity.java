@@ -84,7 +84,13 @@ public class UserMypageActivity extends AppCompatActivity {
                     TextView applyCount = findViewById(R.id.apply_count);
                     applyCount.setText(count);
 
-
+                    // ✅ Intent를 이용해 지원현황 데이터 전달
+                    layoutApply.setOnClickListener(v -> {
+                        Intent intent = new Intent(UserMypageActivity.this, ApplicationStatusActivity.class);
+                        intent.putExtra("apply_count", count); // 지원서 개수 전달
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                    });
 
             }}
 
