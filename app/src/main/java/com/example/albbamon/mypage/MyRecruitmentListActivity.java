@@ -2,6 +2,7 @@ package com.example.albbamon.mypage;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +31,9 @@ public class MyRecruitmentListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recruitment_list);
 
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setText("공고관리");
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -38,6 +42,9 @@ public class MyRecruitmentListActivity extends AppCompatActivity {
 
         // ✅ 채용 공고 목록 불러오기
         loadMyRecruitmentList();
+
+        findViewById(R.id.back).setOnClickListener(v -> finish()); // 현재 액티비티 종료
+
     }
 
     private void loadMyRecruitmentList() {
@@ -48,6 +55,14 @@ public class MyRecruitmentListActivity extends AppCompatActivity {
                     GetRecruitmentResponseDto recruitmentData = response.body().getData(); // ✅ `data` 필드 추출
                     if (recruitmentData != null && recruitmentData.getRecruitmentList() != null) {
                         List<MyRecruitment> recruitmentList = recruitmentData.getRecruitmentList(); // ✅ 실제 리스트 추출
+
+                        // ✅ recruitmentId가 null인지 확인
+                        Log.d("MyRecruitmentListActivity", "📌 받은 recruitmentList: " + recruitmentList.size() + "개");
+                        for (MyRecruitment recruitment : recruitmentList) {
+                            Log.d("MyRecruitmentListActivity", "📌 recruitmentId: " + recruitment.getRecruitmentId() +
+                                    ", title: " + recruitment.getTitle() + ", company: " + recruitment.getCompany());
+                        }
+
                         adapter = new MyRecruitmentAdapter(recruitmentList, MyRecruitmentListActivity.this);
                         recyclerView.setAdapter(adapter);
                     } else {

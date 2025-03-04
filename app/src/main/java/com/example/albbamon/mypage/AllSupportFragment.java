@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResponseWrapper;
 import com.example.albbamon.model.ApplyStatusModel;
-import com.example.albbamon.model.ApplyStatusModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.adapter.ApplyStatusAdapter;

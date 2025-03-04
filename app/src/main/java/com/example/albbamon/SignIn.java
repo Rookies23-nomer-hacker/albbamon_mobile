@@ -18,11 +18,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.albbamon.Experience.ExperienceList;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.model.LoginUserModel;
-import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.gson.Gson;
 
@@ -62,6 +60,11 @@ public class SignIn extends AppCompatActivity {
 
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
+        loginBtn = findViewById(R.id.loginBtn);
+        loginBtn.setEnabled(true);
+
+        // 🔹 뒤로가기 버튼 클릭 이벤트 추가
+        findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
         // 회원가입 버튼 클릭 시 account 화면으로 이동
         TextView textView = findViewById(R.id.signUp);
@@ -72,21 +75,25 @@ public class SignIn extends AppCompatActivity {
 
         loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setEnabled(true);
-        // 🔹 "아이디 찾기" 버튼 클릭 시 FindIdPersonalActivity 이동
-        TextView findIdTextView = findViewById(R.id.findId);  // XML에서 ID 찾아오기
-        findIdTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(SignIn.this, FindIdPersonalActivity.class);
-            startActivity(intent);
-        });
 
-        // 🔹 "비밀번호 찾기" 버튼 클릭 시 FindPwPersonalActivity 이동
-        TextView findPwTextView = findViewById(R.id.findPw);  // XML에서 ID 찾아오기
-        findPwTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(SignIn.this, FindPwPersonalActivity.class);
-            startActivity(intent);
-        });
         // 로그인 버튼 클릭 이벤트
         loginBtn.setOnClickListener(v -> loginUser());
+
+        // ✅ 자동 로그인 검증 로직
+        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+        String sessionCookie = prefs.getString("cookie", null);
+        long userId = prefs.getLong("userId", -1);
+
+        SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
+        String encodedEmail = eCache.getString("email", null);
+
+        if (sessionCookie != null && userId != -1 && encodedEmail != null) {
+            Log.d("AUTO_LOGIN", "✅ 자동 로그인 수행");
+            Intent intent = new Intent(SignIn.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void loginUser() {
@@ -151,10 +158,9 @@ public class SignIn extends AppCompatActivity {
                             editor.putLong("userId", userId); // ✅ userId 저장
                             editor.apply();
 
-                            if (autoCheck == true){
+                            if (autoCheck){
                                 SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
                                 SharedPreferences.Editor cacheEditor = eCache.edit();
-
                                 String encodedEmail = Base64.encodeToString(email.getBytes(), Base64.NO_WRAP);
 
                                 Log.d("API_RESPONSE", encodedEmail);
