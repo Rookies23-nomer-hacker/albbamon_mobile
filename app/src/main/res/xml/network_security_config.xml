@@ -6,6 +6,7 @@
         <domain includeSubdomains="true">58.127.241.84</domain>
         <domain includeSubdomains="true">192.168.0.6</domain>
         <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">192.168.0.242</domain>
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">*.*.*.*</domain>  <!-- 모든 IP 허용 -->

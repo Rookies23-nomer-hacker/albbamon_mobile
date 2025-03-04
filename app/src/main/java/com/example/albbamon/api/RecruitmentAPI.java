@@ -8,6 +8,7 @@ import com.example.albbamon.network.SuccessResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import com.example.albbamon.dto.request.UpdateApplyStatusRequestDto;
+import com.example.albbamon.network.SuccessResponse;
 import com.example.albbamon.dto.response.GetRecruitmentResponseDto;
 import com.example.albbamon.dto.response.GetRecruitmentApplyListResponseDto;
 import retrofit2.Call;

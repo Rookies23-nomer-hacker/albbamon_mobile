@@ -27,6 +27,7 @@ import com.example.albbamon.Resume.ResumePremiumActivity;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.api.PaymentAPI;
 import com.example.albbamon.api.RecruitmentAPI;
+import com.example.albbamon.api.ResponseWrapper;
 import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.model.RecruitmentResponse;
@@ -307,30 +308,16 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<CommunityModel>> call, Response<List<CommunityModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allJobsCommunity.clear();
+                    List<CommunityModel> posts = response.body();
 
-                    for (CommunityModel post : response.body()) {
-                        // 🔥 file 경로 가공하기
-                        String imageUrl = null;
-                        if (post.getFile_name() != null && !post.getFile_name().isEmpty()) {
-                            imageUrl = "http://서버_IP:포트/uploads/post/" + post.getFile_name();
-                        }
+                    Log.d("fetchCommunityPosts", "🔥 API 응답: " + new Gson().toJson(posts));
 
-                        Log.d("fetchCommunityPosts", "Post Title: " + post.getTitle() + ", Image URL: " + imageUrl);
-
-                        JobModel job = new JobModel(
-                                post.getPostId(),
-                                post.getTitle(),
-                                "작성자: " + post.getUserName(),
-                                imageUrl,
-                                true
-                        );
-
-                        allJobsCommunity.add(job);
+                    for (CommunityModel post : posts) {
+                        long postId = post.getPostId();
+                        fetchPostImage(post, postId);  // ✅ 개별 게시글 API 호출
                     }
-
-                    jobAdapterCommunity.notifyDataSetChanged();
                 } else {
-                    Log.e("fetchCommunityPosts", "❌ 서버 응답 실패");
+                    Log.e("fetchCommunityPosts", "❌ 서버 응답 실패: " + response.errorBody());
                 }
             }
 
@@ -340,6 +327,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // ✅ 개별 게시글 정보를 가져와 이미지 URL을 설정하는 함수
+    private void fetchPostImage(CommunityModel post, long postId) {
+        Call<ResponseWrapper<CommunityModel>> call = apiService.getPostById(postId);
+
+        call.enqueue(new Callback<ResponseWrapper<CommunityModel>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<CommunityModel>> call, Response<ResponseWrapper<CommunityModel>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    CommunityModel detailedPost = response.body().getData();
+                    String imageUrl = detailedPost.getFile_name(); // ✅ 개별 게시글의 파일 경로
+
+                    if (imageUrl != null && !imageUrl.isEmpty()) {
+                        imageUrl = imageUrl;
+                    }
+
+                    Log.d("fetchCommunityPosts", "Post Title: " + post.getTitle() + ", Image URL: " + imageUrl);
+
+                    JobModel job = new JobModel(
+                            post.getPostId(),
+                            post.getTitle(),
+                            "작성자: " + post.getUserName(),
+                            imageUrl,
+                            true
+                    );
+
+                    allJobsCommunity.add(job);
+                    jobAdapterCommunity.notifyDataSetChanged();
+                } else {
+                    Log.e("fetchPostImage", "❌ 개별 게시글 정보 불러오기 실패: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<CommunityModel>> call, Throwable t) {
+                Log.e("fetchPostImage", "❌ API 요청 실패: " + t.getMessage());
+            }
+        });
+    }
+
 
 
 
@@ -358,22 +385,20 @@ public class MainActivity extends AppCompatActivity {
 
                     allJobsRecent.clear();
 
-                    // ✅ "recruitmentList" 내부의 데이터를 가져옴 (최대 5개만)
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
                         List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
 
-                        // 🔥 최대 5개까지만 가져오기
                         int maxItems = Math.min(jobList.size(), 5);
                         for (int i = 0; i < maxItems; i++) {
                             RecruitmentModel job = jobList.get(i);
 
+                            // 🔥 이미지 URL 설정 (없으면 기본 이미지)
                             String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
-                                    ? null
-                                    : "서버_URL/" + job.getFile();
+                                    ? "android.resource://" + getPackageName() + "/" + R.drawable.b_logo
+                                    : job.getFile();
 
-                            // ✅ ID 추가된 JobModel 사용
                             allJobsRecent.add(new JobModel(
-                                    job.getId(),  // ✅ ID 추가
+                                    job.getId(),
                                     job.getTitle(),
                                     (job.getWage() != null) ? "급여: " + job.getWage() + "원" : "급여 정보 없음",
                                     imageUrl
@@ -400,9 +425,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private void fetchPremiumRecruitmentPosts() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts(); // ✅ 기존 리스트 API 호출
+        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
@@ -413,37 +439,37 @@ public class MainActivity extends AppCompatActivity {
                     RecruitmentResponse recruitmentResponse = response.body();
                     Log.d("API_RESPONSE", "Message: " + recruitmentResponse.getMessage());
 
-                    allJobsSpecial.clear(); // ✅ 기존 리스트 초기화
+                    allJobsSpecial.clear();
 
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
                         List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
 
-                        int maxItems = 5; // ✅ 최대 5개까지만 가져오기
+                        int maxItems = 5;
                         int count = 0;
 
                         for (RecruitmentModel job : jobList) {
-                            // ✅ item 값이 "Y"인 공고만 필터링
                             if ("Y".equals(job.getItem())) {
                                 Log.d("API_RESPONSE", "✅ Premium Job Found: " + job.getTitle());
 
+                                // 🔥 이미지 URL 설정 (없으면 기본 이미지)
                                 String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
-                                        ? null
-                                        : "서버_URL/" + job.getFile();
+                                        ? "android.resource://" + getPackageName() + "/" + R.drawable.b_logo
+                                        : job.getFile();
 
                                 allJobsSpecial.add(new JobModel(
-                                        job.getId(),  // ✅ ID 추가
+                                        job.getId(),
                                         job.getTitle(),
                                         (job.getWage() != null) ? "급여: " + job.getWage() + "원" : "급여 정보 없음",
                                         imageUrl
                                 ));
 
                                 count++;
-                                if (count >= maxItems) break; // 🔥 최대 5개까지만 가져오기
+                                if (count >= maxItems) break;
                             }
                         }
 
                         Log.d("API_RESPONSE", "Final Premium Job Count: " + allJobsSpecial.size());
-                        recruitmentAdapter.notifyDataSetChanged(); // ✅ RecyclerView 갱신
+                        recruitmentAdapter.notifyDataSetChanged();
                     } else {
                         Log.e("API_ERROR", "프리미엄 공고 없음.");
                         Toast.makeText(MainActivity.this, "프리미엄 공고 데이터 없음", Toast.LENGTH_SHORT).show();
@@ -461,5 +487,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
