@@ -46,6 +46,7 @@ public class UserMypageActivity extends AppCompatActivity {
         LinearLayout userInfoRoute = findViewById(R.id.user_info_section);
         LinearLayout layoutApply = findViewById(R.id.layout_apply);
         LinearLayout resumeManagement = findViewById(R.id.layout_resume);
+        TextView count_resume = findViewById(R.id.txt_resume_count);
 
 
 
@@ -61,10 +62,38 @@ public class UserMypageActivity extends AppCompatActivity {
             public void onSuccess(UserInfo userInfo) {
                 // 사용자 정보 출력
                 userName.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+
             }
             @Override
             public void onFailure(String errorMessage) {
                 Log.e("UserMypage", errorMessage);
+            }
+        });
+
+//        이력서 개수 가져오기
+        ResumeAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        Call <Map<String, Object>> call = apiService.getMyResume();
+
+        call.enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, Object> resumeData = response.body();
+                    int size = (resumeData != null) ? resumeData.size() : 0; // 🔹 Null 체크
+
+                    Log.d("count_resume", "응답 데이터 개수: " + size);
+                    // 응답이 무조건 map 형태로 오고, 1개의 이력서만 저장 가능하기에 1로 하드코딩
+                    count_resume.setText("1");
+
+                } else {
+                    Log.e("count_resume", "서버 응답 실패: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Log.d("count_resume", "응답 데이터 개수: 는 0개이자 서버오류");
+                count_resume.setText("0");
             }
         });
 

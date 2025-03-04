@@ -40,6 +40,9 @@ public interface ResumeAPI {
     @POST("/api/mobile/resume")
     Call<Map<String, Object>> getMyResume();
 
+    @GET("/api/mobile/resume/delete")
+    Call<String> deleteResume();
+
     @GET("/api/mobile/resume/check")
     Call<Boolean> checkResumeExists(@Query("userId") long userId);
 

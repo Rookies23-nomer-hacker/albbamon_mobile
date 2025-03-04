@@ -39,9 +39,19 @@ public class UserResponseDto {
     public String getCeoNum() {
         return ceoNum;
     }
+
+    public void setCeoNum(String ceoNum) {
+        this.ceoNum = ceoNum;
+    }
+
     public String getCompany() {
         return company;
     }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
     public String getItem() {
         return item;
     }

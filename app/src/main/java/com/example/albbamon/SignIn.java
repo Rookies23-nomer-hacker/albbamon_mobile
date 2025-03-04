@@ -34,6 +34,7 @@ public class SignIn extends AppCompatActivity {
 
     private EditText emailInput, passwordInput;
     private Button loginBtn;
+    private Integer pwChkNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,9 +137,17 @@ public class SignIn extends AppCompatActivity {
                             return; // 🚨 로그인 중단
                         }
 
+                        String getPwCheck = String.valueOf(userResponse.getPwChkNum());
+                        Log.d("userResponse", String.valueOf(userResponse.getPwChkNum()));
+
+                        if(userResponse.getPwChkNum()>0){
+                            pwChkNum += 1;
+                            Toast.makeText(SignIn.this, "로그인 실패(틀린 횟수 :" + pwChkNum + " / 5", Toast.LENGTH_SHORT).show();                        }
+
                         // ✅ userId 가져오기
                         long userId = userResponse.getUserId();
                         String email = userResponse.getEmail();
+
                         Log.d("API_RESPONSE", "✅ 로그인 성공 - userId: " + userId);
                         Log.d("API_RESPONSE", "서버 쿠키: " + response.headers());
 
