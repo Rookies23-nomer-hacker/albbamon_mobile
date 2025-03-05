@@ -37,6 +37,7 @@ import com.example.albbamon.model.JobPostingModel;
 import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.network.SuccessResponse;
+import com.example.albbamon.repository.UserRepository;
 import com.example.albbamon.utils.SpinnerUtils;
 import com.google.gson.Gson;
 
@@ -92,46 +93,34 @@ public class JobPostingActivity extends AppCompatActivity {
 
         findViewById(R.id.BackIcon).setOnClickListener(v -> finish()); // 현재 액티비티 종료
 
-        // XML에서 정의한 Spinner 가져오기
-        //월급, 일급, 시급, 건당 선택
+        // ✅ 사용자 정보 확인 후 접근 차단
+        UserRepository userRepository = new UserRepository(this);
+        userRepository.isUserCeo(isCeo -> {
+            if (!isCeo) {
+                Toast.makeText(this, "일반 사용자는 접근할 수 없습니다.", Toast.LENGTH_LONG).show();
+                finish(); // 🚫 액티비티 종료
+                return;
+            }
+            // 🔹 CEO 사용자만 UI 초기화 진행
+            initUI();
+        });
+    }
+
+    private void initUI() {
+        findViewById(R.id.BackIcon).setOnClickListener(v -> finish()); // 현재 액티비티 종료
+
         spinnerWageType = findViewById(R.id.spinnerWageType);
-        // 날짜를 선택하세요 -> 날짜 선택 시 해당 날짜 적힘
         tvSelectedDate = findViewById(R.id.tvSelectedDate);
-        // 날짜 선택 버튼
         btnPickDate = findViewById(R.id.btnPickDate);
-        // 사진 선택 버튼
         btnUploadPhoto = findViewById(R.id.btnUploadPhoto);
-        // 공고 사진
         ivSelectedPhoto = findViewById(R.id.ivSelectedPhoto);
-        // 등록 버튼
         btnSave = findViewById(R.id.btnSave);
 
         SpinnerUtils.setupSpinner(this, spinnerWageType, new String[]{"월급", "일급", "시급", "건당"});
 
         btnPickDate.setOnClickListener(view -> showDatePicker());
-        btnUploadPhoto.setOnClickListener(view -> openGallery()); // 사진 업로드 버튼 클릭 시 갤러리 실행
+        btnUploadPhoto.setOnClickListener(view -> openGallery());
         btnSave.setOnClickListener(view -> submitJobPost());
-
-         Spinner spinnerWageType;
-         TextView tvSelectedDate;
-         Button btnPickDate,btnUploadPhoto;
-         ImageView ivSelectedPhoto;
-         String selectedDate = "날짜 선택 안됨"; // 초기값 설정
-
-        // 등록 버튼 클릭 이벤트
-        btnSave.setOnClickListener(view -> submitJobPost());
-
-
-
-
-
-
-//        findViewById(R.id.btnSave).setOnClickListener(v -> {
-//            Toast.makeText(JobPostingActivity.this,
-//                    "선택한 날짜: " + selectedDate,
-//                    Toast.LENGTH_SHORT).show();
-//        });
-
     }
 
     private void submitJobPost() {

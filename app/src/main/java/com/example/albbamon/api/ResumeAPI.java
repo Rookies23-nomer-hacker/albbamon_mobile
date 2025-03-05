@@ -28,20 +28,27 @@ public interface ResumeAPI {
             @Query("userId") long userId
     );
 
+    @GET("/api/resume/view")
+    Call<Map<String, Object>> getResumeById(@Query("resume_id") long resumeId);
+
     @GET("/api/resume/{userId}")
     Call<ResponseWrapper2<ResumeModel>> getResumeByUserId(@Path("userId") long userId);
 
     @POST("/api/resume/write")  // 서버에 이력서 저장 요청
     Call<String> createResume(@Body ResumeRequestDto resumeRequestDto);
 
-    @POST("/api/mobile/resume/profileImage")
-    Call<ProfileImageResponseDto> updateProfileImage(@Body ProfileImageRequestDto profileImageRequestDto);
-
-    // ✅ `resume_id`로 전체 이력서 정보 가져오기
-    @GET("/api/mobile/resume/view")
-    Call<Map<String, Object>> getResume();
-
     @POST("/api/mobile/resume")
     Call<Map<String, Object>> getMyResume();
 
+    @GET("/api/mobile/resume/delete")
+    Call<Void> deleteResume();
+
+    @GET("/api/mobile/resume/check")
+    Call<Boolean> checkResumeExists(@Query("userId") long userId);
+
+    @GET("/api/mobile/resume/view")
+    Call<Map<String, Object>> getResume();
+
+    @POST("/api/mobile/resume/profileImage")
+    Call<ProfileImageResponseDto> updateProfileImage(@Body ProfileImageRequestDto profileImageRequestDto);
 }

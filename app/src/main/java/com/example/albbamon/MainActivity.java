@@ -12,21 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.widget.NestedScrollView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
 import com.example.albbamon.Experience.ExperienceList;
 import com.example.albbamon.Experience.ExperienceView;
 import com.example.albbamon.Resume.ResumeNewJobActivity;
 import com.example.albbamon.Resume.ResumePremiumActivity;
 import com.example.albbamon.api.CommunityAPI;
-import com.example.albbamon.api.PaymentAPI;
+import com.example.albbamon.api.PostListResponse;
 import com.example.albbamon.api.RecruitmentAPI;
+import com.example.albbamon.api.ResponseWrapper;
 import com.example.albbamon.model.CommunityModel;
 import com.example.albbamon.model.RecruitmentModel;
 import com.example.albbamon.model.RecruitmentResponse;
@@ -34,6 +33,7 @@ import com.example.albbamon.mypage.UserMypageActivity;
 import com.example.albbamon.mypage.CeoMypageActivity;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.repository.UserRepository;
+import com.example.albbamon.sign.SignInActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -46,10 +46,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import com.google.gson.reflect.TypeToken;
-
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -77,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Integer> bannerImages = Arrays.asList(
             R.drawable.img_alrimi,
-            R.drawable.b_logo,
-            R.drawable.b_logo,
-            R.drawable.b_logo,
-            R.drawable.b_logo
+            R.drawable.banner2,
+            R.drawable.banner1,
+            R.drawable.banner1,
+            R.drawable.banner1
     );
 
     private Runnable autoScrollRunnable = new Runnable() {
@@ -268,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         fetchCommunityPosts();
-        fetchRecruitmentPosts();
+        fetchRecruitmentPosts(1 );
         fetchPremiumRecruitmentPosts();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -290,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 } else {
                     // ✅ 로그인 안 되어 있으면 로그인 화면으로 이동
-                    Intent intent = new Intent(MainActivity.this, SignIn.class);
+                    Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_left, 0);
                 }
@@ -308,42 +304,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchCommunityPosts() {
-        Call<List<CommunityModel>> call = apiService.getPosts();
 
-        call.enqueue(new Callback<List<CommunityModel>>() {
+        int size = 5;
+        int page = 0;
+
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
+        Call<PostListResponse> call = apiService.getAllPosts(size, page);  // ✅ PostListResponse 사용
+
+        call.enqueue(new Callback<PostListResponse>() {
             @Override
-            public void onResponse(Call<List<CommunityModel>> call, Response<List<CommunityModel>> response) {
+            public void onResponse(Call<PostListResponse> call, Response<PostListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    PostListResponse postListResponse = response.body();
+                    Log.d("fetchCommunityPosts", "🔥 API 응답: " + new Gson().toJson(postListResponse));
+
                     allJobsCommunity.clear();
 
-                    for (CommunityModel post : response.body()) {
-                        // 🔥 file 경로 가공하기
-                        String imageUrl = null;
-                        if (post.getFile_name() != null && !post.getFile_name().isEmpty()) {
-                            imageUrl = "http://서버_IP:포트/uploads/post/" + post.getFile_name();
+                    if (postListResponse.getData() != null && postListResponse.getData().getPostList() != null) {
+                        List<CommunityModel> postList = postListResponse.getData().getPostList();
+
+                        for (CommunityModel post : postList) {
+                            long postId = post.getPostId();
+                            fetchPostImage(post, postId);  // ✅ 개별 게시글 API 호출 (PostDetailResponse 사용)
                         }
-
-                        Log.d("fetchCommunityPosts", "Post Title: " + post.getTitle() + ", Image URL: " + imageUrl);
-
-                        JobModel job = new JobModel(
-                                post.getPostId(),
-                                post.getTitle(),
-                                "작성자: " + post.getUserName(),
-                                imageUrl,
-                                true
-                        );
-
-                        allJobsCommunity.add(job);
+                    } else {
+                        Log.e("fetchCommunityPosts", "❌ postList가 비어 있음.");
+                        Toast.makeText(MainActivity.this, "커뮤니티 게시글 없음", Toast.LENGTH_SHORT).show();
                     }
-
-                    jobAdapterCommunity.notifyDataSetChanged();
                 } else {
-                    Log.e("fetchCommunityPosts", "❌ 서버 응답 실패");
+                    Log.e("fetchCommunityPosts", "❌ 서버 응답 실패: " + response.errorBody());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CommunityModel>> call, Throwable t) {
+            public void onFailure(Call<PostListResponse> call, Throwable t) {
                 Log.e("fetchCommunityPosts", "❌ API 요청 실패: " + t.getMessage());
             }
         });
@@ -351,9 +345,56 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void fetchRecruitmentPosts() {
+    private void fetchPostImage(CommunityModel post, long postId) {
+        CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
+        Call<ResponseWrapper<CommunityModel>> call = apiService.getPostById(postId);
+
+        call.enqueue(new Callback<ResponseWrapper<CommunityModel>>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper<CommunityModel>> call, Response<ResponseWrapper<CommunityModel>> response) {
+                Log.d("fetchPostImage", "Raw Response: " + response.raw());
+
+                if (response.isSuccessful() && response.body() != null) {
+                    CommunityModel detailedPost = response.body().getData();
+                    Log.d("fetchPostImage", "🔥 상세 게시글 응답: " + new Gson().toJson(detailedPost));
+
+                    // ✅ 이미지 URL 설정 (없으면 기본 이미지)
+                    String imageUrl = (detailedPost.getFile_name() == null || detailedPost.getFile_name().isEmpty())
+                            ? "android.resource://" + getPackageName() + "/" + R.drawable.b_logo
+                            : detailedPost.getFile_name();
+
+                    // ✅ 게시글을 리스트에 추가 (ID 포함)
+                    allJobsCommunity.add(new JobModel(
+                            detailedPost.getPostId(),
+                            detailedPost.getTitle(),
+                            detailedPost.getUserName(),
+                            imageUrl,
+                            true  // 🔥 커뮤니티 게시글임을 표시
+                    ));
+
+                    // ✅ RecyclerView 갱신
+                    jobAdapterCommunity.notifyDataSetChanged();
+                } else {
+                    Log.e("fetchPostImage", "❌ 게시글 이미지 가져오기 실패: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper<CommunityModel>> call, Throwable t) {
+                Log.e("fetchPostImage", "❌ API 요청 실패: " + t.getMessage());
+            }
+        });
+    }
+
+
+
+
+
+
+
+    private void fetchRecruitmentPosts(int page) {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
+        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts(1, 10);
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
@@ -366,22 +407,20 @@ public class MainActivity extends AppCompatActivity {
 
                     allJobsRecent.clear();
 
-                    // ✅ "recruitmentList" 내부의 데이터를 가져옴 (최대 5개만)
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
                         List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
 
-                        // 🔥 최대 5개까지만 가져오기
                         int maxItems = Math.min(jobList.size(), 5);
                         for (int i = 0; i < maxItems; i++) {
                             RecruitmentModel job = jobList.get(i);
 
+                            // 🔥 이미지 URL 설정 (없으면 기본 이미지)
                             String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
-                                    ? null
-                                    : "서버_URL/" + job.getFile();
+                                    ? "android.resource://" + getPackageName() + "/" + R.drawable.b_logo
+                                    : job.getFile();
 
-                            // ✅ ID 추가된 JobModel 사용
                             allJobsRecent.add(new JobModel(
-                                    job.getId(),  // ✅ ID 추가
+                                    job.getId(),
                                     job.getTitle(),
                                     (job.getWage() != null) ? "급여: " + job.getWage() + "원" : "급여 정보 없음",
                                     imageUrl
@@ -408,9 +447,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private void fetchPremiumRecruitmentPosts() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts(); // ✅ 기존 리스트 API 호출
+        Call<RecruitmentResponse> call = recruitmentAPI.getAllRecruitmentPosts(); // ✅ 새로운 API 호출
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
@@ -421,37 +461,37 @@ public class MainActivity extends AppCompatActivity {
                     RecruitmentResponse recruitmentResponse = response.body();
                     Log.d("API_RESPONSE", "Message: " + recruitmentResponse.getMessage());
 
-                    allJobsSpecial.clear(); // ✅ 기존 리스트 초기화
+                    allJobsSpecial.clear(); // 기존 데이터 초기화
 
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
                         List<RecruitmentModel> jobList = recruitmentResponse.getData().getRecruitmentList();
 
-                        int maxItems = 5; // ✅ 최대 5개까지만 가져오기
+                        int maxItems = 5;
                         int count = 0;
 
                         for (RecruitmentModel job : jobList) {
-                            // ✅ item 값이 "Y"인 공고만 필터링
-                            if ("Y".equals(job.getItem())) {
+                            if ("Y".equalsIgnoreCase(job.getItem())) { // ✅ item = "Y" 체크
                                 Log.d("API_RESPONSE", "✅ Premium Job Found: " + job.getTitle());
 
+                                // 🔥 이미지 URL 설정 (없으면 기본 이미지)
                                 String imageUrl = (job.getFile() == null || job.getFile().isEmpty())
-                                        ? null
-                                        : "서버_URL/" + job.getFile();
+                                        ? "android.resource://" + getPackageName() + "/" + R.drawable.b_logo
+                                        : job.getFile();
 
                                 allJobsSpecial.add(new JobModel(
-                                        job.getId(),  // ✅ ID 추가
+                                        job.getId(),
                                         job.getTitle(),
                                         (job.getWage() != null) ? "급여: " + job.getWage() + "원" : "급여 정보 없음",
                                         imageUrl
                                 ));
 
                                 count++;
-                                if (count >= maxItems) break; // 🔥 최대 5개까지만 가져오기
+                                if (count >= maxItems) break; // 🔥 최대 5개까지만 추가
                             }
                         }
 
                         Log.d("API_RESPONSE", "Final Premium Job Count: " + allJobsSpecial.size());
-                        recruitmentAdapter.notifyDataSetChanged(); // ✅ RecyclerView 갱신
+                        jobAdapterSpecial.notifyDataSetChanged(); // ✅ RecyclerView 업데이트
                     } else {
                         Log.e("API_ERROR", "프리미엄 공고 없음.");
                         Toast.makeText(MainActivity.this, "프리미엄 공고 데이터 없음", Toast.LENGTH_SHORT).show();
@@ -469,5 +509,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }
