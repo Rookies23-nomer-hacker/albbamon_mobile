@@ -39,9 +39,11 @@ public class OnlineSupportFragment extends Fragment {
     private ViewPager2 subViewPager;
     private ViewPagerAdapter subAdapter;
 
+
     // 하위 탭에 사용될 숫자 배열 및 제목
     private int[] tabNumbers = {0, 0, 0, 0, 0};
     private final String[] tabTitles = {"전체", "지원완료", "면접", "합격", "불합격/취소"};
+
 
     @Nullable
     @Override

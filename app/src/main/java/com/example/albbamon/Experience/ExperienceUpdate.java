@@ -125,7 +125,7 @@ public class ExperienceUpdate extends AppCompatActivity {
                         et_content.setText(bbs.getContents());
                         old_title = et_title.getText().toString().strip();
                         old_content = et_content.getText().toString().strip();
-                        file_name = bbs.getFile_name().toString();
+                        file_name = (bbs.getFile_name() != null) ? bbs.getFile_name().toString() : "";
                     } else {
                         Log.e("API_ERROR", "data 필드가 null 입니다.");
                     }

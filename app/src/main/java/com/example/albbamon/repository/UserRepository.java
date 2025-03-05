@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.request.ChangePwRequestDto;
+import com.example.albbamon.dto.response.GetUserInfoResponseDto;
 import com.example.albbamon.dto.response.UserChangePwResponseDto;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.model.UserModel;
@@ -81,6 +82,49 @@ public class UserRepository {
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
+                Log.d("DEBUG", "API 호출 실패: " + t.getMessage());
+                callback.onFailure("API 호출 실패: " + t.getMessage());
+            }
+        });
+    }
+
+    public void fetchUserInfoById(long userId, UserCallback callback) {
+        Log.d("DEBUG", "🚀 fetchUserInfoById() 호출됨, userId: " + userId);
+
+        Call<SuccessResponse<GetUserInfoResponseDto>> call = userAPI.getUserApplyerInfo(userId);
+        call.enqueue(new Callback<SuccessResponse<GetUserInfoResponseDto>>() {
+            @Override
+            public void onResponse(Call<SuccessResponse<GetUserInfoResponseDto>> call, Response<SuccessResponse<GetUserInfoResponseDto>> response) {
+                Log.d("DEBUG", "📌 API 응답 코드: " + response.code());
+
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getData() != null && response.body().getData().getUserInfo() != null) {
+                        UserInfo userInfo = response.body().getData().getUserInfo();
+                        Log.d("DEBUG", "✅ fetchUserInfoById() 성공, userId: " + userInfo.getId());
+
+                        if (userInfo.getId() != 0) {
+                            callback.onSuccess(userInfo);
+                        } else {
+                            Log.e("ERROR", "❌ userId가 0입니다.");
+                            callback.onFailure("userId가 0입니다.");
+                        }
+                    } else {
+                        Log.d("DEBUG", "userInfo가 null입니다.");
+                        callback.onFailure("userInfo가 null입니다.");
+                    }
+                } else {
+                    try {
+                        Log.e("API_ERROR", "서버 응답 실패 - 코드: " + response.code());
+                        Log.e("API_ERROR", "응답 본문: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "응답 본문 읽기 실패", e);
+                    }
+                    callback.onFailure("응답 실패: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResponse<GetUserInfoResponseDto>> call, Throwable t) {
                 Log.d("DEBUG", "API 호출 실패: " + t.getMessage());
                 callback.onFailure("API 호출 실패: " + t.getMessage());
             }

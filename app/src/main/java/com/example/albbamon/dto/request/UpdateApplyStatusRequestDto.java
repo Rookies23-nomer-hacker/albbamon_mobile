@@ -7,7 +7,7 @@ public class UpdateApplyStatusRequestDto {
     private String status;
 
     public UpdateApplyStatusRequestDto(String status) {
-        // ✅ status가 null이면 기본값을 "PENDING"으로 설정
+        // ✅ status가 null이면 기본값을 "WAITING"으로 설정
         this.status = (status != null) ? status.toUpperCase() : "WAITING";
     }
 

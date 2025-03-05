@@ -1,6 +1,8 @@
 package com.example.albbamon.api;
 
 import com.example.albbamon.dto.request.ChangePwRequestDto;
+import com.example.albbamon.dto.request.UserRequestDto;
+import com.example.albbamon.dto.response.GetUserInfoResponseDto;
 import com.example.albbamon.dto.response.UserChangePwResponseDto;
 import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.model.ApplyStatusModel;
@@ -22,6 +24,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.DELETE;
+import retrofit2.http.QueryMap;
 
 
 public interface UserAPI {
@@ -62,5 +65,8 @@ public interface UserAPI {
     Call<ResponseWrapper<ResponseWrapper.ApplyData>> findApplyVoByUserId(
             @Query("userId") long userId
     );
+
+    @GET("/api/mobile/user/info")
+    Call<SuccessResponse<GetUserInfoResponseDto>> getUserApplyerInfo(@Query("userId") long userId);
 
 }

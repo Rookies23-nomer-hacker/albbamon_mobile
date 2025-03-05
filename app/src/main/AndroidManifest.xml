@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -39,9 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".mypage.ResultUpdateActivity"
-            android:exported="false" />
         <activity
             android:name=".mypage.RecruitmentApplyListActivity"
             android:exported="false" /> <!-- <activity -->
@@ -154,7 +152,6 @@
             android:name=".SearchActivity"
             android:exported="true"
             android:theme="@style/Theme.Albbamon" />
-        <activity android:name=".JobDetailActivity" />
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import com.example.albbamon.network.SuccessResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import com.example.albbamon.dto.request.UpdateApplyStatusRequestDto;
+import com.example.albbamon.network.SuccessResponse;
 import com.example.albbamon.dto.response.GetRecruitmentResponseDto;
 import com.example.albbamon.dto.response.GetRecruitmentApplyListResponseDto;
 
@@ -25,7 +26,10 @@ import retrofit2.http.Part;
 
 public interface RecruitmentAPI {
     @GET("/api/recruitment/list")  // ✅ 전체 JSON 객체를 받도록 수정
-    Call<RecruitmentResponse> getRecruitmentPosts();
+    Call<RecruitmentResponse> getRecruitmentPosts(
+        @Query("page") int page,
+        @Query("size") int size
+    );
 
     @GET("api/mobile/recruitment/list/my")
     Call<SuccessResponse<GetRecruitmentResponseDto>> getMyRecruitments();
@@ -48,7 +52,7 @@ public interface RecruitmentAPI {
             @Path("recruitmentId") long recruitmentId,
             @Query("userId") long userId);
 
-    @POST("recruitment/{recruitmentId}/apply/{applyId}/status")
+    @POST("/api/recruitment/{recruitmentId}/apply/{applyId}/status")
     Call<ResponseBody> updateApplyStatus(
             @Path("recruitmentId") long recruitmentId,
             @Path("applyId") long applyId,
@@ -59,6 +63,10 @@ public interface RecruitmentAPI {
     Call<RecruitmentCountResponse> getMyApplyCount(
             @Query("userId") long userId
     );
+
+    @GET("/api/mobile/recruitment/list")
+    Call<RecruitmentResponse> getAllRecruitmentPosts();  // ✅ 새로운 API 추가
+
 }
 
 

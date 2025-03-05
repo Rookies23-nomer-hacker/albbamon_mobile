@@ -45,9 +45,9 @@ public class ApplicationStatusActivity extends AppCompatActivity {
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("지원현황");
 
-        // 뒤로가기 버튼
-        ImageView backButton = findViewById(R.id.back);
-        backButton.setOnClickListener(v -> onBackPressed());
+
+        findViewById(R.id.back).setOnClickListener(v -> finish()); // 현재 액티비티 종료
+
 
         // 검색 기능 설정
         EditText searchEditText = findViewById(R.id.searchEditText);
