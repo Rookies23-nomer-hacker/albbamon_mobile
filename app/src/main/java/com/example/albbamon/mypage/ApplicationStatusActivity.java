@@ -47,7 +47,7 @@ public class ApplicationStatusActivity extends AppCompatActivity {
         setContentView(R.layout.application_status);
 
         // ✅ UserMypageActivity에서 전달된 데이터 받기
-        applyCount = getIntent().getStringExtra("apply_count");
+       applyCount = getIntent().getStringExtra("apply_count");
 
         // 툴바 제목 설정
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
@@ -94,7 +94,7 @@ public class ApplicationStatusActivity extends AppCompatActivity {
         if (applyCount != null) {
             try {
                 int count = Integer.parseInt(applyCount);
-                updateOnlineSupportFragment(count);
+                updateOnlineSupportFragment(Integer.parseInt(applyCount));
             } catch (NumberFormatException e) {
                 Log.e("applyCountError", "지원서 개수 변환 오류: " + e.getMessage());
             }

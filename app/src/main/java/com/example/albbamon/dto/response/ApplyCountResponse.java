@@ -2,6 +2,8 @@ package com.example.albbamon.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ApplyCountResponse {
     public String getStatus() {
         return status;
@@ -19,6 +21,8 @@ public class ApplyCountResponse {
         this.data = data;
     }
 
+    private List<com.example.albbamon.model.ApplyItem> list;   // ✅ 추가된 부분: 지원 리스트
+
     @SerializedName("status")
     private String status;
 
@@ -35,11 +39,17 @@ public class ApplyCountResponse {
     @SerializedName("data")
     private String data;
 
-    private ApplyCountResponse(String status, String message, String data){
+    private ApplyCountResponse(String status, String message, String data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
+
+    // ✅ ★ 여기가 중요! `getList()` 메서드를 추가해야 함
+    public List<com.example.albbamon.model.ApplyItem> getList() {
+        return (list != null) ? list : List.of();
+    }
+}
 
 //    private String status; // 응답 상태 (예: "success" 또는 "error")
 //    private String message; // 응답 메시지 (예: "요청 성공" 또는 "에러 메시지")
@@ -87,4 +97,4 @@ public class ApplyCountResponse {
 //                ", data=" + data +
 //                '}';
 //    }
-}
+

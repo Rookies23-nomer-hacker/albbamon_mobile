@@ -18,6 +18,7 @@ import com.example.albbamon.FailFragment;
 import com.example.albbamon.InterviewFragment;
 import com.example.albbamon.PassFragment;
 import com.example.albbamon.R;
+import com.example.albbamon.model.ApplyItem;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.network.SupportStatusService;
 import com.example.albbamon.utils.ViewPagerAdapter;
@@ -43,7 +44,7 @@ public class OnlineSupportFragment extends Fragment {
     private int receivedApplyCount = -1;
 
     // 하위 탭 제목
-    private final String[] tabTitles = {"전체", "지원완료", "면접", "합격", "불합격/취소"};
+    private final String[] tabTitles = {"전체", "지원완료", "면접", "합격", "불합격"};
 
     /**
      * ✅ 새로운 인스턴스를 생성하면서 데이터를 전달할 수 있도록 처리
@@ -111,8 +112,20 @@ public class OnlineSupportFragment extends Fragment {
                     Log.d("API_RESPONSE", "지원현황 데이터: " + counts.toString());
 
                     try {
-                        int count = Integer.parseInt(counts.getData());
-                        setTabNumber(1, count);
+                        int totalCount = Integer.parseInt(counts.getData()); // 전체 지원 개수
+                        int applyCompleteCount = 0; // 지원완료 개수
+
+                        // ✅ `getList()`가 null이 아니면 실행
+                        for (ApplyItem item : counts.getList()) {
+                            if ("지원완료".equals(item.getStatus())) {
+                                applyCompleteCount++;
+                            }
+                        }
+
+                        // ✅ UI 업데이트 (전체 지원 개수 및 지원완료 개수)
+                        setTabNumber(0, totalCount);  // 전체 탭 업데이트
+                        setTabNumber(1, applyCompleteCount); // 지원완료 탭 업데이트
+
                     } catch (NumberFormatException e) {
                         Log.e("applyCountError", "API 응답 변환 오류: " + e.getMessage());
                     }
