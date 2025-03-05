@@ -52,7 +52,7 @@ public interface RecruitmentAPI {
             @Path("recruitmentId") long recruitmentId,
             @Query("userId") long userId);
 
-    @POST("recruitment/{recruitmentId}/apply/{applyId}/status")
+    @POST("/api/recruitment/{recruitmentId}/apply/{applyId}/status")
     Call<ResponseBody> updateApplyStatus(
             @Path("recruitmentId") long recruitmentId,
             @Path("applyId") long applyId,
