@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.albbamon.JobPostingActivity;
 import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.api.RecruitmentAPI;
@@ -108,9 +109,9 @@ public class CeoMypageActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 지원서 관리 페이지
+        // 공고 등록 페이지
         layoutApply.setOnClickListener(v -> {
-            Intent intent = new Intent(CeoMypageActivity.this, RecruitmentApplyListActivity.class);//MyJobPostActivity
+            Intent intent = new Intent(CeoMypageActivity.this, JobPostingActivity.class);//MyJobPostActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
@@ -153,7 +154,7 @@ public class CeoMypageActivity extends AppCompatActivity {
             public void onResponse(Call<RecruitmentCountResponse> call, Response<RecruitmentCountResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     int count = response.body().getData().getCount(); // ✅ "data.count" 가져오기
-                    recruitmentCountTextView.setText("공고 개수: " + count);
+                    recruitmentCountTextView.setText(""+count);
                 } else {
                     Log.e("Recruitment", "공고 개수 불러오기 실패");
                 }

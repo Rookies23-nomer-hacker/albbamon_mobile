@@ -5,9 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="50dp"
-    android:layout_marginBottom="50dp"
-    tools:context=".Experience.ExperienceList">
+    tools:context=".Experience.ExperienceList"
+    android:background="@color/background">
 
     <!-- 기존 레이아웃 유지 -->
 
@@ -19,7 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageButton
                 android:id="@+id/back_img_btn"
@@ -28,17 +28,14 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:paddingLeft="30px"
-                android:paddingTop="10px"
                 app:srcCompat="@drawable/ic_arrow_left" />
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="344dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:paddingLeft="30px"
+                android:layout_weight="10"
                 android:text="게시글 작성"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -49,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
+                android:layout_weight="1"
                 android:padding="10dp"
                 android:text="등록"
                 android:textSize="16sp" />
@@ -115,13 +113,14 @@
                     android:padding="0dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_system_plus"
-                    android:tint="#000000" />
+                    app:tint="#000000" />
 
                 <ImageView
                     android:id="@+id/upload_image"
                     android:layout_width="111dp"
                     android:layout_height="54dp"
-                    tools:srcCompat="@tools:sample/avatars" />  <!-- foreground 수정 -->
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_marginTop="10dp"/>  <!-- foreground 수정 -->
 
             </LinearLayout>
 

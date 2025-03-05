@@ -103,6 +103,7 @@ public class RetrofitClient {
         }
         return retrofitWithSession;
     }
+
     public static Retrofit getRetrofitInstance() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)

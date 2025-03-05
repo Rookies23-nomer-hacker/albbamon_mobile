@@ -6,15 +6,24 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.R;
 import com.example.albbamon.api.RecruitmentAPI;
 import com.example.albbamon.api.ResumeAPI;
+import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.request.UpdateApplyStatusRequestDto;
+import com.example.albbamon.dto.request.UserRequestDto;
+import com.example.albbamon.dto.response.GetUserInfoResponseDto;
 import com.example.albbamon.dto.response.ResumeResponseDto;
+import com.example.albbamon.model.UserData;
+import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.network.RetrofitClient;
+import com.example.albbamon.network.SuccessResponse;
+import com.example.albbamon.repository.UserRepository;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,22 +35,27 @@ import retrofit2.Response;
 
 public class RecruitementResultActivity extends AppCompatActivity {
 
-    private long recruitmentId;
-    private long applyId;
+    private long recruitmentId, applyId, resumeId;
     private TextView nameText, phoneText, emailText;
     private TextView schoolContent, jobContent, optionContent, introContent, portfolioContent;
+    private UserAPI userAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruitement_result);
 
+        userAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(UserAPI.class);
+
         Intent intent = getIntent();
         recruitmentId = intent.getLongExtra("recruitmentId", 0L);
         applyId = intent.getLongExtra("applyId", 0L);
+        resumeId = intent.getLongExtra("resumeId", 0L);  // ✅ resumeId 추가
 
         Log.d("RecruitementResultActivity", "받은 recruitmentId: " + recruitmentId);
         Log.d("RecruitementResultActivity", "받은 applyId: " + applyId);
+        Log.d("RecruitementResultActivity", "받은 resumeId: " + resumeId); // 로그 추가
+
 
         nameText = findViewById(R.id.Name);
         phoneText = findViewById(R.id.phoneText);
@@ -60,21 +74,43 @@ public class RecruitementResultActivity extends AppCompatActivity {
         passButton.setOnClickListener(v -> updateApplyStatus("PASSED"));
         failButton.setOnClickListener(v -> updateApplyStatus("FAILED"));
 
-        loadResumeData();
+        loadResumeData(resumeId);
     }
 
-    private void loadResumeData() {
+    private void loadResumeData(long resumeId) {
         ResumeAPI resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
-        Call<Map<String, Object>> call = resumeAPI.getResumeById(applyId);
+
+        Log.d("RecruitementResultActivity", "🔍 resumeId로 이력서 요청: " + resumeId);
+
+        Call<Map<String, Object>> call = resumeAPI.getResumeById(resumeId);
 
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Log.d("RecruitementResultActivity", "📡 서버 응답 수신! 응답 코드: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Object> resume = response.body();
+                    Log.d("RecruitementResultActivity", "✅ 받은 이력서 데이터: " + resume);
+
+                    // userId 가져오기
+                    if (resume.containsKey("user_id")) {
+                        long userId = ((Number) resume.get("user_id")).longValue();
+                        Log.d("RecruitementResultActivity", "🔍 가져온 userId: " + userId);
+                        loadUserInfo(userId);  // ✅ userId로 사용자 정보 조회
+                    } else {
+                        Log.e("RecruitementResultActivity", "❌ userId 정보 없음");
+                    }
+
                     updateUI(resume);
                 } else {
                     Log.e("RecruitementResultActivity", "❌ 서버 응답 실패: " + response.code());
+                    try {
+                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "응답 본문 없음";
+                        Log.e("RecruitementResultActivity", "오류 메시지: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -132,4 +168,76 @@ public class RecruitementResultActivity extends AppCompatActivity {
         });
     }
 
+    private void loadUserInfo(long userId) {
+        Log.d("RecruitementResultActivity", "🔍 userId로 사용자 정보 요청: " + userId);
+
+        fetchUserInfoById(userId, new UserRepository.UserCallback() {
+            @Override
+            public void onSuccess(UserInfo userInfo) {
+                Log.d("RecruitementResultActivity", "✅ 사용자 정보 조회 성공: " + new Gson().toJson(userInfo));
+                updateUserInfo(userInfo);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("RecruitementResultActivity", "❌ 사용자 정보 조회 실패: " + errorMessage);
+            }
+        });
+    }
+
+    public void fetchUserInfoById(long userId, UserRepository.UserCallback callback) {
+        Log.d("DEBUG", "🚀 fetchUserInfoById() 호출됨, userId: " + userId);
+
+        Call<SuccessResponse<GetUserInfoResponseDto>> call = userAPI.getUserApplyerInfo(userId);
+        call.enqueue(new Callback<SuccessResponse<GetUserInfoResponseDto>>() {
+            @Override
+            public void onResponse(Call<SuccessResponse<GetUserInfoResponseDto>> call, Response<SuccessResponse<GetUserInfoResponseDto>> response) {
+                Log.d("DEBUG", "📌 API 응답 코드: " + response.code());
+
+                if (response.isSuccessful() && response.body() != null) {
+                    GetUserInfoResponseDto responseDto = response.body().getData();
+
+                    if (responseDto != null && responseDto.getUserInfo() != null) {
+                        UserInfo userInfo = responseDto.getUserInfo(); // ✅ 여기서 변환
+                        Log.d("DEBUG", "✅ fetchUserInfoById() 성공, userId: " + userInfo.getId());
+
+                        if (userInfo.getId() != 0) {
+                            callback.onSuccess(userInfo);
+                        } else {
+                            Log.e("ERROR", "❌ userId가 0입니다.");
+                            callback.onFailure("userId가 0입니다.");
+                        }
+                    } else {
+                        Log.d("DEBUG", "userInfo가 null입니다.");
+                        callback.onFailure("userInfo가 null입니다.");
+                    }
+                } else {
+                    try {
+                        Log.e("API_ERROR", "서버 응답 실패 - 코드: " + response.code());
+                        Log.e("API_ERROR", "응답 본문: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "응답 본문 읽기 실패", e);
+                    }
+                    callback.onFailure("응답 실패: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResponse<GetUserInfoResponseDto>> call, Throwable t) {
+                Log.d("DEBUG", "API 호출 실패: " + t.getMessage());
+                callback.onFailure("API 호출 실패: " + t.getMessage());
+            }
+        });
+    }
+
+
+    private void updateUserInfo(UserInfo userInfo) {
+        String name = userInfo.getName();
+        String phone = userInfo.getPhone();
+        String email = userInfo.getEmail();
+
+        nameText.setText(name);
+        phoneText.setText(phone);
+        emailText.setText(email);
+    }
 }

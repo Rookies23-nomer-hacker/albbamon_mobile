@@ -1,8 +1,11 @@
 package com.example.albbamon.Experience;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -54,7 +57,7 @@ public class ExperienceList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_experience_list);
 
         list_view = (ListView) findViewById(R.id.ex_list);
@@ -68,6 +71,7 @@ public class ExperienceList extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         pageNumbersContainer = findViewById(R.id.pageNumbersContainer);
         paginationLayout = findViewById(R.id.paginationLayout);
+
         size = 10;
         page = 0;
         String keyword = getIntent().getStringExtra("keyword");
@@ -86,8 +90,6 @@ public class ExperienceList extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, 0);
             }
         });
-
-
 
         list_view.setOnItemClickListener((parent, view, position, id) -> {
             // 클릭한 아이템 가져오기
@@ -260,17 +262,31 @@ public class ExperienceList extends AppCompatActivity {
     private void updatePaginationButtons() {
         pageNumbersContainer.removeAllViews(); // 기존 버튼 제거
 
-        for (int i = 0; i <= totalPages; i++) {
-            Button pageButton = new Button(this);
+        for (int i = 0; i < totalPages; i++) {
+//            Button pageButton = new Button(this);
+            TextView pageButton = new TextView(this);
             pageButton.setText(String.valueOf(i+1));
-            pageButton.setLayoutParams(new LinearLayout.LayoutParams(
+            pageButton.setTextSize(20);
+            pageButton.setPadding(20, 8, 20, 8);
+            pageButton.setGravity(Gravity.CENTER);
+//            pageButton.setLayoutParams(new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT
+//            ));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            pageButton.setLayoutParams(params);
 
             // 현재 페이지 표시
-            if (i == currentPage - 1) {
+            if (i == currentPage) {
                 pageButton.setEnabled(false); // 현재 페이지는 비활성화
+                pageButton.setTypeface(null, Typeface.BOLD);
+                pageButton.setTextColor(Color.parseColor("#FF5722")); // 주황색
+            } else {
+                pageButton.setTypeface(null, Typeface.NORMAL);
+                pageButton.setTextColor(Color.parseColor("#000000")); // 검정색
             }
 
             // 페이지 버튼 클릭 이벤트
@@ -284,7 +300,26 @@ public class ExperienceList extends AppCompatActivity {
         }
 
         // 이전/다음 버튼 활성화 여부 설정
-        btnPrev.setEnabled(currentPage > 1);
-        btnNext.setEnabled(currentPage < totalPages);
+//        btnPrev.setEnabled(currentPage > 1);
+//        btnNext.setEnabled(currentPage < totalPages);
+
+        // 이전 버튼 활성화/비활성화
+        if (currentPage > 1) {
+            btnPrev.setEnabled(true);
+            btnPrev.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_left_active, 0, 0, 0);
+        } else {
+            btnPrev.setEnabled(false);
+            btnPrev.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_left_deactive, 0, 0, 0);
+        }
+
+        // 다음 버튼 활성화/비활성화
+        if (currentPage < totalPages) {
+            btnNext.setEnabled(true);
+            btnNext.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_right_active, 0, 0, 0);
+        } else {
+            btnNext.setEnabled(false);
+            btnNext.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_right_deactive, 0, 0, 0);
+        }
+
     }
 }

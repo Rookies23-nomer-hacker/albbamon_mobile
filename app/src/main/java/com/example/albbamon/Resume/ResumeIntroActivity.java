@@ -2,7 +2,10 @@ package com.example.albbamon.Resume;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +14,8 @@ import com.example.albbamon.R;
 
 public class ResumeIntroActivity extends AppCompatActivity {
 
-    private EditText editIntro;
+    private TextView tvCharCount;
+    private EditText editIntro, edit_content;
     private ResumeDataManager dataManager;
 
     @Override
@@ -21,6 +25,7 @@ public class ResumeIntroActivity extends AppCompatActivity {
 
         editIntro = findViewById(R.id.etIntro);
         dataManager = ResumeDataManager.getInstance();
+        tvCharCount = findViewById(R.id.tvCharCount);
 
         findViewById(R.id.BackIcon).setOnClickListener(v -> finish());
 
@@ -29,6 +34,20 @@ public class ResumeIntroActivity extends AppCompatActivity {
         if (savedIntro != null) {
             editIntro.setText(savedIntro);
         }
+
+        // 글자 수 업데이트
+        editIntro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tvCharCount.setText(charSequence.length() + " / 50,000");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         findViewById(R.id.btnSave).setOnClickListener(v -> {
             String introText = editIntro.getText().toString();
