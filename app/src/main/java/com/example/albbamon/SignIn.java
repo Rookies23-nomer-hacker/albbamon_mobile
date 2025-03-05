@@ -76,6 +76,19 @@ public class SignIn extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setEnabled(true);
 
+        // 🔹 "아이디 찾기" 버튼 클릭 시 FindIdPersonalActivity 이동
+        TextView findIdTextView = findViewById(R.id.findId);  // XML에서 ID 찾아오기
+        findIdTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(SignIn.this, FindIdPersonalActivity.class);
+            startActivity(intent);
+        });
+
+        // 🔹 "비밀번호 찾기" 버튼 클릭 시 FindPwPersonalActivity 이동
+        TextView findPwTextView = findViewById(R.id.findPw);  // XML에서 ID 찾아오기
+        findPwTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(SignIn.this, FindPwPersonalActivity.class);
+            startActivity(intent);
+        });
         // 로그인 버튼 클릭 이벤트
         loginBtn.setOnClickListener(v -> loginUser());
 

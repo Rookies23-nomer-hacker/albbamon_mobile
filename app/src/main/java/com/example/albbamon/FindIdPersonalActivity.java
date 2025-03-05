@@ -79,6 +79,8 @@ public class FindIdPersonalActivity extends AppCompatActivity {
             String phone = etPhone.getText().toString().trim();
             String ceoNum = "";  // 개인회원이므로 빈 문자열 사용
 
+
+
             if (name.isEmpty() || phone.isEmpty()) {
                 Toast.makeText(this, "이름과 전화번호를 입력하세요.", Toast.LENGTH_SHORT).show();
                 return;
