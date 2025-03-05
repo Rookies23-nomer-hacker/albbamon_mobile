@@ -55,9 +55,10 @@ public interface CommunityAPI {
     );
 
     //글 삭제
-    @DELETE("/api/post/mobile/delete/{postId}")
+    @DELETE("/api/mobile/post/delete/{postId}")
     Call<Void> mobiledeletePost(
             @Path("postId") long postId,
             @Query("userId") long userId
+
     );
 }
