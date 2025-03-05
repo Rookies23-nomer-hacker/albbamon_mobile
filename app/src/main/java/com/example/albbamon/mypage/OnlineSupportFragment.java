@@ -29,7 +29,7 @@ public class OnlineSupportFragment extends Fragment {
     private ViewPagerAdapter subAdapter;
 
     private final int[] tabNumbers = {6, 6, 0, 0, 0}; // 각 탭의 숫자 값
-    private final String[] tabTitles = {"전체", "지원완료", "면접", "합격", "불합격/취소"};
+    private final String[] tabTitles = {"전체", "지원완료", "면접", "합격", "불합격"};
 
     @Nullable
     @Override
