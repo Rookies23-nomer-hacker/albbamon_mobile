@@ -17,7 +17,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor; // 이미 import 되어 있음
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -27,15 +27,21 @@ public class RetrofitClient {
     private static Retrofit retrofitWithSession = null;
     private static String sessionCookie = null; // 세션 쿠키 저장 변수
 
-//    private static final String BASE_URL = "http://58.127.241.84:60085/";
+    private static final String BASE_URL = "http://58.127.241.84:60085/";
 //    private static final String BASE_URL = "http://192.168.0.6:60085/";
-    private static final String BASE_URL = "http://10.0.2.2:60085/";
+//    private static final String BASE_URL = "http://10.0.2.2:60085/";
 
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
         if (retrofitWithoutSession == null) {
 
-            OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+            // 추가됨: HttpLoggingInterceptor 추가 (logging level BODY)
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(loggingInterceptor) // 추가됨
+                    .build();
 
             retrofitWithoutSession = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -50,7 +56,12 @@ public class RetrofitClient {
     // ✅ 세션을 포함하는 Retrofit (세션 유지)
     public static Retrofit getRetrofitInstanceWithSession(Context context) {
         if (retrofitWithSession == null) {
+            // 추가됨: HttpLoggingInterceptor 추가 (logging level BODY)
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(loggingInterceptor) // 추가됨
                     .cookieJar(new CookieJar() {
                         @Override
                         public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
@@ -107,6 +118,14 @@ public class RetrofitClient {
     public static Retrofit getRetrofitInstance() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+    // 기존 RetrofitClient 클래스 아래에 추가합니다.
+    public static Retrofit getApplyRetrofitInstance() {
+        // BASE_URL 뒤에 "api/apply/"를 추가한 URL로 Retrofit 인스턴스를 생성합니다.
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL + "api/apply/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

@@ -1,5 +1,7 @@
 package com.example.albbamon.mypage;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.dto.response.ApplyCountResponse;
+import com.example.albbamon.dto.response.ApplyCountResponse;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.network.SupportStatusService;
@@ -31,6 +34,7 @@ public class UserMypageActivity extends AppCompatActivity {
     private ImageView profileImg;
     private TextView userName;
     private ResumeAPI resumeAPI;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,35 +108,36 @@ public class UserMypageActivity extends AppCompatActivity {
             }
         });
 
-        SupportStatusService apiService2 = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
-        Call<ApplyCountResponse> call2 = apiService2.getMyApplyCount();
+
+
+        SupportStatusService appService = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
+        Call<ApplyCountResponse> call2 = appService.getMyApplyCount();
 
         call2.enqueue(new Callback<ApplyCountResponse>() {
             @Override
             public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String result = response.body().getData();
 
-                    Log.d("API_RESPONSE", "지원 개수 데이터: " + result);
-                    TextView apply_count = findViewById(R.id.apply_count);
-                    apply_count.setText(result);
+                    String count = response.body().getData();
 
+                    TextView applyCount = findViewById(R.id.apply_count);
+                    applyCount.setText(count);
 
-                } else {
-                    Log.e("API_ERROR", "응답 실패: " + response.message());
-                    Toast.makeText(UserMypageActivity.this, "지원 개수 로드 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
+                    // ✅ Intent를 이용해 지원현황 데이터 전달
+                    layoutApply.setOnClickListener(v -> {
+                        Intent intent = new Intent(UserMypageActivity.this, ApplicationStatusActivity.class);
+                        intent.putExtra("apply_count", count); // 지원서 개수 전달
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                    });
+
+            }}
 
             @Override
             public void onFailure(Call<ApplyCountResponse> call, Throwable t) {
-                Log.e("API_ERROR", "API 호출 실패: " + t.getMessage());
-                Toast.makeText(UserMypageActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+
             }
         });
-
-
-
 
         fetchResumeDetails();
 
