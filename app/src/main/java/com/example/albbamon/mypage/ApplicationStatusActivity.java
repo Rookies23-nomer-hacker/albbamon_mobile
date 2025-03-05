@@ -33,14 +33,20 @@ public class ApplicationStatusActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private ViewPagerAdapter adapter;
-    private List<Fragment> fragments = new ArrayList<>();
-    private List<String> titles = new ArrayList<>();
+    List<Fragment> fragments = new ArrayList<>();
+    List<String> titles = new ArrayList<>();
+
+    private String applyCount; // ✅ UserMypageActivity에서 전달받은 지원서 개수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.application_status);
 
+        // ✅ UserMypageActivity에서 전달된 데이터 받기
+       applyCount = getIntent().getStringExtra("apply_count");
+
+        // 툴바 제목 설정
         // 툴바 제목 설정
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("지원현황");
@@ -61,50 +67,72 @@ public class ApplicationStatusActivity extends AppCompatActivity {
             }
         });
 
-        // 상위 탭 설정
+        // ✅ 상위 탭 설정
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        // OnlineSupportFragment 추가
-        OnlineSupportFragment onlineSupportFragment = new OnlineSupportFragment();
-        fragments.add(onlineSupportFragment);
+        // ✅ 프래그먼트 추가
+        fragments.add(new OnlineSupportFragment());
         titles.add("온라인·문자·이메일 지원");
 
-        // 기타 지원 탭 추가
         fragments.add(new OtherSupportFragment());
         titles.add("기타 지원");
 
+        // 🔹 어댑터 설정
         adapter = new ViewPagerAdapter(this, fragments, titles);
         viewPager.setAdapter(adapter);
 
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText(adapter.getTabTitle(position));
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(adapter.getTabTitle(position));
+            }
         }).attach();
 
-        // API 호출하여 지원현황 데이터 가져오기
-        fetchMyApplyCount(onlineSupportFragment);
+        // ✅ UserMypageActivity에서 전달받은 데이터가 있으면 적용
+        if (applyCount != null) {
+            try {
+                int count = Integer.parseInt(applyCount);
+                updateOnlineSupportFragment(Integer.parseInt(applyCount));
+            } catch (NumberFormatException e) {
+                Log.e("applyCountError", "지원서 개수 변환 오류: " + e.getMessage());
+            }
+        }
+
+        // ✅ API 호출하여 지원현황 데이터 가져오기
+        fetchMyApplyCount();
     }
 
     /**
-     * API를 호출하여 지원 데이터 가져와서 OnlineSupportFragment에 전달
+     * ✅ API 호출하여 지원현황 데이터를 가져오는 메서드
      */
-    private void fetchMyApplyCount(OnlineSupportFragment onlineSupportFragment) {
+    private void fetchMyApplyCount() {
         SupportStatusService apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
         Call<ApplyCountResponse> call = apiService.getMyApplyCount();
 
         call.enqueue(new Callback<ApplyCountResponse>() {
             @Override
             public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
+                Log.d("applyPageList", "API 호출 성공!");
+
                 if (response.isSuccessful() && response.body() != null) {
-                    String result = response.body().getData();
+                    ApplyCountResponse result = response.body();
+                    try {
+                        int count = Integer.parseInt(result.getData());
 
-                    Log.d("API_RESPONSE", "지원 개수 데이터: " + result);
+                        Log.d("API_RESPONSE", "status=" + result.getStatus()
+                                + ", message=" + result.getMessage()
+                                + ", applyCount=" + count);
 
-                    // OnlineSupportFragment에 데이터 전달
-                    onlineSupportFragment.updateTabData(result);
+                        // ✅ OnlineSupportFragment에도 데이터 전달
+                        updateOnlineSupportFragment(count);
+                    } catch (NumberFormatException e) {
+                        Log.e("applyCountError", "API 응답 변환 오류: " + e.getMessage());
+                    }
                 } else {
-                    Log.e("API_ERROR", "응답 실패: " + response.message());
-                    Toast.makeText(ApplicationStatusActivity.this, "지원 개수 로드 실패", Toast.LENGTH_SHORT).show();
+                    Log.e("API_ERROR", "응답 실패: code=" + response.code()
+                            + ", message=" + response.message());
+                    Toast.makeText(ApplicationStatusActivity.this, "지원서 개수 로드 실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -114,5 +142,20 @@ public class ApplicationStatusActivity extends AppCompatActivity {
                 Toast.makeText(ApplicationStatusActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * ✅ OnlineSupportFragment의 UI를 업데이트하는 메서드
+     */
+    private void updateOnlineSupportFragment(int count) {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof OnlineSupportFragment) {
+                ((OnlineSupportFragment) fragment).setTabNumber(0, count); // ✅ 전체(0) 탭 업데이트
+                ((OnlineSupportFragment) fragment).setTabNumber(1, count); // ✅ 지원완료(1) 탭 업데이트
+                Log.d("applyList", "setTabNumber() 실행됨, count=" + count);
+                break; // ✅ 첫 번째 해당하는 프래그먼트만 업데이트 후 종료
+            }
+        }
     }
 }

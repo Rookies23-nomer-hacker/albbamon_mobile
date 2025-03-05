@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.albbamon.mypage.OnlineSupportFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- 상단 5개 탭 (전체, 지원완료, 면접, 합격, 불합격/취소) -->
+    <!-- 하위 탭 (TabLayout) -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/subTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-
+        android:background="@color/white"
         app:tabMode="fixed"
+        app:tabGravity="fill" />
 
-        app:tabRippleColor="@null"
-        app:tabTextColor="@color/gray"
-        app:tabSelectedTextColor="@color/black"
-        android:background="@color/white"/>
-
-    <!-- ViewPager2 (탭과 연결) -->
+    <!-- 하위 탭의 컨텐츠를 보여줄 ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/subViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvCountAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="16sp" />
 
 </LinearLayout>

@@ -7,10 +7,14 @@ public class UserRequestDto {
     private long userId;  // ✅ long 타입 유지
 
     public UserRequestDto(long userId) {
-        this.userId = userId;  // ✅ 변환 없이 그대로 저장
+        this.userId = userId;
     }
 
     public long getUserId() {
         return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

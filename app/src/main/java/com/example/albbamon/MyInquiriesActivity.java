@@ -5,17 +5,17 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.tabs.TabLayout;
 
-public class InquiryActivity extends AppCompatActivity {
+public class MyInquiriesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inquiry); // inquiry.xml을 사용
+        setContentView(R.layout.activity_my_inquiries);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
 
         // 현재 선택된 탭을 반영
-        int currentTab = getIntent().getIntExtra("selected_tab", 0);
+        int currentTab = getIntent().getIntExtra("selected_tab", 1);
         TabLayout.Tab selectedTab = tabLayout.getTabAt(currentTab);
         if (selectedTab != null) {
             selectedTab.select();
@@ -26,9 +26,9 @@ public class InquiryActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                if (position == 1) { // "나의 문의내역" 탭 선택 시
-                    Intent intent = new Intent(InquiryActivity.this, InquiriesMyActivity.class);
-                    intent.putExtra("selected_tab", 1);
+                if (position == 0) { // "문의하기" 탭 선택 시
+                    Intent intent = new Intent(MyInquiriesActivity.this, InquiryActivity.class);
+                    intent.putExtra("selected_tab", 0);
                     startActivity(intent);
                     finish(); // 현재 액티비티 종료
                 }
