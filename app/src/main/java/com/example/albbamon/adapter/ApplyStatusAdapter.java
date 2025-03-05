@@ -11,7 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.albbamon.R;
 import com.example.albbamon.model.ApplyStatusModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ApplyStatusAdapter extends RecyclerView.Adapter<ApplyStatusAdapter.ViewHolder> {
     private List<ApplyStatusModel> applyVoList;
@@ -42,7 +46,11 @@ public class ApplyStatusAdapter extends RecyclerView.Adapter<ApplyStatusAdapter.
         holder.company.setText(applyStatusModel.getCompany());
         holder.wage.setText(String.valueOf(applyStatusModel.getRecruitmentWage()));
         holder.status.setText(applyStatusModel.getStatus());
-        holder.createDate.setText(applyStatusModel.getCreateDate());
+        // holder.createDate.setText(applyStatusModel.getCreateDate());
+
+        // 날짜 변환 (ISO 8601 → yyyy-MM-dd)
+        String formattedDate = formatDate(applyStatusModel.getCreateDate());
+        holder.createDate.setText(formattedDate);
     }
 
     @Override
@@ -60,6 +68,20 @@ public class ApplyStatusAdapter extends RecyclerView.Adapter<ApplyStatusAdapter.
             wage = itemView.findViewById(R.id.wage);
             status = itemView.findViewById(R.id.status);
             createDate = itemView.findViewById(R.id.createDate);
+        }
+    }
+
+    private String formatDate(String isoDate) {
+        if (isoDate == null || isoDate.isEmpty()) return ""; // 날짜가 없을 경우 빈 값 반환
+
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = inputFormat.parse(isoDate);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return isoDate; // 변환 실패 시 원본 반환
         }
     }
 }
