@@ -159,6 +159,12 @@ public class ExperienceList extends AppCompatActivity {
         setClickListeners();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postList(currentPage); // 현재 페이지 기준으로 리스트 새로 로딩
+    }
+
     private void setClickListeners() {
         fab_up_btn.setOnClickListener(v -> onScrollTopClick(v));
         efab_write_btn.setOnClickListener(v -> onWriteClick(v));
