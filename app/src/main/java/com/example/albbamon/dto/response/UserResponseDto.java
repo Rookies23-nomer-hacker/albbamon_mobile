@@ -22,7 +22,7 @@ public class UserResponseDto {
     private String item;
 
     @SerializedName("pwChkNum")
-    private Integer psChkNum;
+    private Integer pwChkNum;
 
     @SerializedName("pwCheck")
     private Boolean pwCheck;
@@ -35,47 +35,29 @@ public class UserResponseDto {
         return userId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    public String getEmail() { return email; }
     public String getCeoNum() {
         return ceoNum;
     }
-
-    public void setCeoNum(String ceoNum) {
-        this.ceoNum = ceoNum;
-    }
+    
 
     public String getCompany() {
         return company;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
-    }
+
 
     public String getItem() {
         return item;
     }
+    public Integer getPwChkNum() { return pwChkNum;}
+    public Boolean getPwCheck() { return pwCheck; }
 
-    public void setItem(String item) {
-        this.item = item;
-    }
+
+    public void setUserId(long userId) { this.userId = userId; }
+    public void setEmail(String email) { this.email = email; }
+    public void setName(String name) { this.name = name;}
+//    public void setCeoNum(String ceoNum) { this.ceoNum = ceoNum; }
+//    public void setCompany(String company) { this.company = company; }
+    public void setItem(String item) { this.item = item; }
 }

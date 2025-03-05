@@ -1,5 +1,6 @@
 package com.example.albbamon.network;
 
+import com.example.albbamon.dto.response.ApplyCountResponse;
 import com.example.albbamon.model.ApplyCountResponse;
 
 import retrofit2.Call;

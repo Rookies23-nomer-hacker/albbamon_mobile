@@ -1,11 +1,16 @@
 package com.example.albbamon.Experience;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,7 +22,11 @@ import com.example.albbamon.MenuActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.adapter.CommunityAdapter;
 import com.example.albbamon.api.CommunityAPI;
+import com.example.albbamon.api.PostListResponse;
+import com.example.albbamon.api.ResponseWrapper;
+import com.example.albbamon.dto.request.PostData;
 import com.example.albbamon.model.CommunityModel;
+import com.example.albbamon.model.PageInfo;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.example.albbamon.network.RetrofitClient;
@@ -41,11 +50,14 @@ public class ExperienceList extends AppCompatActivity {
     List<CommunityModel> communityList = new ArrayList<>();
     TextView total_bbs;
     ImageButton searchButton, menuButton;
+    Button btnPrev, btnNext;
+    LinearLayout pageNumbersContainer, paginationLayout;
+    int size, page, totalPages, currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_experience_list);
 
         list_view = (ListView) findViewById(R.id.ex_list);
@@ -55,10 +67,17 @@ public class ExperienceList extends AppCompatActivity {
         total_bbs = (TextView) findViewById(R.id.totalRec_textView);
         searchButton = findViewById(R.id.searchButton);
         menuButton = findViewById(R.id.menuButton);
+        btnPrev = findViewById(R.id.btnPrev);
+        btnNext = findViewById(R.id.btnNext);
+        pageNumbersContainer = findViewById(R.id.pageNumbersContainer);
+        paginationLayout = findViewById(R.id.paginationLayout);
+
+        size = 10;
+        page = 0;
         String keyword = getIntent().getStringExtra("keyword");
         if (keyword == null){
             //ListView 데이터 가져와서 보여주기
-            postList();
+            postList(page);
         }else{
             postSearchList(keyword);
         }
@@ -122,8 +141,28 @@ public class ExperienceList extends AppCompatActivity {
             }
         });
 
+        btnPrev.setOnClickListener(v -> {
+            if (currentPage > 1) {
+                currentPage = 1;
+                postList(currentPage);
+            }
+        });
+
+        // 다음 버튼 클릭 시
+        btnNext.setOnClickListener(v -> {
+            if (currentPage < totalPages) {
+                currentPage = totalPages;
+                postList(currentPage);
+            }
+        });
 
         setClickListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postList(currentPage); // 현재 페이지 기준으로 리스트 새로 로딩
     }
 
     private void setClickListeners() {
@@ -146,38 +185,55 @@ public class ExperienceList extends AppCompatActivity {
         list_view.smoothScrollToPosition(0); // 리스트뷰 맨 위로 이동
     }
 
-    private void postList() {
+    private void postList(int page) {
         CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
 
-        Call<List<CommunityModel>> call = apiService.getPosts();
-
-        call.enqueue(new Callback<>() {
+        Call<PostListResponse> call = apiService.getAllPosts(size, page);
+        call.enqueue(new Callback<PostListResponse>() {
             @Override
-            public void onResponse(Call<List<CommunityModel>> call, Response<List<CommunityModel>> response) {
+            public void onResponse(Call<PostListResponse> call, Response<PostListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<CommunityModel> bbs = response.body();
+                    PostData data = response.body().getData();
 
-                    runOnUiThread(() -> {
+                    if (data != null && data.getPostList() != null) {
+                        List<CommunityModel> postList = data.getPostList();
+                        PageInfo pageinfo = data.getPageInfo();
+                        totalPages = pageinfo.getTotalPages();
+                        currentPage = pageinfo.getPageNum();
+                        Log.e("API_ERROR", " page num : "+pageinfo.getPageNum());
                         runOnUiThread(() -> {
                             communityList.clear();  // 기존 데이터 삭제 (중복 방지)
-                            communityList.addAll(bbs);  // communityList에 데이터 추가
+                            communityList.addAll(postList);  // 데이터를 communityList에 추가
+                            CommunityAdapter adapter = new CommunityAdapter(ExperienceList.this, communityList);
+                            list_view.setAdapter(adapter);
+                            total_bbs.setText("총 " + communityList.size() + "건");
+
+
                         });
-                        CommunityAdapter adapter = new CommunityAdapter(ExperienceList.this, communityList);
-                        list_view.setAdapter(adapter);
-                        total_bbs.setText("총 " + communityList.size() + "건");
-                    });
+
+                        // 리스트뷰가 끝나면 페이지네이션 UI 표시
+                        if (totalPages > 1) {
+                            paginationLayout.setVisibility(View.VISIBLE);
+                            updatePaginationButtons();
+                        } else {
+                            paginationLayout.setVisibility(View.GONE); // 한 페이지만 있으면 숨김
+                        }
+                    } else {
+                        Log.e("API_ERROR", "데이터가 null 또는 postList가 비어 있음");
+                    }
                 } else {
                     Log.e("API_ERROR", "서버 응답 실패: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CommunityModel>> call, Throwable t) {
+            public void onFailure(Call<PostListResponse> call, Throwable t) { // ✅ 타입 수정
                 Log.e("API_ERROR", "Error: " + t.getMessage());
                 t.printStackTrace(); // 전체 오류 로그 출력
             }
         });
     }
+
     private void postSearchList(String keyword) {
         CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
         Call<List<CommunityModel>> call = apiService.getSearchlist(keyword);
@@ -207,5 +263,91 @@ public class ExperienceList extends AppCompatActivity {
                 t.printStackTrace(); // 전체 오류 로그 출력
             }
         });
+    }
+
+    private void updatePaginationButtons() {
+        pageNumbersContainer.removeAllViews(); // 기존 버튼 제거
+
+        int maxVisiblePages = 5; // 최대 5개의 페이지 버튼만 표시
+        int startPage, endPage;
+
+        if (totalPages <= maxVisiblePages) {
+            // 총 페이지가 5개 이하일 경우, 모든 페이지 표시
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            // 현재 페이지를 중심으로 5개만 표시
+            int half = maxVisiblePages / 2;
+
+            if (currentPage <= half + 1) {
+                startPage = 1;
+                endPage = maxVisiblePages;
+            } else if (currentPage >= totalPages - half) {
+                startPage = totalPages - (maxVisiblePages - 1);
+                endPage = totalPages;
+            } else {
+                startPage = currentPage - half;
+                endPage = currentPage + half;
+            }
+        }
+
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+
+//        for (int i = 0; i < totalPages; i++) {
+//            TextView pageText = new TextView(this);
+//            pageText.setText(String.valueOf(i+1));
+        for (int i = startPage; i < endPage; i++) {
+            TextView pageText = new TextView(this);
+            pageText.setText(String.valueOf(i));
+            pageText.setTextSize(20);
+            pageText.setPadding(20, 8, 20, 8);
+            pageText.setGravity(Gravity.CENTER);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            pageText.setLayoutParams(params);
+
+            // 현재 페이지 표시
+            if (i == currentPage || (currentPage == 1 && i == 1)) {
+                pageText.setEnabled(false);
+                pageText.setTypeface(null, Typeface.BOLD);
+                pageText.setTextColor(Color.parseColor("#FF5722")); // 주황색
+            } else {
+                pageText.setTypeface(null, Typeface.NORMAL);
+                pageText.setTextColor(Color.parseColor("#000000")); // 검정색
+            }
+
+            // 페이지 버튼 클릭 이벤트
+            final int pageNumber = i;
+            pageText.setOnClickListener(v -> {
+                currentPage = pageNumber+1;
+                postList(currentPage);
+            });
+
+            pageNumbersContainer.addView(pageText);
+        }
+
+        // 이전 버튼 활성화/비활성화
+        if (currentPage > 1) {
+            btnPrev.setEnabled(true);
+            btnPrev.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_left_active, 0, 0, 0);
+        } else {
+            btnPrev.setEnabled(false);
+            btnPrev.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_left_deactive, 0, 0, 0);
+        }
+
+        // 다음 버튼 활성화/비활성화
+        if (currentPage < totalPages) {
+            btnNext.setEnabled(true);
+            btnNext.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_right_active, 0, 0, 0);
+        } else {
+            btnNext.setEnabled(false);
+            btnNext.setCompoundDrawablesWithIntrinsicBounds(R.drawable.line_arrow_right_deactive, 0, 0, 0);
+        }
+
     }
 }

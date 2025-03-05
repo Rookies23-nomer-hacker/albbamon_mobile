@@ -54,11 +54,19 @@
             android:entries="@array/filter_options"/>
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <!-- 채용공고 목록 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerJobList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingTop="8dp"/>
 
     <Button
@@ -68,5 +76,23 @@
         android:text="채용공고 목록"
         android:layout_marginTop="16dp"
         android:layout_gravity="center"/>
+
+    <!-- ✅ 페이징 버튼 추가 (하단에 배치) -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/paginationLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
 
 </LinearLayout>

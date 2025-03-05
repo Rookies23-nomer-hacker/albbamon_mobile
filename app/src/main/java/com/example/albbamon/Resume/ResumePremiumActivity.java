@@ -22,9 +22,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ResumePremiumActivity extends AppCompatActivity {
-    private RecyclerView recyclerJobList;  // ✅ RecyclerView 변수명 수정
-    private JobAdapter2 jobAdapter2;  // ✅ JobAdapter2 변수명 수정
-    private List<RecruitmentModel> jobList;  // ✅ JobModel이 아닌 RecruitmentModel 사용
+    private RecyclerView recyclerJobList;
+    private JobAdapter2 jobAdapter2;
+    private List<RecruitmentModel> jobList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +43,14 @@ public class ResumePremiumActivity extends AppCompatActivity {
         // ✅ 지원하기 버튼 클릭 이벤트
         jobAdapter2.setOnItemClickListener(jobId -> {
             Intent intent = new Intent(ResumePremiumActivity.this, RecruitmentViewActivity.class);
-            intent.putExtra("jobId", jobId); // 🔥 jobId 전달
-            startActivity(intent); // 🔥 화면 이동
+            intent.putExtra("jobId", jobId);
+            startActivity(intent);
         });
-
-
     }
 
     private void fetchRecruitmentPosts() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
-        Call<RecruitmentResponse> call = recruitmentAPI.getRecruitmentPosts();
+        Call<RecruitmentResponse> call = recruitmentAPI.getAllRecruitmentPosts(); // ✅ 새로운 API 호출
 
         call.enqueue(new Callback<RecruitmentResponse>() {
             @Override
@@ -65,10 +63,10 @@ public class ResumePremiumActivity extends AppCompatActivity {
 
                     jobList.clear();
 
-                    // ✅ "recruitmentList" 내부의 데이터를 가져옴
+                    // ✅ "recruitmentList" 내부의 데이터를 가져옴 (item = "Y" 필터링)
                     if (recruitmentResponse.getData() != null && recruitmentResponse.getData().getRecruitmentList() != null) {
                         for (RecruitmentModel job : recruitmentResponse.getData().getRecruitmentList()) {
-                            if ("Y".equals(job.getItem())) {
+                            if ("Y".equalsIgnoreCase(job.getItem())) {  // ✅ 대소문자 무시하고 비교
                                 jobList.add(job);
                             }
                         }

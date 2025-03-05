@@ -1,3 +1,5 @@
+package com.example.albbamon.dto.response;
+
 package com.example.albbamon.model;
 
 import com.google.gson.annotations.SerializedName;
@@ -39,7 +41,7 @@ public class ApplyCountResponse {
     @SerializedName("data")
     private String data;
 
-    private ApplyCountResponse(String status, String message, String data) {
+    private ApplyCountResponse(String status, String message, String data){
         this.status = status;
         this.message = message;
         this.data = data;

@@ -60,11 +60,12 @@ public class OnlineSupportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("DEBUG", "OnlineSupportFragment onCreateView 호출됨");
         View view = inflater.inflate(R.layout.fragment_online_support, container, false);
 
         subTabLayout = view.findViewById(R.id.subTabLayout);
         subViewPager = view.findViewById(R.id.subViewPager);
+
+        // 🔹 ViewPager2 오버스크롤 제거 (하단 스크롤 효과 제거)
         subViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         // ✅ Bundle에서 `apply_count` 데이터 가져오기
@@ -80,6 +81,7 @@ public class OnlineSupportFragment extends Fragment {
         fragments.add(new PassFragment());
         fragments.add(new FailFragment());
 
+        // 🔹 어댑터 설정
         subAdapter = new ViewPagerAdapter(requireActivity(), fragments, Arrays.asList(tabTitles));
         subViewPager.setAdapter(subAdapter);
 
@@ -194,4 +196,4 @@ public class OnlineSupportFragment extends Fragment {
         tab.setCustomView(null); // 기존 CustomView를 제거
         tab.setCustomView(customView); // 새로운 CustomView를 설정
     }
-}
+    }

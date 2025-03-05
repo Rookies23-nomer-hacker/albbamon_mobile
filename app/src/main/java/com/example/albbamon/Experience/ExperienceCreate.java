@@ -1,7 +1,6 @@
 package com.example.albbamon.Experience;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,7 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.albbamon.R;
-import com.example.albbamon.SignIn;
+import com.example.albbamon.sign.SignInActivity;
 import com.example.albbamon.api.CommunityAPI;
 import com.example.albbamon.network.RetrofitClient;
 
@@ -54,7 +53,7 @@ public class ExperienceCreate extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_experience_create);
 
         // 세션에서 사용자 ID 가져오기
@@ -63,7 +62,7 @@ public class ExperienceCreate extends AppCompatActivity {
 
         if (userId == -1) {
             Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(ExperienceCreate.this, SignIn.class));
+            startActivity(new Intent(ExperienceCreate.this, SignInActivity.class));
             finish();
             return;
         }
@@ -107,7 +106,7 @@ public class ExperienceCreate extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                char_count.setText(charSequence.length() + "/5000");
+                char_count.setText(charSequence.length() + " / 5,000");
             }
 
             @Override
@@ -176,7 +175,7 @@ public class ExperienceCreate extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ExperienceCreate.this, "게시글이 작성되었습니다!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ExperienceCreate.this, ExperienceList.class));
+//                    startActivity(new Intent(ExperienceCreate.this, ExperienceList.class));
                     finish();
                 } else {
                     try {

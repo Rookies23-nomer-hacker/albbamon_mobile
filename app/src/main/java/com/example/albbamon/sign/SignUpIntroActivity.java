@@ -1,4 +1,4 @@
-package com.example.albbamon;
+package com.example.albbamon.sign;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class account extends AppCompatActivity {
+import com.example.albbamon.R;
+
+public class SignUpIntroActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class account extends AppCompatActivity {
         btnPer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), perAccount.class);
+                Intent intent = new Intent(getApplicationContext(), PerSignUpActivity.class);
                 intent.putExtra("isCompany", false);
                 startActivity(intent);
             }
@@ -52,7 +54,7 @@ public class account extends AppCompatActivity {
         btnCom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), comAccount.class);
+                Intent intent = new Intent(getApplicationContext(), ComSignUpActivity.class);
                 intent.putExtra("isCompany", true);
                 startActivity(intent);
             }
@@ -63,7 +65,7 @@ public class account extends AppCompatActivity {
         loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });

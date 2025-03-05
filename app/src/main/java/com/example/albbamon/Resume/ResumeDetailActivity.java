@@ -71,6 +71,8 @@ public class ResumeDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResumeResponseDto> call, Response<ResumeResponseDto> response) {
                         if (response.isSuccessful() && response.body() != null) {
+                            ResumeResponseDto resume = response.body();
+                            Log.d("API_RESPONSE", "📌 API 응답 데이터: " + new Gson().toJson(resume));
                             // ✅ JSON 변환 없이 그대로 사용 (서버에서 UTF-8로 변환했으므로)
                             updateUI(response.body());
                         } else {

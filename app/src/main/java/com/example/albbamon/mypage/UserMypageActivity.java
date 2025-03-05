@@ -16,6 +16,7 @@ import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
 import com.example.albbamon.model.ApplyCountResponse;
+import com.example.albbamon.dto.response.ApplyCountResponse;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.network.SupportStatusService;
@@ -49,6 +50,7 @@ public class UserMypageActivity extends AppCompatActivity {
         LinearLayout userInfoRoute = findViewById(R.id.user_info_section);
         LinearLayout layoutApply = findViewById(R.id.layout_apply);
         LinearLayout resumeManagement = findViewById(R.id.layout_resume);
+        TextView count_resume = findViewById(R.id.txt_resume_count);
 
 
 
@@ -64,12 +66,75 @@ public class UserMypageActivity extends AppCompatActivity {
             public void onSuccess(UserInfo userInfo) {
                 // 사용자 정보 출력
                 userName.setText(userInfo.getName() != null ? userInfo.getName() : "이름 없음");
+
             }
             @Override
             public void onFailure(String errorMessage) {
                 Log.e("UserMypage", errorMessage);
             }
         });
+
+//        이력서 개수 가져오기
+        ResumeAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        Call <Map<String, Object>> call = apiService.getMyResume();
+
+        call.enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, Object> resumeData = response.body();
+                    int size = (resumeData != null) ? resumeData.size() : 0; // 🔹 Null 체크
+
+                    Log.d("count_resume", "응답 데이터 개수: " + size);
+                    // 응답이 무조건 map 형태로 오고, 1개의 이력서만 저장 가능하기에 1로 하드코딩
+                    if(size>0){
+                        count_resume.setText("1");
+                    }else{
+                        count_resume.setText("0");
+                    }
+
+
+                } else {
+                    Log.e("count_resume", "서버 응답 실패: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Log.d("count_resume", "응답 데이터 개수: 는 0개이자 서버오류");
+//                count_resume.setText("0");
+            }
+        });
+
+        SupportStatusService apiService2 = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
+        Call<ApplyCountResponse> call2 = apiService2.getMyApplyCount();
+
+        call2.enqueue(new Callback<ApplyCountResponse>() {
+            @Override
+            public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String result = response.body().getData();
+
+                    Log.d("API_RESPONSE", "지원 개수 데이터: " + result);
+                    TextView apply_count = findViewById(R.id.apply_count);
+                    apply_count.setText(result);
+
+
+                } else {
+                    Log.e("API_ERROR", "응답 실패: " + response.message());
+                    Toast.makeText(UserMypageActivity.this, "지원 개수 로드 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApplyCountResponse> call, Throwable t) {
+                Log.e("API_ERROR", "API 호출 실패: " + t.getMessage());
+                Toast.makeText(UserMypageActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
 
         SupportStatusService appService = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
         Call<ApplyCountResponse> call = appService.getMyApplyCount();
@@ -111,12 +176,13 @@ public class UserMypageActivity extends AppCompatActivity {
         });
 
         // X 버튼 클릭 시 MainActivity로 이동
-        closeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(UserMypageActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
+//        closeButton.setOnClickListener(v -> {
+//            Intent intent = new Intent(UserMypageActivity.this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//            finish();
+//        });
+        closeButton.setOnClickListener(v -> finish());
 
         userInfoRoute.setOnClickListener(v -> {
             Intent intent = new Intent(UserMypageActivity.this, UserInfoActivity.class);

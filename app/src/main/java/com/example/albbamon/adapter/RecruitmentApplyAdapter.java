@@ -65,6 +65,7 @@ public class RecruitmentApplyAdapter extends RecyclerView.Adapter<RecruitmentApp
             Intent intent = new Intent(v.getContext(), RecruitementResultActivity.class);
             intent.putExtra("recruitmentId", recruitmentId);  // 채용 공고 ID 전달
             intent.putExtra("applyId", apply.getApplyId());  // 지원서 ID 전달
+            intent.putExtra("resumeId", apply.getresumeId());  // 지원서 ID 전달
             v.getContext().startActivity(intent);
         });
     }

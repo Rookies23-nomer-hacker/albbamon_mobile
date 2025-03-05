@@ -40,7 +40,7 @@
                     android:id="@+id/btn_home"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:contentDescription="홈 버튼"
                     android:src="@drawable/ic_home" />
 
@@ -50,6 +50,7 @@
                     android:id="@+id/btn_settings"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:contentDescription="설정 버튼"
                     android:src="@drawable/ic_settings" />
