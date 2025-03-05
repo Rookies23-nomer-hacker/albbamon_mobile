@@ -78,6 +78,14 @@ public class FindIdPersonalActivity extends AppCompatActivity {
             String name = etName.getText().toString().trim();
             String phone = etPhone.getText().toString().trim();
             String ceoNum = "";  // 개인회원이므로 빈 문자열 사용
+
+
+
+            if (name.isEmpty() || phone.isEmpty()) {
+                Toast.makeText(this, "이름과 전화번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             callFindIdApi(name, phone, ceoNum);
         });
 
@@ -139,12 +147,34 @@ public class FindIdPersonalActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<UserFindIdModel>>() {
             @Override
             public void onResponse(Call<List<UserFindIdModel>> call, Response<List<UserFindIdModel>> response) {
-                // ...
+                if (response.isSuccessful() && response.body() != null) {
+                    List<UserFindIdModel> userList = response.body();
+                    if (!userList.isEmpty()) {
+                        // ✅ 아이디 찾기 성공
+                        tvFoundId.setText(userList.get(0).getEmail());
+                        layoutFindResult.setVisibility(View.VISIBLE);
+                    } else {
+                        // ✅ 아이디를 찾지 못한 경우
+                        Toast.makeText(FindIdPersonalActivity.this, "입력하신 정보로 등록된 아이디가 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // **여기에서 응답 상태 코드와 에러 메시지 출력**
+                    try {
+                        String errorMessage = response.errorBody().string();
+                        Log.e("API_ERROR", "서버 오류: " + response.code() + ", 메시지: " + errorMessage);
+                        Toast.makeText(FindIdPersonalActivity.this, "서버 오류 발생! (에러 코드: " + response.code() + ")", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "에러 메시지를 읽을 수 없습니다.", e);
+                        Toast.makeText(FindIdPersonalActivity.this, "서버 오류 발생!", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
+
             @Override
             public void onFailure(Call<List<UserFindIdModel>> call, Throwable t) {
-                // ...
+                Log.e("API_ERROR", "네트워크 오류: " + t.getMessage(), t);
+                Toast.makeText(FindIdPersonalActivity.this, "네트워크 오류!", Toast.LENGTH_SHORT).show();
             }
         });
     }
-}
+    }

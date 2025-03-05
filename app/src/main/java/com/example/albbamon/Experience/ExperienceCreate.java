@@ -175,7 +175,7 @@ public class ExperienceCreate extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ExperienceCreate.this, "게시글이 작성되었습니다!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ExperienceCreate.this, ExperienceList.class));
+//                    startActivity(new Intent(ExperienceCreate.this, ExperienceList.class));
                     finish();
                 } else {
                     try {

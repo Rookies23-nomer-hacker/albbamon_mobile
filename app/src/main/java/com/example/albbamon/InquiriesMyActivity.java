@@ -1,40 +1,29 @@
 package com.example.albbamon;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyInquiriesFragment extends Fragment {
+public class InquiriesMyActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private MyInquiriesAdapter adapter;
     private List<InquiryItem> inquiryList;
 
-    public MyInquiriesFragment() {
-        // Required empty public constructor
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_inquiries, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_inquiries); // 올바른 레이아웃 파일 사용
 
         // RecyclerView 설정
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView = findViewById(R.id.recyclerView); // `findViewById()` 사용
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 더미 데이터 추가
         loadDummyData();
-
-        return view;
     }
 
     private void loadDummyData() {
@@ -51,5 +40,3 @@ public class MyInquiriesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 }
-
-

@@ -143,7 +143,7 @@ public class ExperienceList extends AppCompatActivity {
 
         btnPrev.setOnClickListener(v -> {
             if (currentPage > 1) {
-                currentPage--;
+                currentPage = 1;
                 postList(currentPage);
             }
         });
@@ -151,12 +151,18 @@ public class ExperienceList extends AppCompatActivity {
         // 다음 버튼 클릭 시
         btnNext.setOnClickListener(v -> {
             if (currentPage < totalPages) {
-                currentPage++;
+                currentPage = totalPages;
                 postList(currentPage);
             }
         });
 
         setClickListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postList(currentPage); // 현재 페이지 기준으로 리스트 새로 로딩
     }
 
     private void setClickListeners() {
@@ -262,46 +268,68 @@ public class ExperienceList extends AppCompatActivity {
     private void updatePaginationButtons() {
         pageNumbersContainer.removeAllViews(); // 기존 버튼 제거
 
-        for (int i = 0; i < totalPages; i++) {
-//            Button pageButton = new Button(this);
-            TextView pageButton = new TextView(this);
-            pageButton.setText(String.valueOf(i+1));
-            pageButton.setTextSize(20);
-            pageButton.setPadding(20, 8, 20, 8);
-            pageButton.setGravity(Gravity.CENTER);
-//            pageButton.setLayoutParams(new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.WRAP_CONTENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT
-//            ));
+        int maxVisiblePages = 5; // 최대 5개의 페이지 버튼만 표시
+        int startPage, endPage;
+
+        if (totalPages <= maxVisiblePages) {
+            // 총 페이지가 5개 이하일 경우, 모든 페이지 표시
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            // 현재 페이지를 중심으로 5개만 표시
+            int half = maxVisiblePages / 2;
+
+            if (currentPage <= half + 1) {
+                startPage = 1;
+                endPage = maxVisiblePages;
+            } else if (currentPage >= totalPages - half) {
+                startPage = totalPages - (maxVisiblePages - 1);
+                endPage = totalPages;
+            } else {
+                startPage = currentPage - half;
+                endPage = currentPage + half;
+            }
+        }
+
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+
+//        for (int i = 0; i < totalPages; i++) {
+//            TextView pageText = new TextView(this);
+//            pageText.setText(String.valueOf(i+1));
+        for (int i = startPage; i < endPage; i++) {
+            TextView pageText = new TextView(this);
+            pageText.setText(String.valueOf(i));
+            pageText.setTextSize(20);
+            pageText.setPadding(20, 8, 20, 8);
+            pageText.setGravity(Gravity.CENTER);
+
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(8, 0, 8, 0);
-            pageButton.setLayoutParams(params);
+            pageText.setLayoutParams(params);
 
             // 현재 페이지 표시
-            if (i == currentPage) {
-                pageButton.setEnabled(false); // 현재 페이지는 비활성화
-                pageButton.setTypeface(null, Typeface.BOLD);
-                pageButton.setTextColor(Color.parseColor("#FF5722")); // 주황색
+            if (i == currentPage || (currentPage == 1 && i == 1)) {
+                pageText.setEnabled(false);
+                pageText.setTypeface(null, Typeface.BOLD);
+                pageText.setTextColor(Color.parseColor("#FF5722")); // 주황색
             } else {
-                pageButton.setTypeface(null, Typeface.NORMAL);
-                pageButton.setTextColor(Color.parseColor("#000000")); // 검정색
+                pageText.setTypeface(null, Typeface.NORMAL);
+                pageText.setTextColor(Color.parseColor("#000000")); // 검정색
             }
 
             // 페이지 버튼 클릭 이벤트
             final int pageNumber = i;
-            pageButton.setOnClickListener(v -> {
-                currentPage = pageNumber + 1;
+            pageText.setOnClickListener(v -> {
+                currentPage = pageNumber+1;
                 postList(currentPage);
             });
 
-            pageNumbersContainer.addView(pageButton);
+            pageNumbersContainer.addView(pageText);
         }
-
-        // 이전/다음 버튼 활성화 여부 설정
-//        btnPrev.setEnabled(currentPage > 1);
-//        btnNext.setEnabled(currentPage < totalPages);
 
         // 이전 버튼 활성화/비활성화
         if (currentPage > 1) {

@@ -68,7 +68,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"/>
 
-        <!-- 첨부파일 영역: 아이콘만으로 파일 첨부 -->
+        <!-- 첨부파일 영역 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +76,6 @@
             android:layout_marginBottom="8dp"
             android:gravity="center_vertical">
 
-            <!-- 파일 첨부 아이콘 -->
             <FrameLayout
                 android:id="@+id/attachment_box"
                 android:layout_width="60dp"
@@ -95,7 +94,6 @@
                     android:contentDescription="첨부파일 아이콘" />
             </FrameLayout>
 
-            <!-- 첨부파일 안내 문구 -->
             <TextView
                 android:id="@+id/tv_attachment_info"
                 android:layout_width="wrap_content"
@@ -106,7 +104,7 @@
                 android:textColor="#888888" />
         </LinearLayout>
 
-        <!-- 첨부된 파일 이름을 표시할 TextView -->
+        <!-- 첨부된 파일 이름 -->
         <TextView
             android:id="@+id/tv_attached_file"
             android:layout_width="wrap_content"
@@ -136,7 +134,7 @@
             android:inputType="textEmailAddress"
             android:layout_marginBottom="16dp"/>
 
-        <!-- 전화번호(선택) -->
+        <!-- 전화번호 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,29 +154,62 @@
             android:inputType="phone"
             android:layout_marginBottom="16dp"/>
 
-        <!-- 개인정보 수집 동의 체크박스 -->
-        <CheckBox
-            android:id="@+id/cb_agree_privacy"
-            android:layout_width="wrap_content"
+        <!-- ✅ 개인정보 동의 (수정된 UI) -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="개인정보수집 및 이용안내 동의"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical">
 
+            <CheckBox
+                android:id="@+id/cb_agree_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보 수집 및 이용 동의"
+                android:layout_marginBottom="8dp"/>
+
+
+        </LinearLayout>
+
+        <!-- 개인정보 상세 안내 -->
         <TextView
             android:id="@+id/tv_privacy_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="문의에 대한 처리 및 답변을 위해 이메일, 계정정보,전화번호(선택)&#10;,첨부파일(선택),IP주소, 브라우저 및 OS정보가 수집되며,&#10;수집된 정보는 3년간 보관합니다. 이에 동의하지 않을 경우&#10; 문의/제안/신고 등록이 불가하며,선택 항목은 입력 하지 않더라도&#10; 서비스 이용에 제한을 두지 않습니다."
+            android:text="문의에 대한 처리 및 답변을 위해 \n"
+            android:textSize="13sp"
+            android:textColor="#888888"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이메일, 계정정보, 전화번호(선택), 첨부파일(선택), IP주소, 브라우저 및 OS 정보"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가 수집되며, 수집된 정보는 "
+            android:textSize="13sp"
+            android:textColor="#888888"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3년간 보관"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="됩니다. 이에 동의하지 않을 경우 문의/제안/신고 등록이 불가하며, 선택 항목은 입력하지 않더라도 서비스 이용에 제한을 두지 않습니다."
             android:textSize="13sp"
             android:textColor="#888888"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- 답변 알림 체크박스 -->
-        <CheckBox
-            android:id="@+id/cb_notify_reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="고객센터 문의 답변 알림받기"
             android:layout_marginBottom="16dp"/>
 
         <!-- 보내기 버튼 -->
@@ -191,55 +222,22 @@
             android:textColor="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+
         <ImageView
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_back"
-            android:contentDescription="@string/back_button_desc"
-            android:background="@android:color/transparent"
+            android:contentDescription="뒤로 가기 버튼"
             android:padding="8dp"
             android:clickable="true"
             android:focusable="true"/>
 
-
-
-        <Button
-            android:id="@+id/btn_go_to_withdrawal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="회원 탈퇴 페이지로 이동"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:id="@+id/btn_go_to_find_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아이디 찾기"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal" />/>
-
-        <Button
-            android:id="@+id/btn_go_to_find_pw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="비밀번호 찾기"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:id="@+id/btn_go_to_job_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="채용공고 목록 보기"
-            android:backgroundTint="#FF5F1F"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="16dp"/>
-
     </LinearLayout>
 </ScrollView>
-
-
-
-

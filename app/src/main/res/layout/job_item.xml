@@ -17,7 +17,7 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/createDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2024.07.03"
@@ -26,11 +26,11 @@
             android:paddingEnd="8dp"/>
 
         <TextView
-            android:id="@+id/tv_apply_type"
+            android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="| 온라인지원"
+            android:text="| WAITTING"
             android:textSize="14sp"
             android:textColor="@color/gray" />
 
@@ -62,19 +62,18 @@
         android:gravity="center_vertical"
         android:layout_marginTop="8dp">
 
+        <!-- 회사명 -->
         <TextView
-            android:id="@+id/tv_expired"
+            android:id="@+id/company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:text="열람기간만료"
-            android:textSize="12sp"
-            android:textColor="@color/gray"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"/>
+            android:text="맨파워그룹"
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
 
 
+        <!-- 상태 -->
         <TextView
             android:id="@+id/tv_deadline"
             android:layout_width="wrap_content"
@@ -84,17 +83,6 @@
             android:textColor="@color/gray"/>
     </LinearLayout>
 
-    <!-- 회사명 -->
-    <TextView
-        android:id="@+id/company"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="맨파워그룹"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop ="8dp"/>
 
     <!-- 공고 제목 -->
     <TextView
@@ -107,7 +95,7 @@
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
         android:layout_marginTop ="4dp"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="10dp"/>
 
     <!-- 시급 -->
     <TextView
@@ -115,38 +103,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="[1일단기/동마중] 7월7일 시험감독 아르바이트"
+        android:gravity="right"
+        android:text="시급: 15000원 "
         android:textSize="16sp"
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium"
-        android:layout_marginTop ="4dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="40dp"/>
 
-    <!-- 상태 -->
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="[1일단기/동마중] 7월7일 시험감독 아르바이트"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop ="4dp"
-        android:layout_marginBottom="40dp"/>
-
-    <!-- 공고일 -->
-    <TextView
-        android:id="@+id/createDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="[1일단기/동마중] 7월7일 시험감독 아르바이트"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop ="4dp"
-        android:layout_marginBottom="40dp"/>
 
     <View
         android:id="@+id/divider7"
