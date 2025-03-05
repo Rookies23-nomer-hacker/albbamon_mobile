@@ -24,7 +24,7 @@ import com.example.albbamon.network.SupportStatusService;
 import com.example.albbamon.utils.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.example.albbamon.model.ApplyCountResponse;
+import com.example.albbamon.dto.response.ApplyCountResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,4 +196,4 @@ public class OnlineSupportFragment extends Fragment {
         tab.setCustomView(null); // 기존 CustomView를 제거
         tab.setCustomView(customView); // 새로운 CustomView를 설정
     }
-    }
+}

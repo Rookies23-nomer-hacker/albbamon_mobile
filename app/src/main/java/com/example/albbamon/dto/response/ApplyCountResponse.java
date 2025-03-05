@@ -1,6 +1,5 @@
 package com.example.albbamon.dto.response;
 
-package com.example.albbamon.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,5 +1,7 @@
 package com.example.albbamon.mypage;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.api.ResumeAPI;
-import com.example.albbamon.model.ApplyCountResponse;
+import com.example.albbamon.dto.response.ApplyCountResponse;
 import com.example.albbamon.dto.response.ApplyCountResponse;
 import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.model.UserInfo;
@@ -106,40 +108,12 @@ public class UserMypageActivity extends AppCompatActivity {
             }
         });
 
-        SupportStatusService apiService2 = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
-        Call<ApplyCountResponse> call2 = apiService2.getMyApplyCount();
-
-        call2.enqueue(new Callback<ApplyCountResponse>() {
-            @Override
-            public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    String result = response.body().getData();
-
-                    Log.d("API_RESPONSE", "지원 개수 데이터: " + result);
-                    TextView apply_count = findViewById(R.id.apply_count);
-                    apply_count.setText(result);
-
-
-                } else {
-                    Log.e("API_ERROR", "응답 실패: " + response.message());
-                    Toast.makeText(UserMypageActivity.this, "지원 개수 로드 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApplyCountResponse> call, Throwable t) {
-                Log.e("API_ERROR", "API 호출 실패: " + t.getMessage());
-                Toast.makeText(UserMypageActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
 
 
         SupportStatusService appService = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
-        Call<ApplyCountResponse> call = appService.getMyApplyCount();
+        Call<ApplyCountResponse> call2 = appService.getMyApplyCount();
 
-        call.enqueue(new Callback<ApplyCountResponse>() {
+        call2.enqueue(new Callback<ApplyCountResponse>() {
             @Override
             public void onResponse(Call<ApplyCountResponse> call, Response<ApplyCountResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

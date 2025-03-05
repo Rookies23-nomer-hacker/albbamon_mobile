@@ -18,6 +18,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.albbamon.FindIdPersonalActivity;
+import com.example.albbamon.FindPwPersonalActivity;
 import com.example.albbamon.MainActivity;
 import com.example.albbamon.R;
 import com.example.albbamon.api.UserAPI;
@@ -71,14 +73,14 @@ public class SignInActivity extends AppCompatActivity {
         // 🔹 "아이디 찾기" 버튼 클릭 시 FindIdPersonalActivity 이동
         TextView findIdTextView = findViewById(R.id.findId);  // XML에서 ID 찾아오기
         findIdTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(SignIn.this, FindIdPersonalActivity.class);
+            Intent intent = new Intent(SignInActivity.this, FindIdPersonalActivity.class);
             startActivity(intent);
         });
 
         // 🔹 "비밀번호 찾기" 버튼 클릭 시 FindPwPersonalActivity 이동
         TextView findPwTextView = findViewById(R.id.findPw);  // XML에서 ID 찾아오기
         findPwTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(SignIn.this, FindPwPersonalActivity.class);
+            Intent intent = new Intent(SignInActivity.this, FindPwPersonalActivity.class);
             startActivity(intent);
         });
         // 로그인 버튼 클릭 이벤트

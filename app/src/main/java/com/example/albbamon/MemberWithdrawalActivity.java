@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.albbamon.model.UserInfo;
 import com.example.albbamon.repository.UserRepository;
+import com.example.albbamon.sign.SignInActivity;
 
 public class MemberWithdrawalActivity extends AppCompatActivity {
 
@@ -100,7 +101,7 @@ public class MemberWithdrawalActivity extends AppCompatActivity {
                 public void onSuccess(String message) {
                     Toast.makeText(MemberWithdrawalActivity.this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show();
                     // ✅ 회원 탈퇴 후 로그인 화면(SignIn)으로 이동
-                    Intent intent = new Intent(MemberWithdrawalActivity.this, SignIn.class);
+                    Intent intent = new Intent(MemberWithdrawalActivity.this, SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 기존 스택 삭제
                     startActivity(intent);
                     finish();
