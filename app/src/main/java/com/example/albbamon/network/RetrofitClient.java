@@ -26,8 +26,8 @@ public class RetrofitClient {
     private static Retrofit retrofitWithoutSession = null;
     private static Retrofit retrofitWithSession = null;
     private static String sessionCookie = null; // 세션 쿠키 저장 변수
-
-    private static final String BASE_URL = "http://58.127.241.84:60085/";
+    private static final String BASE_URL = "http://www.albbamon.com:44380/";
+//    private static final String BASE_URL = "http://58.127.241.84:60085/";
 //    private static final String BASE_URL = "http://192.168.0.6:60085/";
 //    private static final String BASE_URL = "http://10.0.2.2:60085/";
 
