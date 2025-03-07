@@ -8,6 +8,7 @@
         <domain includeSubdomains="true">192.168.219.42</domain>
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">192.168.0.242</domain>
+        <domain includeSubdomains="true">www.albbamon.com</domain>
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">*.*.*.*</domain>  <!-- 모든 IP 허용 -->
