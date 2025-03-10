@@ -98,26 +98,45 @@
         android:layout_marginBottom="10dp"/>
 
     <!-- 시급 -->
-    <TextView
-        android:id="@+id/wage"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:gravity="right"
-        android:text="시급: 15000원 "
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="40dp"/>
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_marginBottom="40dp">
 
+        <!-- 급여: -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="급여:"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginEnd="4dp"/>
 
-    <View
-        android:id="@+id/divider7"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+        <!-- 시급 금액 -->
+        <TextView
+            android:id="@+id/wage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15000"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"/>
 
+        <!-- 원 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="4dp"/>
+    </LinearLayout>
 
     <!-- 기업 후기 작성 버튼 -->
 
