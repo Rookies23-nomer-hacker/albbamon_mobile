@@ -136,7 +136,7 @@ public class CeoMypageActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Log.e("UserMypage", "이력서 데이터를 불러오지 못함");
+                    Log.e("UserMypage", "이력서 이미지 데이터를 불러오지 못함");
                 }
             }
 
