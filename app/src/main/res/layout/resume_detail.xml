@@ -235,54 +235,56 @@
 
 
             <!-- 경력사항 -->
+
+
+            <!-- 희망근무조건 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/jobLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:focusable="true"
-                app:layout_constraintTop_toBottomOf="@id/schoolLayout"
-                app:layout_constraintStart_toStartOf="parent"
+                android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="10dp">
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/schoolLayout">
 
                 <TextView
                     android:id="@+id/jobTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="경력사항"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/jobContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:text="경력사항 출력"
-                    android:textSize="14sp"
                     android:textColor="#777777"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/jobTitle"
-                    android:layout_marginTop="4dp"/>
+                    app:layout_constraintTop_toBottomOf="@id/jobTitle" />
 
                 <View
                     android:id="@+id/divider3"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="#D7D7D7"
                     android:layout_marginTop="10dp"
+                    android:background="#D7D7D7"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/jobContent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <!-- 희망근무조건 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/optionLayout"
                 android:layout_width="match_parent"

@@ -275,16 +275,14 @@ public class MainActivity extends AppCompatActivity {
                     UserRepository userRepository = new UserRepository(MainActivity.this);
 
                     userRepository.isUserCeo(isCeo -> {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            Intent intent;
-                            if (isCeo) {
-                                intent = new Intent(MainActivity.this, CeoMypageActivity.class);
-                            } else {
-                                intent = new Intent(MainActivity.this, UserMypageActivity.class);
-                            }
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.slide_in_left, 0);
-                        }, 1000); // 1초 대기 후 실행 (필요에 따라 시간 조절 가능)
+                        Intent intent;
+                        if (isCeo) {
+                            intent = new Intent(MainActivity.this, CeoMypageActivity.class);
+                        } else {
+                            intent = new Intent(MainActivity.this, UserMypageActivity.class);
+                        }
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_left, 0);
                     });
                 } else {
                     // ✅ 로그인 안 되어 있으면 로그인 화면으로 이동
@@ -292,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_left, 0);
                 }
+                return true;
             }
 
             return false;
