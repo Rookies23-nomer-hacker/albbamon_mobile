@@ -51,4 +51,7 @@ public interface ResumeAPI {
 
     @POST("/api/mobile/resume/profileImage")
     Call<ProfileImageResponseDto> updateProfileImage(@Body ProfileImageRequestDto profileImageRequestDto);
+
+    @GET("/api/resume/download")
+    Call<ResponseBody> downloadResumeFile(@Query("fileName") String fileName);
 }
