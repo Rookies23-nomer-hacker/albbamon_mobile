@@ -121,12 +121,14 @@ public class ResumeManagementActivity extends AppCompatActivity {
                 tv_work_type.setText(resumeData.containsKey("industry_occupation") ? resumeData.get("industry_occupation").toString() : "직업 정보 없음");
                 tv_career.setText(resumeData.containsKey("personal") ? resumeData.get("personal").toString() : "경력 정보 없음");
 
-                if (resumeData.containsKey("last_modified_date")) {
+                // 수정된 코드: last_modified_date가 null인 경우를 처리
+                if (resumeData.containsKey("last_modified_date") && resumeData.get("last_modified_date") != null) {
                     String formattedDate = formatDate(resumeData.get("last_modified_date").toString());
                     createDate.setText(formattedDate + " 수정");
                 } else {
                     createDate.setText("날짜 정보 없음");
                 }
+
 
                 btnMore.setOnClickListener(new View.OnClickListener() {
                     @Override

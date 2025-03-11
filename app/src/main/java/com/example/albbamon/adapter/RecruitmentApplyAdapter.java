@@ -69,7 +69,7 @@ public class RecruitmentApplyAdapter extends RecyclerView.Adapter<RecruitmentApp
         // 포트폴리오 URL 클릭 시 브라우저에서 열기
         holder.textPortfolio.setText("포트폴리오 보기");
         holder.textPortfolio.setOnClickListener(v -> {
-            if (!apply.getPortfolioUrl().isEmpty()) {
+            if (apply.getPortfolioUrl() != null && !apply.getPortfolioUrl().isEmpty()) {
                 downloadResumeFile(apply.getPortfolioUrl());
             } else {
                 Toast.makeText(context, "포트폴리오 URL이 없습니다.", Toast.LENGTH_SHORT).show();
