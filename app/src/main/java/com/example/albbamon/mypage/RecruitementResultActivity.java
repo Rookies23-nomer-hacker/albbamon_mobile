@@ -2,10 +2,15 @@ package com.example.albbamon.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +44,7 @@ public class RecruitementResultActivity extends AppCompatActivity {
     private TextView nameText, phoneText, emailText;
     private TextView schoolContent, jobContent, optionContent, introContent, portfolioContent;
     private UserAPI userAPI;
+    private String portfolioFileName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,7 @@ public class RecruitementResultActivity extends AppCompatActivity {
         introContent = findViewById(R.id.introContent);
         portfolioContent = findViewById(R.id.portfolioContent);
 
+
         findViewById(R.id.BackIcon).setOnClickListener(v -> finish());
 
         Button passButton = findViewById(R.id.passButton);
@@ -75,6 +82,14 @@ public class RecruitementResultActivity extends AppCompatActivity {
         failButton.setOnClickListener(v -> updateApplyStatus("FAILED"));
 
         loadResumeData(resumeId);
+
+        portfolioContent.setOnClickListener(v -> {
+            if (!portfolioFileName.isEmpty()) {
+                downloadPortfolioFile(portfolioFileName);
+            } else {
+                Toast.makeText(this, "포트폴리오 파일이 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadResumeData(long resumeId) {
@@ -124,7 +139,8 @@ public class RecruitementResultActivity extends AppCompatActivity {
     private void updateUI(Map<String, Object> resume) {
         schoolContent.setText((String) resume.get("school") + " " + resume.get("status"));
         introContent.setText((String) resume.get("introduction"));
-        portfolioContent.setText((String) resume.get("portfolioName"));
+        portfolioFileName = (String) resume.get("portfolioname");
+        portfolioContent.setText(portfolioFileName);
     }
 
     private void updateApplyStatus(String status) {
@@ -239,5 +255,65 @@ public class RecruitementResultActivity extends AppCompatActivity {
         nameText.setText(name);
         phoneText.setText(phone);
         emailText.setText(email);
+    }
+
+    private void downloadPortfolioFile(String fileName) {
+        ResumeAPI resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+
+        Log.d("RecruitementResultActivity", "📥 파일 다운로드 요청: " + fileName);
+        Call<ResponseBody> call = resumeAPI.downloadResumeFile(fileName);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    boolean isSaved = saveFileToStorage(response.body(), fileName);
+                    if (isSaved) {
+                        Toast.makeText(RecruitementResultActivity.this, "파일 다운로드 완료: " + fileName, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RecruitementResultActivity.this, "파일 저장 실패", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.e("RecruitementResultActivity", "❌ 다운로드 실패: " + response.code());
+                    Toast.makeText(RecruitementResultActivity.this, "다운로드 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("RecruitementResultActivity", "🚨 다운로드 요청 실패: " + t.getMessage());
+                Toast.makeText(RecruitementResultActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private boolean saveFileToStorage(ResponseBody body, String fileName) {
+        try {
+            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File file = new File(downloadDir, fileName);
+            InputStream inputStream = null;
+            FileOutputStream outputStream = null;
+
+            try {
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(file);
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.flush();
+                return true;
+            } catch (IOException e) {
+                Log.e("RecruitementResultActivity", "❌ 파일 저장 실패", e);
+                return false;
+            } finally {
+                if (inputStream != null) inputStream.close();
+                if (outputStream != null) outputStream.close();
+            }
+        } catch (IOException e) {
+            Log.e("RecruitementResultActivity", "❌ 파일 저장 오류", e);
+            return false;
+        }
     }
 }
