@@ -65,7 +65,7 @@ public class ResumeResponseDto {
         return portfolioname;
     }
 
-    public String getPortfolioUrl() {
+    public String getPortfoliourl() {
         return portfoliourl;
     }
     public String getResume_imgurl() { return resume_imgurl; }
