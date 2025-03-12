@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,14 +66,18 @@ public class RetrofitClient {
                                 // 모든 쿠키 저장
                                 cookieHeader.append(cookie.name()).append("=").append(cookie.value()).append("; ");
 
-                                // JSESSIONID는 별도 저장
                                 if (cookie.name().equals("JSESSIONID")) {
                                     editor.putString("jsessionid", cookie.value());
                                     Log.d(TAG, "🔐 JSESSIONID 저장됨: " + cookie.value());
                                 }
+                                if (cookie.name().equals("AWSALB")) {
+                                    editor.putString("AWSALB", cookie.value());
+                                }
+                                if (cookie.name().equals("AWSALBCORS")) {
+                                    editor.putString("AWSALBCORS", cookie.value());
+                                }
                             }
 
-                            // SharedPreferences에 모든 쿠키 저장
                             editor.putString("cookie", cookieHeader.toString().trim());
                             editor.apply();
                             Log.d(TAG, "🔒 저장된 전체 쿠키: " + cookieHeader.toString().trim());
@@ -86,13 +88,13 @@ public class RetrofitClient {
                             SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
                             String savedCookies = prefs.getString("cookie", "");
                             String savedJsessionId = prefs.getString("jsessionid", "");
+                            String savedAwsAlb = prefs.getString("AWSALB", "");
+                            String savedAwsAlbCors = prefs.getString("AWSALBCORS", "");
+
+                            List<Cookie> cookieList = new ArrayList<>();
 
                             if (!savedCookies.isEmpty()) {
-                                Log.d(TAG, "📤 요청에 추가할 쿠키: " + savedCookies);
-
-                                List<Cookie> cookieList = new ArrayList<>();
                                 String[] cookiesArray = savedCookies.split("; ");
-
                                 for (String cookieStr : cookiesArray) {
                                     String[] parts = cookieStr.split("=", 2);
                                     if (parts.length == 2) {
@@ -107,26 +109,42 @@ public class RetrofitClient {
                                         cookieList.add(cookie);
                                     }
                                 }
-
-                                // JSESSIONID가 있을 경우 추가
-                                if (!savedJsessionId.isEmpty()) {
-                                    Cookie jsessionCookie = new Cookie.Builder()
-                                            .domain(url.host())
-                                            .path("/")
-                                            .name("JSESSIONID")
-                                            .value(savedJsessionId)
-                                            .httpOnly()
-                                            .secure()
-                                            .build();
-                                    cookieList.add(jsessionCookie);
-                                    Log.d(TAG, "📤 JSESSIONID 추가됨: " + savedJsessionId);
-                                }
-
-                                return cookieList;
                             }
 
-                            Log.d(TAG, "🚨 저장된 쿠키 없음");
-                            return Collections.emptyList();
+                            if (!savedAwsAlb.isEmpty()) {
+                                cookieList.add(new Cookie.Builder()
+                                        .domain(url.host())
+                                        .path("/")
+                                        .name("AWSALB")
+                                        .value(savedAwsAlb)
+                                        .httpOnly()
+                                        .secure()
+                                        .build());
+                            }
+                            if (!savedAwsAlbCors.isEmpty()) {
+                                cookieList.add(new Cookie.Builder()
+                                        .domain(url.host())
+                                        .path("/")
+                                        .name("AWSALBCORS")
+                                        .value(savedAwsAlbCors)
+                                        .httpOnly()
+                                        .secure()
+                                        .build());
+                            }
+
+                            if (!savedJsessionId.isEmpty()) {
+                                cookieList.add(new Cookie.Builder()
+                                        .domain(url.host())
+                                        .path("/")
+                                        .name("JSESSIONID")
+                                        .value(savedJsessionId)
+                                        .httpOnly()
+                                        .secure()
+                                        .build());
+                                Log.d(TAG, "📤 JSESSIONID 추가됨: " + savedJsessionId);
+                            }
+
+                            return cookieList;
                         }
                     })
                     .addInterceptor(new Interceptor() {
@@ -136,14 +154,20 @@ public class RetrofitClient {
                             SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
                             String savedCookies = prefs.getString("cookie", "");
                             String savedJsessionId = prefs.getString("jsessionid", "");
+                            String savedAwsAlb = prefs.getString("AWSALB", "");
+                            String savedAwsAlbCors = prefs.getString("AWSALBCORS", "");
 
                             Request.Builder requestBuilder = original.newBuilder();
                             StringBuilder cookieHeader = new StringBuilder(savedCookies);
 
-                            // JSESSIONID 추가
+                            if (!savedAwsAlb.isEmpty()) {
+                                cookieHeader.append("AWSALB=").append(savedAwsAlb).append("; ");
+                            }
+                            if (!savedAwsAlbCors.isEmpty()) {
+                                cookieHeader.append("AWSALBCORS=").append(savedAwsAlbCors).append("; ");
+                            }
                             if (!savedJsessionId.isEmpty()) {
-                                cookieHeader.append(" JSESSIONID=").append(savedJsessionId).append("; ");
-                                Log.d(TAG, "📤 요청 헤더에 JSESSIONID 추가: " + savedJsessionId);
+                                cookieHeader.append("JSESSIONID=").append(savedJsessionId).append("; ");
                             }
 
                             requestBuilder.header("Cookie", cookieHeader.toString().trim());
@@ -170,7 +194,6 @@ public class RetrofitClient {
                 .build();
     }
 
-    // ✅ 추가 API 엔드포인트를 위한 Retrofit 인스턴스 생성
     public static Retrofit getApplyRetrofitInstance() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL + "api/apply/")
