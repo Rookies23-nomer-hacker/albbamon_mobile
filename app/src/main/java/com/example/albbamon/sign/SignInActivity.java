@@ -86,6 +86,21 @@ public class SignInActivity extends AppCompatActivity {
         // 로그인 버튼 클릭 이벤트
         loginBtn.setOnClickListener(v -> loginUser());
 
+        // ✅ 자동 로그인 검증 로직
+        SharedPreferences prefs = getSharedPreferences("SESSION", MODE_PRIVATE);
+        String sessionCookie = prefs.getString("cookie", null);
+        long userId = prefs.getLong("userId", -1);
+
+        SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
+        String encodedEmail = eCache.getString("email", null);
+
+        if (sessionCookie != null && userId != -1 && encodedEmail != null) {
+            Log.d("AUTO_LOGIN", "✅ 자동 로그인 수행");
+            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void loginUser() {

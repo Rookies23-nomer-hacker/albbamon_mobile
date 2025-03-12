@@ -1,9 +1,7 @@
 package com.example.albbamon.autologin;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,10 +15,6 @@ import com.example.albbamon.dto.response.UserResponseDto;
 import com.example.albbamon.network.RetrofitClient;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,15 +24,6 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        // 루팅 탐지
-        if (isDeviceRooted(this)) {
-            Log.e("ROOT_CHECK", "루팅된 기기입니다. 앱을 종료합니다.");
-            Toast.makeText(this, "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
-            finish(); // 앱 종료
-            return;
-        }
 
         checkAutoLogin(); //
     }
@@ -146,101 +131,5 @@ public class Splash extends AppCompatActivity {
         startActivity(intent);
         finish(); // 스플래시 화면 종료
     }
-
-//    루팅 탐지 기능 추가 ++
-
-    // 루트 권한 확인(su 명령어 실행)
-    public static boolean checkRootMethod1() {
-        Process process = null;
-        try {
-            process = Runtime.getRuntime().exec(new String[]{"/system/xbin/which", "su"});
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            return in.readLine() != null;
-        } catch (Exception e) {
-            return false;
-        } finally {
-            if (process != null) {
-                process.destroy();
-            }
-        }
-    }
-
-    // 루트 전용 파일 확인
-    public static boolean checkRootMethod2() {
-        String[] paths = {
-                "/system/app/Superuser.apk",
-                "/system/xbin/su",
-                "/system/bin/su",
-                "/system/sbin/su",
-                "/sbin/su",
-                "/vendor/bin/su",
-                "/su/bin/su"
-        };
-        for (String path : paths) {
-            if (new File(path).exists()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // 루트 전용 앱 설치되었는지 확인
-    public static boolean checkRootMethod3(Context context) {
-        String[] rootApps = {
-                "com.noshufou.android.su",
-                "com.koushikdutta.superuser",
-                "eu.chainfire.supersu",
-                "com.thirdparty.superuser",
-                "com.topjohnwu.magisk"
-        };
-        PackageManager pm = context.getPackageManager();
-        for (String packageName : rootApps) {
-            try {
-                pm.getPackageInfo(packageName, 0);
-                return true;
-            } catch (PackageManager.NameNotFoundException ignored) {
-            }
-        }
-        return false;
-    }
-
-
-    // Read-Only 시스템 변경 여부 확인
-    public static boolean checkRootMethod4() {
-        try {
-            File file = new File("/system/app/Superuser.apk");
-            if (file.exists()) return true;
-
-            Process process = Runtime.getRuntime().exec("mount");
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                if (line.contains(" /system ")) {
-                    String[] args = line.split(" ");
-                    for (String arg : args) {
-                        if (arg.equalsIgnoreCase("rw")) {
-                            return true; // 시스템 파티션이 읽기/쓰기 모드이면 루팅된 기기일 가능성이 높음
-                        }
-                    }
-                }
-            }
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isDeviceRooted(Context context) {
-        return checkRootMethod1() || checkRootMethod2() || checkRootMethod3(context) || checkRootMethod4();
-    }
-
-
-
-
-
-
-
-
-
 
 }
