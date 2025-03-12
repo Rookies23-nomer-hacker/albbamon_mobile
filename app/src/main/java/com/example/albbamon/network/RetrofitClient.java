@@ -7,10 +7,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -19,7 +18,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor; // 이미 import 되어 있음
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -27,23 +26,16 @@ public class RetrofitClient {
     private static final String TAG = "RetrofitClient";
     private static Retrofit retrofitWithoutSession = null;
     private static Retrofit retrofitWithSession = null;
-    private static String sessionCookie = null; // 세션 쿠키 저장 변수
     private static final String BASE_URL = "https://www.albbamon.com:44380/";
-//    private static final String BASE_URL = "http://58.127.241.84:60085/";
-//    private static final String BASE_URL = "http://192.168.0.6:60085/";
-//    private static final String BASE_URL = "http://10.0.2.2:60085/";
-//    private static final String BASE_URL = "http://www.albbamon.com:44380/";
 
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
         if (retrofitWithoutSession == null) {
-
-            // 추가됨: HttpLoggingInterceptor 추가 (logging level BODY)
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(loggingInterceptor) // 추가됨
+                    .addInterceptor(loggingInterceptor)
                     .build();
 
             retrofitWithoutSession = new Retrofit.Builder()
@@ -51,7 +43,6 @@ public class RetrofitClient {
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
         }
         return retrofitWithoutSession;
     }
@@ -59,32 +50,82 @@ public class RetrofitClient {
     // ✅ 세션을 포함하는 Retrofit (세션 유지)
     public static Retrofit getRetrofitInstanceWithSession(Context context) {
         if (retrofitWithSession == null) {
-            // 추가됨: HttpLoggingInterceptor 추가 (logging level BODY)
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(loggingInterceptor) // 추가됨
+                    .addInterceptor(loggingInterceptor)
                     .cookieJar(new CookieJar() {
                         @Override
                         public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                            SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            StringBuilder cookieHeader = new StringBuilder();
+
                             for (Cookie cookie : cookies) {
+                                Log.d(TAG, "🍪 응답 쿠키 확인: " + cookie.toString());
+
+                                // 모든 쿠키 저장
+                                cookieHeader.append(cookie.name()).append("=").append(cookie.value()).append("; ");
+
+                                // JSESSIONID는 별도 저장
                                 if (cookie.name().equals("JSESSIONID")) {
-                                    sessionCookie = cookie.toString(); // 전체 쿠키 저장
-                                    SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putString("cookie", sessionCookie); // SharedPreferences에 저장
-                                    editor.apply();
-                                    Log.d(TAG, "세션 저장: " + sessionCookie);
+                                    editor.putString("jsessionid", cookie.value());
+                                    Log.d(TAG, "🔐 JSESSIONID 저장됨: " + cookie.value());
                                 }
                             }
+
+                            // SharedPreferences에 모든 쿠키 저장
+                            editor.putString("cookie", cookieHeader.toString().trim());
+                            editor.apply();
+                            Log.d(TAG, "🔒 저장된 전체 쿠키: " + cookieHeader.toString().trim());
                         }
 
                         @Override
                         public List<Cookie> loadForRequest(HttpUrl url) {
-                            if (sessionCookie != null) {
-                                return Collections.singletonList(Cookie.parse(url, sessionCookie));
+                            SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+                            String savedCookies = prefs.getString("cookie", "");
+                            String savedJsessionId = prefs.getString("jsessionid", "");
+
+                            if (!savedCookies.isEmpty()) {
+                                Log.d(TAG, "📤 요청에 추가할 쿠키: " + savedCookies);
+
+                                List<Cookie> cookieList = new ArrayList<>();
+                                String[] cookiesArray = savedCookies.split("; ");
+
+                                for (String cookieStr : cookiesArray) {
+                                    String[] parts = cookieStr.split("=", 2);
+                                    if (parts.length == 2) {
+                                        Cookie cookie = new Cookie.Builder()
+                                                .domain(url.host())
+                                                .path("/")
+                                                .name(parts[0])
+                                                .value(parts[1])
+                                                .httpOnly()
+                                                .secure()
+                                                .build();
+                                        cookieList.add(cookie);
+                                    }
+                                }
+
+                                // JSESSIONID가 있을 경우 추가
+                                if (!savedJsessionId.isEmpty()) {
+                                    Cookie jsessionCookie = new Cookie.Builder()
+                                            .domain(url.host())
+                                            .path("/")
+                                            .name("JSESSIONID")
+                                            .value(savedJsessionId)
+                                            .httpOnly()
+                                            .secure()
+                                            .build();
+                                    cookieList.add(jsessionCookie);
+                                    Log.d(TAG, "📤 JSESSIONID 추가됨: " + savedJsessionId);
+                                }
+
+                                return cookieList;
                             }
+
+                            Log.d(TAG, "🚨 저장된 쿠키 없음");
                             return Collections.emptyList();
                         }
                     })
@@ -92,19 +133,23 @@ public class RetrofitClient {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request original = chain.request();
-
-                            // ✅ SharedPreferences에서 세션 쿠키 가져오기
                             SharedPreferences prefs = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-                            String savedCookie = prefs.getString("cookie", "");
+                            String savedCookies = prefs.getString("cookie", "");
+                            String savedJsessionId = prefs.getString("jsessionid", "");
 
                             Request.Builder requestBuilder = original.newBuilder();
-                            if (!savedCookie.isEmpty()) {
-                                requestBuilder.header("Cookie", savedCookie);
-                                Log.d(TAG, "요청 헤더에 쿠키 추가: " + savedCookie);
+                            StringBuilder cookieHeader = new StringBuilder(savedCookies);
+
+                            // JSESSIONID 추가
+                            if (!savedJsessionId.isEmpty()) {
+                                cookieHeader.append(" JSESSIONID=").append(savedJsessionId).append("; ");
+                                Log.d(TAG, "📤 요청 헤더에 JSESSIONID 추가: " + savedJsessionId);
                             }
 
-                            Request request = requestBuilder.method(original.method(), original.body()).build();
-                            return chain.proceed(request);
+                            requestBuilder.header("Cookie", cookieHeader.toString().trim());
+                            Log.d(TAG, "📨 최종 요청 헤더: " + cookieHeader.toString().trim());
+
+                            return chain.proceed(requestBuilder.build());
                         }
                     })
                     .build();
@@ -124,9 +169,9 @@ public class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
-    // 기존 RetrofitClient 클래스 아래에 추가합니다.
+
+    // ✅ 추가 API 엔드포인트를 위한 Retrofit 인스턴스 생성
     public static Retrofit getApplyRetrofitInstance() {
-        // BASE_URL 뒤에 "api/apply/"를 추가한 URL로 Retrofit 인스턴스를 생성합니다.
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL + "api/apply/")
                 .addConverterFactory(GsonConverterFactory.create())

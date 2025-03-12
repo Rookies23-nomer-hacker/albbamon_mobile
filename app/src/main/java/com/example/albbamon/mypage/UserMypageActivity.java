@@ -58,7 +58,7 @@ public class UserMypageActivity extends AppCompatActivity {
 
         // ✅ Retrofit 인스턴스 생성
         resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
-
+        Log.d("resumeAPI", "1. Retrofit resumeAPI 인스턴스 생성");
         // ✅ UserRepository 초기화
         UserRepository userRepository = new UserRepository(this);
 
@@ -79,6 +79,7 @@ public class UserMypageActivity extends AppCompatActivity {
 //        이력서 개수 가져오기
         ResumeAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
         Call <Map<String, Object>> call = apiService.getMyResume();
+        Log.d("resumeAPI", "2. Retrofit resumeAPI 이력서 가져오 인스턴스 생성");
 
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
@@ -111,6 +112,8 @@ public class UserMypageActivity extends AppCompatActivity {
 
 
         SupportStatusService appService = RetrofitClient.getRetrofitInstanceWithSession(this).create(SupportStatusService.class);
+        Log.d("resumeAPI", "3. Retrofit appService 지원공고 갯수");
+
         Call<ApplyCountResponse> call2 = appService.getMyApplyCount();
 
         call2.enqueue(new Callback<ApplyCountResponse>() {
