@@ -35,6 +35,7 @@ public class ResumeDetailActivity extends AppCompatActivity {
     private TextView schoolContent, jobContent, optionContent, introContent, portfolioContent;
 
     private UserRepository userRepository;
+    private String portfolioName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,7 @@ public class ResumeDetailActivity extends AppCompatActivity {
                 "근무일시: " + resume.getWorking_day());
         Log.d("DEBUG", "📌 자기소개: " + resume.getIntroduction());
         Log.d("DEBUG", "📌 포트폴리오: " + resume.getPortfolioName());
+        portfolioName = resume.getPortfolioName(); // 포트폴리오 이름 저장
 
         schoolContent.setText(resume.getSchool() + " " + resume.getStatus());
         jobContent.setText(resume.getPersonal());
@@ -131,32 +133,38 @@ public class ResumeDetailActivity extends AppCompatActivity {
         introContent.setText(resume.getIntroduction());
         portfolioContent.setText(resume.getPortfolioName());
         portfolioContent.setOnClickListener(v -> {
-            if (resume != null && resume.getPortfolioUrl() != null && !resume.getPortfolioUrl().isEmpty()) {
-                downloadPortfolioFile(resume.getPortfolioUrl());
+            if (resume != null && resume.getPortfoliourl() != null && !resume.getPortfoliourl().isEmpty()) {
+                downloadPortfolioFile(resume.getPortfoliourl());
             } else {
                 Toast.makeText(ResumeDetailActivity.this, "포트폴리오 파일이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     private void downloadPortfolioFile(String fileUrl) {
+        // 파일 이름을 portfolioName에서 직접 가져옴
+        Log.d("DEBUG", "📌 포트폴리오 파일이름: " + portfolioName);
+
+        if (portfolioName == null || portfolioName.isEmpty()) {
+            Toast.makeText(this, "파일 이름이 유효하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ResumeAPI resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
-        Call<ResponseBody> call = resumeAPI.downloadResumeFile(fileUrl);
+        Call<ResponseBody> call = resumeAPI.downloadResumeFile(portfolioName);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     // 파일 쓰기 성공 시
-                    boolean writtenToDisk = writeResponseBodyToDisk(response.body(), fileUrl.substring(fileUrl.lastIndexOf('/') + 1));
-
+                    boolean writtenToDisk = writeResponseBodyToDisk(response.body(), portfolioName);
                     if (writtenToDisk) {
                         Toast.makeText(ResumeDetailActivity.this, "다운로드 성공", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ResumeDetailActivity.this, "파일 저장 실패", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(ResumeDetailActivity.this, "서버 에러 발생", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResumeDetailActivity.this, "서버 에러 발생: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -167,9 +175,9 @@ public class ResumeDetailActivity extends AppCompatActivity {
         });
     }
 
-    private boolean writeResponseBodyToDisk(ResponseBody body, String fileName) {
+    private boolean writeResponseBodyToDisk(ResponseBody body, String portfolioName) {
         try {
-            File file = new File(getExternalFilesDir(null) + File.separator + fileName);
+            File file = new File(getExternalFilesDir(null) + File.separator + portfolioName);
             InputStream inputStream = null;
             OutputStream outputStream = null;
 
@@ -206,4 +214,5 @@ public class ResumeDetailActivity extends AppCompatActivity {
             return false;
         }
     }
+
 }
