@@ -31,12 +31,19 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         // 루팅 탐지
-        if (isDeviceRooted(this)) {
+//        if (isDeviceRooted(this)) {
+//            Log.e("ROOT_CHECK", "루팅된 기기입니다. 앱을 종료합니다.");
+//            Toast.makeText(this, "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
+//            finish(); // 앱 종료
+//            return;
+//        }
+
+        RootChecker rootChecker = new RootChecker();
+        if(rootChecker.isDeviceRooted()) {
             Log.e("ROOT_CHECK", "루팅된 기기입니다. 앱을 종료합니다.");
-            Toast.makeText(this, "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
-            finish(); // 앱 종료
+            Toast.makeText(this, "(C++) 루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
+            finish();
             return;
         }
 
