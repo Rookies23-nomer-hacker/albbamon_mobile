@@ -43,5 +43,8 @@ public class ResponseWrapper<T> {
         public void setApplyList(List<ApplyStatusModel> applyList) {
             this.applyList = applyList;
         }
+
+        }
     }
-}
+
+

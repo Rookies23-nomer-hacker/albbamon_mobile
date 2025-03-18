@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">10.0.2.2</domain>
-        <domain includeSubdomains="true">10.0.0.2</domain>
-        <domain includeSubdomains="true">58.127.241.84</domain>
-        <domain includeSubdomains="true">192.168.0.6</domain>
-        <domain includeSubdomains="true">192.168.219.42</domain>
-        <domain includeSubdomains="true">localhost</domain>
-        <domain includeSubdomains="true">192.168.0.242</domain>
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="true">10.0.2.2</domain>-->
+<!--        <domain includeSubdomains="true">10.0.0.2</domain>-->
+<!--        <domain includeSubdomains="true">58.127.241.84</domain>-->
+<!--        <domain includeSubdomains="true">192.168.0.6</domain>-->
+<!--        <domain includeSubdomains="true">192.168.219.42</domain>-->
+<!--        <domain includeSubdomains="true">localhost</domain>-->
+<!--        <domain includeSubdomains="true">192.168.0.242</domain>-->
+<!--    </domain-config>-->
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="true">*.*.*.*</domain>  &lt;!&ndash; 모든 IP 허용 &ndash;&gt;-->
+<!--        <domain includeSubdomains="true">www.albbamon.com</domain>-->
+<!--    </domain-config>-->
+    <domain-config cleartextTrafficPermitted="false">  <!-- HTTP 차단 -->
         <domain includeSubdomains="true">www.albbamon.com</domain>
-    </domain-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">*.*.*.*</domain>  <!-- 모든 IP 허용 -->
+        <pin-set expiration="2026-01-01">  <!-- Pinning 적용 -->
+            <pin digest="SHA-256">RSbcFPnevV0vV2WyW/Fb/VLpBPC5ChjIFRaJiRegwgs=</pin>
+        </pin-set>
     </domain-config>
 </network-security-config>

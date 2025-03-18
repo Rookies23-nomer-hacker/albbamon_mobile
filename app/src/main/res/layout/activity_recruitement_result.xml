@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".Resume.ResumeWriteActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".Resume.ResumeWriteActivity">
 
     <!-- 뒤로 가기 아이콘 -->
     <ImageView
@@ -37,16 +37,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_text"
-        >
+        app:layout_constraintBottom_toTopOf="@id/customTwoButtonLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="40dp">
 
 

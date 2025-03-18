@@ -282,10 +282,19 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, UserMypageActivity.class);
                         }
                         startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_left, 0);
+//                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+//                            Intent intent;
+//                            if (isCeo) {
+//                                intent = new Intent(MainActivity.this, CeoMypageActivity.class);
+//                            } else {
+//                                intent = new Intent(MainActivity.this, UserMypageActivity.class);
+//                            }
+//                            startActivity(intent);
+//                            overridePendingTransition(R.anim.slide_in_left, 0);
+//                        }, 2000); // 2초 지연 후 실행
                     });
                 } else {
-                    // ✅ 로그인 안 되어 있으면 로그인 화면으로 이동
+                    // 로그인 안 되어 있으면 로그인 화면으로 이동
                     Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_left, 0);

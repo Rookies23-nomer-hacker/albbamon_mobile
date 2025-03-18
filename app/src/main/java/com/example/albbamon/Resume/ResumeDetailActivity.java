@@ -3,6 +3,7 @@ package com.example.albbamon.Resume;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,8 +16,14 @@ import com.example.albbamon.network.RetrofitClient;
 import com.example.albbamon.repository.UserRepository;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +35,7 @@ public class ResumeDetailActivity extends AppCompatActivity {
     private TextView schoolContent, jobContent, optionContent, introContent, portfolioContent;
 
     private UserRepository userRepository;
+    private String portfolioName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +119,7 @@ public class ResumeDetailActivity extends AppCompatActivity {
                 "근무일시: " + resume.getWorking_day());
         Log.d("DEBUG", "📌 자기소개: " + resume.getIntroduction());
         Log.d("DEBUG", "📌 포트폴리오: " + resume.getPortfolioName());
+        portfolioName = resume.getPortfolioName(); // 포트폴리오 이름 저장
 
         schoolContent.setText(resume.getSchool() + " " + resume.getStatus());
         jobContent.setText(resume.getPersonal());
@@ -123,8 +132,87 @@ public class ResumeDetailActivity extends AppCompatActivity {
         );
         introContent.setText(resume.getIntroduction());
         portfolioContent.setText(resume.getPortfolioName());
+        portfolioContent.setOnClickListener(v -> {
+            if (resume != null && resume.getPortfoliourl() != null && !resume.getPortfoliourl().isEmpty()) {
+                downloadPortfolioFile(resume.getPortfoliourl());
+            } else {
+                Toast.makeText(ResumeDetailActivity.this, "포트폴리오 파일이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void downloadPortfolioFile(String fileUrl) {
+        // 파일 이름을 portfolioName에서 직접 가져옴
+        Log.d("DEBUG", "📌 포트폴리오 파일이름: " + portfolioName);
+
+        if (portfolioName == null || portfolioName.isEmpty()) {
+            Toast.makeText(this, "파일 이름이 유효하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ResumeAPI resumeAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(ResumeAPI.class);
+        Call<ResponseBody> call = resumeAPI.downloadResumeFile(portfolioName);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    // 파일 쓰기 성공 시
+                    boolean writtenToDisk = writeResponseBodyToDisk(response.body(), portfolioName);
+                    if (writtenToDisk) {
+                        Toast.makeText(ResumeDetailActivity.this, "다운로드 성공", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ResumeDetailActivity.this, "파일 저장 실패", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(ResumeDetailActivity.this, "서버 에러 발생: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(ResumeDetailActivity.this, "다운로드 실패: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    private boolean writeResponseBodyToDisk(ResponseBody body, String portfolioName) {
+        try {
+            File file = new File(getExternalFilesDir(null) + File.separator + portfolioName);
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
 
+            try {
+                byte[] fileReader = new byte[4096];
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(file);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+                    fileSizeDownloaded += read;
+                }
+
+                outputStream.flush();
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
 }
