@@ -53,7 +53,7 @@ public class ExperienceList extends AppCompatActivity {
     Button btnPrev, btnNext;
     LinearLayout pageNumbersContainer, paginationLayout;
     int size, page, totalPages, currentPage;
-    String keyword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +74,7 @@ public class ExperienceList extends AppCompatActivity {
 
         size = 10;
         page = 0;
-        keyword = null;
-        keyword = getIntent().getStringExtra("keyword");
+        String keyword = getIntent().getStringExtra("keyword");
         if (keyword == null){
             //ListView 데이터 가져와서 보여주기
             postList(page);
@@ -207,9 +206,10 @@ public class ExperienceList extends AppCompatActivity {
                             communityList.addAll(postList);  // 데이터를 communityList에 추가
                             CommunityAdapter adapter = new CommunityAdapter(ExperienceList.this, communityList);
                             list_view.setAdapter(adapter);
+                            total_bbs.setText("총 " + communityList.size() + "건");
+
 
                         });
-                        total_bbs.setText("총 " + pageinfo.getTotalElements() + "건");
 
                         // 리스트뷰가 끝나면 페이지네이션 UI 표시
                         if (totalPages > 1) {
