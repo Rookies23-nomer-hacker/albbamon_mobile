@@ -33,12 +33,12 @@ public class Splash extends AppCompatActivity {
 
 
         // 루팅 탐지
-        if (isDeviceRooted(this)) {
-            Log.e("ROOT_CHECK", "루팅된 기기입니다. 앱을 종료합니다.");
-            Toast.makeText(this, "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
-            finish(); // 앱 종료
-            return;
-        }
+//        if (isDeviceRooted(this)) {
+//            Log.e("ROOT_CHECK", "루팅된 기기입니다. 앱을 종료합니다.");
+//            Toast.makeText(this, "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
+//            finish(); // 앱 종료
+//            return;
+//        }
 
         checkAutoLogin(); //
     }

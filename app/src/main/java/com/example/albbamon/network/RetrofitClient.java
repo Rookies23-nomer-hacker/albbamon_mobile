@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -41,6 +45,7 @@ public class RetrofitClient {
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+
         }
         return retrofitWithoutSession;
     }
@@ -48,6 +53,7 @@ public class RetrofitClient {
     // ✅ 세션을 포함하는 Retrofit (세션 유지)
     public static Retrofit getRetrofitInstanceWithSession(Context context) {
         if (retrofitWithSession == null) {
+            // 추가됨: HttpLoggingInterceptor 추가 (logging level BODY)
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 

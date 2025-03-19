@@ -179,10 +179,10 @@
                     android:id="@+id/txt_resume_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1"
-                    android:textSize="18sp"
+                    android:text="loading"
                     android:textColor="@color/appcolor"
-                    android:textStyle="bold"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:text="이력서 관리"
                     android:layout_width="wrap_content"
@@ -209,9 +209,9 @@
 
                 <TextView
                     android:id="@+id/apply_count"
-                    android:layout_width="7dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text="loading"
                     android:textColor="@color/appcolor"
                     android:textSize="18sp"
                     android:textStyle="bold" />
