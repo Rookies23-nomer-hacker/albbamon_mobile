@@ -100,7 +100,7 @@ public class SignInActivity extends AppCompatActivity {
         // 입력값 로그 출력
 //        Log.d("LOGIN_INPUT", "이메일: " + email + ", 비밀번호: " + password);
 
-        UserAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(UserAPI.class);
+        UserAPI apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(UserAPI.class);
         LoginUserModel login = new LoginUserModel(email, password);
 
         // 서버에서 단순 문자열을 반환하므로 ResponseBody 사용
@@ -115,7 +115,7 @@ public class SignInActivity extends AppCompatActivity {
                 Log.d("API_RESPONSE", "HTTP 응답 코드: " + response.code());
 
                 for (String name : response.headers().names()) {
-                    Log.d("API_RESPONSE", "헤더: " + name + " = " + response.headers().get(name));
+                    Log.d("API_RESPONSE", "헤더123: " + name + " = " + response.headers().get(name));
                 }
 
                 if (response.isSuccessful() && response.body() != null) {
@@ -170,6 +170,24 @@ public class SignInActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("cookie", setCookieHeader); // ✅ 세션 쿠키 저장
                             editor.putLong("userId", userId); // ✅ userId 저장
+                            
+                            // jsession, awsabl, AWSALBCORS 추가
+                            if (setCookieHeader.contains("JSESSIONID=")) {
+                                String jsessionId = setCookieHeader.split("JSESSIONID=")[1].split(";")[0].trim();
+                                editor.putString("jsessionid", jsessionId);
+                                Log.d("SESSION", "✅ 정리된 JSESSIONID 저장: " + jsessionId);
+                            }
+                            if (setCookieHeader.contains("AWSALB=")) {
+                                String awsAlb = setCookieHeader.split("AWSALB=")[1].split(";")[0];
+                                editor.putString("AWSALB", awsAlb);
+                                Log.d("SESSION", "✅ AWSALB 저장: " + awsAlb);
+                            }
+                            if (setCookieHeader.contains("AWSALBCORS=")) {
+                                String awsAlbCors = setCookieHeader.split("AWSALBCORS=")[1].split(";")[0];
+                                editor.putString("AWSALBCORS", awsAlbCors);
+                                Log.d("SESSION", "✅ AWSALBCORS 저장: " + awsAlbCors);
+                            }
+                            
                             editor.apply();
 
 

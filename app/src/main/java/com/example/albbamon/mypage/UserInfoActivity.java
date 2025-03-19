@@ -89,8 +89,11 @@ public class UserInfoActivity extends AppCompatActivity{
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.remove("userId"); // userId 삭제
                     editor.remove("cookie"); // 세션 쿠키 삭제
+                    editor.remove("jsessionid");
+                    editor.remove("AWSALB");
+                    editor.remove("AWSALBCORS");
                     editor.clear();
-                    editor.commit();
+                    boolean isCleared = editor.commit();
 
                     // 자동 로그인 정보 삭제
                     SharedPreferences eCache = getSharedPreferences("ECACHE", MODE_PRIVATE);
