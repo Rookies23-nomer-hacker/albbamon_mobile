@@ -6,6 +6,8 @@ public class RecruitmentApply {
     private Long applyId;
     private Long resumeId;
     private String userName;
+    private String userEmail;
+    private String userPhone;
     private String school;
     private String status;
     private String personal;
@@ -24,7 +26,7 @@ public class RecruitmentApply {
     private String applyStatus;
 
     // 생성자
-    public RecruitmentApply(Long applyId, Long resumeId, String userName, String school, String status, String personal,
+    public RecruitmentApply(Long applyId, Long resumeId, String userName, String userEmail, String userPhone, String school, String status, String personal,
                             String workPlaceRegion, String workPlaceCity, String industryOccupation,
                             String employmentType, String workingPeriod, String workingDay,
                             String introduction, String portfolioUrl, String portfolioName,
@@ -33,6 +35,8 @@ public class RecruitmentApply {
         this.applyId = applyId;
         this.resumeId = resumeId;
         this.userName = userName;
+        this.userEmail = userEmail;
+        this.userPhone = userPhone;
         this.school = school;
         this.status = status;
         this.personal = personal;
@@ -55,6 +59,8 @@ public class RecruitmentApply {
     public Long getApplyId() { return applyId; }
     public Long getresumeId() { return resumeId; }
     public String getUserName() { return userName; }
+    public String getUserEmail() { return userEmail; }
+    public String getUserPhone() { return userPhone; }
     public String getSchool() { return school; }
     public String getStatus() { return status; }
     public String getPersonal() { return personal; }
@@ -71,4 +77,13 @@ public class RecruitmentApply {
     public String getResumeImgName() { return resumeImgName; }
     public String getCreateDate() { return createDate; }
     public String getApplyStatus() { return applyStatus; }
+
+    @Override
+    public String toString() {
+        return "이름: " + userName +
+                ", 이메일: " + userEmail +
+                ", 상태: " + applyStatus +
+                ", 연락처: " + userPhone;
+    }
+
 }
