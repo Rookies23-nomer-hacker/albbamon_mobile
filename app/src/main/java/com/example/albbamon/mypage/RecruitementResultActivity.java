@@ -107,6 +107,8 @@ public class RecruitementResultActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Object> resume = response.body();
                     Log.d("RecruitementResultActivity", "✅ 받은 이력서 데이터: " + resume);
+//                    Toast.makeText(RecruitementResultActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
+
 
                     // userId 가져오기
                     if (resume.containsKey("user_id")) {
