@@ -37,8 +37,8 @@ public interface RecruitmentAPI {
     @GET("/api/recruitment/{id}") // ✅ 단일 공고 조회
     Call<RecruitmentDetailResponse> getRecruitmentDetails(@Path("id") Long id);
 
-    @GET("api/recruitment/{recruitmentId}/apply")
-    Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> getRecruitmentApplyList(@Path("recruitmentId") Long recruitmentId);
+    @GET("api/mobile/recruitment/{recruitmentId}/apply")
+    Call<GetRecruitmentApplyListResponseDto> getRecruitmentApplyList(@Path("recruitmentId") Long recruitmentId);
 
     @Multipart
     @POST("/api/mobile/recruitment")

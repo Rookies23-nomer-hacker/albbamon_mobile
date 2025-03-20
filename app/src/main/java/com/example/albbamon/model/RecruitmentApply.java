@@ -6,6 +6,8 @@ public class RecruitmentApply {
     private Long applyId;
     private Long resumeId;
     private String userName;
+    private String userEmail;
+    private String userPhone;
     private String school;
     private String status;
     private String personal;
@@ -33,6 +35,8 @@ public class RecruitmentApply {
         this.applyId = applyId;
         this.resumeId = resumeId;
         this.userName = userName;
+        this.userEmail = userEmail;
+        this.userPhone = userPhone;
         this.school = school;
         this.status = status;
         this.personal = personal;
@@ -55,6 +59,9 @@ public class RecruitmentApply {
     public Long getApplyId() { return applyId; }
     public Long getresumeId() { return resumeId; }
     public String getUserName() { return userName; }
+    public String getUserEmail() {return userEmail; }
+
+    public String getUserPhone() {return userPhone; }
     public String getSchool() { return school; }
     public String getStatus() { return status; }
     public String getPersonal() { return personal; }
