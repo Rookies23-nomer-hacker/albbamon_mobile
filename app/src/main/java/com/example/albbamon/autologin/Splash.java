@@ -1,5 +1,8 @@
 package com.example.albbamon.autologin;
 
+import static java.lang.Thread.sleep;
+
+import com.example.albbamon.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,13 +44,21 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isDeviceRooted()) {
-            Toast.makeText(this, "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
-            finish(); // 앱 종료
-            return;
-        }
+        setContentView(R.layout.activity_layout);
 
-        checkAutoLogin(); //
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boolean isroot = isDeviceRooted();
+
+                if (isroot) {
+                    Toast.makeText(getApplicationContext(), "루팅된 기기에서는 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
+                    finish(); // 앱 종료
+                } else {
+                    checkAutoLogin(); // 루팅되지 않은 경우 로그인 체크 실행
+                }
+            }
+        }, 3000);
     }
 
     private boolean isDeviceRooted() {
