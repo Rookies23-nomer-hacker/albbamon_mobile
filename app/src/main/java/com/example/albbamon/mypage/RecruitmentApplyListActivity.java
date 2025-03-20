@@ -68,12 +68,12 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
     private void loadApplyList() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
 
-        recruitmentAPI.getRecruitmentApplyList(recruitmentId).enqueue(new Callback<SuccessResponse<GetRecruitmentApplyListResponseDto>>() {
+        recruitmentAPI.getRecruitmentApplyList(recruitmentId).enqueue(new Callback<GetRecruitmentApplyListResponseDto>() {
             @Override
-            public void onResponse(Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> call, Response<SuccessResponse<GetRecruitmentApplyListResponseDto>> response) {
+            public void onResponse(Call<GetRecruitmentApplyListResponseDto> call, Response<GetRecruitmentApplyListResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("API_RESPONSE", "✅ 서버 응답 성공! " + response.body().toString());
-                    List<RecruitmentApply> recruitmentApplyList = response.body().getData().getApplyList();
+                    List<RecruitmentApply> recruitmentApplyList = response.body().getApplyList();
                     applyList.clear();
                     if (recruitmentApplyList != null) {
                         applyList.addAll(recruitmentApplyList);
@@ -87,7 +87,7 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SuccessResponse<GetRecruitmentApplyListResponseDto>> call, Throwable t) {
+            public void onFailure(Call<GetRecruitmentApplyListResponseDto> call, Throwable t) {
                 Log.e("API_ERROR", "❌ API 요청 실패: " + t.getMessage());
                 Toast.makeText(RecruitmentApplyListActivity.this, "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
             }
