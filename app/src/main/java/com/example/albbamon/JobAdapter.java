@@ -63,14 +63,21 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             Log.d("JobAdapter", "❌ 이미지 없음, 기본 이미지 사용");
             holder.jobImage.setImageResource(R.drawable.b_logo);
         } else {
-            Log.d("JobAdapter", "🔥 이미지 로드 시도: " + job.getImageUrl());
+            String imageUrl = job.getImageUrl().toLowerCase();
 
-            Glide.with(holder.itemView.getContext())
-                    .load(job.getImageUrl())
-                    .placeholder(R.drawable.b_logo) // ✅ 로딩 중 기본 이미지
-                    .error(R.drawable.b_logo) // ✅ 에러 시 기본 이미지
-                    .diskCacheStrategy(DiskCacheStrategy.ALL) // ✅ 캐싱 활성화
-                    .into(holder.jobImage);
+            if (imageUrl.endsWith(".png") || imageUrl.endsWith(".jpg")) {
+                Log.d("JobAdapter", "🔥 이미지 로드 시도: " + imageUrl);
+
+                Glide.with(holder.itemView.getContext())
+                        .load(imageUrl)
+                        .placeholder(R.drawable.b_logo) // ✅ 로딩 중 기본 이미지
+                        .error(R.drawable.b_logo) // ✅ 에러 시 기본 이미지
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // ✅ 캐싱 활성화
+                        .into(holder.jobImage);
+            } else {
+                Log.d("JobAdapter", "🚫 지원되지 않는 이미지 형식: " + imageUrl);
+                holder.jobImage.setImageResource(R.drawable.b_logo); // 기본 이미지 사용
+            }
         }
 
         holder.itemView.setOnClickListener(v -> {

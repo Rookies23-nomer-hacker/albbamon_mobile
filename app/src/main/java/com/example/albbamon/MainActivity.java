@@ -166,40 +166,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        jobAdapterSpecial.setOnItemClickListener(position -> {
-            JobModel clickedJob = allJobsSpecial.get(position);
-
-            // ✅ 선택한 공고 ID 가져오기
-            Long jobId = clickedJob.getId();
-
-            // ✅ Intent를 통해 RecruitmentViewActivity로 ID 전달
-            Intent intent = new Intent(MainActivity.this, RecruitmentViewActivity.class);
-            intent.putExtra("job_id", jobId);
-            startActivity(intent);
-        });
-
-        recruitmentAdapter = new JobAdapter(allJobsRecent);
-        recyclerRecent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerRecent.setAdapter(recruitmentAdapter);
-
-        recruitmentAdapter.setOnItemClickListener(position -> {
-            JobModel clickedJob = allJobsRecent.get(position);
-
-            // ✅ 선택한 공고 ID 가져오기
-            Long jobId = clickedJob.getId();
-
-            // ✅ Intent를 통해 RecruitmentViewActivity로 ID 전달
-            Intent intent = new Intent(MainActivity.this, RecruitmentViewActivity.class);
-            intent.putExtra("job_id", jobId);
-            startActivity(intent);
-        });
-
         // ✅ RecyclerView 어댑터 설정
         jobAdapterCommunity = new JobAdapter(allJobsCommunity);
         recyclerCommunity.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerCommunity.setAdapter(jobAdapterCommunity);
 
-// ✅ 클릭 리스너 설정
+        // ✅ 클릭 리스너 설정
         jobAdapterCommunity.setOnItemClickListener(position -> {
             JobModel clickedPost = allJobsCommunity.get(position);
             Log.d("MainActivity", "🔥 클릭된 아이템: " + clickedPost.getTitle() + ", ID: " + clickedPost.getId());
@@ -217,9 +189,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MainActivity", "✅ Intent 실행 완료");
         });
 
-
-
-        // ✅ "더보기" 버튼 클릭 이벤트 (현재 기능 없음)
+        // ✅ "더보기" 버튼 클릭 이벤트
         btnMoreSpecial.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ResumePremiumActivity.class);
             startActivity(intent);
@@ -255,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         apiService = RetrofitClient.getRetrofitInstanceWithSession(this).create(CommunityAPI.class);
 
-        recyclerCommunity = findViewById(R.id.recycler_community);
+
 
 
 
@@ -264,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         fetchCommunityPosts();
-        fetchRecruitmentPosts(1 );
+        fetchRecruitmentPosts(1);
         fetchPremiumRecruitmentPosts();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -282,16 +252,6 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, UserMypageActivity.class);
                         }
                         startActivity(intent);
-//                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-//                            Intent intent;
-//                            if (isCeo) {
-//                                intent = new Intent(MainActivity.this, CeoMypageActivity.class);
-//                            } else {
-//                                intent = new Intent(MainActivity.this, UserMypageActivity.class);
-//                            }
-//                            startActivity(intent);
-//                            overridePendingTransition(R.anim.slide_in_left, 0);
-//                        }, 2000); // 2초 지연 후 실행
                     });
                 } else {
                     // 로그인 안 되어 있으면 로그인 화면으로 이동
@@ -313,12 +273,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchCommunityPosts() {
-
         int size = 5;
         int page = 0;
 
         CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
-        Call<PostListResponse> call = apiService.getAllPosts(size, page);  // ✅ PostListResponse 사용
+        Call<PostListResponse> call = apiService.getAllPosts(size, page);
 
         call.enqueue(new Callback<PostListResponse>() {
             @Override
@@ -351,8 +310,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void fetchPostImage(CommunityModel post, long postId) {
         CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
@@ -394,12 +351,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
 
     private void fetchRecruitmentPosts(int page) {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
@@ -454,8 +405,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void fetchPremiumRecruitmentPosts() {
         RecruitmentAPI recruitmentAPI = RetrofitClient.getRetrofitInstanceWithSession(this).create(RecruitmentAPI.class);
@@ -518,7 +467,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }
