@@ -1,8 +1,5 @@
 package com.example.albbamon.autologin;
 
-import static java.lang.Thread.sleep;
-
-import com.example.albbamon.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
