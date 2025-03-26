@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.MainActivity;
+import com.example.albbamon.aesbox.KeyInitializer;
 import com.example.albbamon.sign.SignInActivity;
 import com.example.albbamon.api.UserAPI;
 import com.example.albbamon.dto.response.UserResponseDto;
@@ -45,6 +46,9 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_layout);
+
+        KeyInitializer.initializeAESKeyIfNeeded(this);
+
 
         new android.os.Handler().postDelayed(new Runnable() {
             @Override

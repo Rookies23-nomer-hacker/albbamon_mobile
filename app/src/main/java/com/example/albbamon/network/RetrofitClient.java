@@ -27,7 +27,6 @@ public class RetrofitClient {
     private static Retrofit retrofitWithoutSession = null;
     private static Retrofit retrofitWithSession = null;
     private static final String BASE_URL = "https://www.albbamon.com:44380/";
-
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
         if (retrofitWithoutSession == null) {

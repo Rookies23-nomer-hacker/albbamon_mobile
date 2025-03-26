@@ -26,7 +26,7 @@ public class RecruitmentApply {
     private String applyStatus;
 
     // 생성자
-    public RecruitmentApply(Long applyId, Long resumeId, String userName, String school, String status, String personal,
+    public RecruitmentApply(Long applyId, Long resumeId, String userName, String userEmail, String userPhone, String school, String status, String personal,
                             String workPlaceRegion, String workPlaceCity, String industryOccupation,
                             String employmentType, String workingPeriod, String workingDay,
                             String introduction, String portfolioUrl, String portfolioName,

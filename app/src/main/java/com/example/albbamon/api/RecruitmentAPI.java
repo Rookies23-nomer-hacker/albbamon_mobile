@@ -1,5 +1,6 @@
 package com.example.albbamon.api;
 
+import com.example.albbamon.dto.request.RecruitmentApplyListRequestDto;
 import com.example.albbamon.model.RecruitmentCountResponse;
 import com.example.albbamon.model.RecruitmentDetailResponse;
 import com.example.albbamon.model.JobPostingModel;
@@ -32,13 +33,15 @@ public interface RecruitmentAPI {
     );
 
     @GET("api/mobile/recruitment/list/my")
-    Call<SuccessResponse<GetRecruitmentResponseDto>> getMyRecruitments();
+    Call<ResponseBody> getMyRecruitments();
 
     @GET("/api/recruitment/{id}") // ✅ 단일 공고 조회
     Call<RecruitmentDetailResponse> getRecruitmentDetails(@Path("id") Long id);
 
-    @GET("api/mobile/recruitment/{recruitmentId}/apply")
-    Call<GetRecruitmentApplyListResponseDto> getRecruitmentApplyList(@Path("recruitmentId") Long recruitmentId);
+    // 요청값, 응답값 수정 dto -> ResponseBody (03.26)
+    @POST("api/mobile/recruitment/apply")
+    Call<String> getRecruitmentApplyList(@Body String base64);
+
 
     @Multipart
     @POST("/api/mobile/recruitment")
@@ -65,7 +68,7 @@ public interface RecruitmentAPI {
     );
 
     @GET("/api/mobile/recruitment/list")
-    Call<RecruitmentResponse> getAllRecruitmentPosts();  // ✅ 새로운 API 추가
+    Call<ResponseBody> getAllRecruitmentPosts();  // ✅ 새로운 API 추가
 
 }
 
