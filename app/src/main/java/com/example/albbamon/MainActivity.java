@@ -175,34 +175,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        jobAdapterSpecial.setOnItemClickListener(position -> {
-            JobModel clickedJob = allJobsSpecial.get(position);
-
-            // ✅ 선택한 공고 ID 가져오기
-            Long jobId = clickedJob.getId();
-
-            // ✅ Intent를 통해 RecruitmentViewActivity로 ID 전달
-            Intent intent = new Intent(MainActivity.this, RecruitmentViewActivity.class);
-            intent.putExtra("job_id", jobId);
-            startActivity(intent);
-        });
-
-        recruitmentAdapter = new JobAdapter(allJobsRecent);
-        recyclerRecent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerRecent.setAdapter(recruitmentAdapter);
-
-        recruitmentAdapter.setOnItemClickListener(position -> {
-            JobModel clickedJob = allJobsRecent.get(position);
-
-            // ✅ 선택한 공고 ID 가져오기
-            Long jobId = clickedJob.getId();
-
-            // ✅ Intent를 통해 RecruitmentViewActivity로 ID 전달
-            Intent intent = new Intent(MainActivity.this, RecruitmentViewActivity.class);
-            intent.putExtra("job_id", jobId);
-            startActivity(intent);
-        });
-
         // ✅ RecyclerView 어댑터 설정
         jobAdapterCommunity = new JobAdapter(allJobsCommunity);
         recyclerCommunity.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -273,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         fetchCommunityPosts();
-        fetchRecruitmentPosts(1);
+        fetchRecruitmentPosts(1 );
         fetchPremiumRecruitmentPosts();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -327,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         int page = 0;
 
         CommunityAPI apiService = RetrofitClient.getRetrofitInstanceWithoutSession().create(CommunityAPI.class);
-        Call<PostListResponse> call = apiService.getAllPosts(size, page);
+        Call<PostListResponse> call = apiService.getAllPosts(size, page);  // ✅ PostListResponse 사용
 
         call.enqueue(new Callback<PostListResponse>() {
             @Override

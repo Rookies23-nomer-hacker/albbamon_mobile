@@ -43,6 +43,7 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.media3.transformer
     implementation libs.cronet.embedded
+    implementation libs.security.crypto
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -69,6 +70,8 @@ dependencies {
 
 //    암호화 통신 받기 위한 의존성 추가
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    implementation 'com.google.code.gson:gson:2.10.1' // 또는 최신 안정 버전
 
 }
 
