@@ -21,13 +21,13 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor; // 이미 import 되어 있음
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
     private static final String TAG = "RetrofitClient";
     private static Retrofit retrofitWithoutSession = null;
     private static Retrofit retrofitWithSession = null;
     private static final String BASE_URL = "https://www.albbamon.com:44380/";
-
     // ✅ 로그인 요청을 위한 Retrofit (세션 없이 요청)
     public static Retrofit getRetrofitInstanceWithoutSession() {
         if (retrofitWithoutSession == null) {
@@ -183,6 +183,7 @@ public class RetrofitClient {
             retrofitWithSession = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

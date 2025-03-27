@@ -6,7 +6,8 @@ import java.io.Serializable;
 public class RecruitmentModel implements Serializable {
     @SerializedName("id")
     private Long id;
-
+    @SerializedName("userEmail")
+    private String email;
     @SerializedName("title")
     private String title;
 
@@ -28,6 +29,8 @@ public class RecruitmentModel implements Serializable {
     public Long getId() {
         return id;
     }
+
+    public String getEmail() {return email;}
 
     public String getTitle() {
         return title;
