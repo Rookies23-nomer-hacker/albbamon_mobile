@@ -21,6 +21,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor; // 이미 import 되어 있음
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
     private static final String TAG = "RetrofitClient";
@@ -182,6 +183,7 @@ public class RetrofitClient {
             retrofitWithSession = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

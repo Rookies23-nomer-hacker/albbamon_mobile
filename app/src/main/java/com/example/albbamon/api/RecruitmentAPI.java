@@ -40,7 +40,7 @@ public interface RecruitmentAPI {
 
     // 요청값, 응답값 수정 dto -> ResponseBody (03.26)
     @POST("api/mobile/recruitment/apply")
-    Call<String> getRecruitmentApplyList(@Body String base64);
+    Call<String> getRecruitmentApplyList(@Body RequestBody requestBody);
 
 
     @Multipart

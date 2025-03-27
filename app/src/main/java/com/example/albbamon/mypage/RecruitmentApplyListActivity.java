@@ -98,7 +98,7 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
             );
             String fixedKey = prefs.getString("aes_key", null);
 
-            aesUtil aesUtil = new aesUtil(json);
+            aesUtil aesUtil = new aesUtil(fixedKey);
 
             byte[] encryptedBytes = aesUtil.encrypt(json);
             Log.d("AES_DEBUG", "📤 암호화된 바이트 HEX: " + bytesToHex(encryptedBytes));
@@ -109,14 +109,9 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
             Log.d("AES_DEBUG", "📤 Base64 인코딩된 문자열: " + base64Encoded);
 
 
-// JSON 문자열로 wrapping (따옴표 포함!)
-            String jsonWrapped = "\"" + base64Encoded + "\"";
-            Log.d("AES_DEBUG", "📤 최종 JSON 전송 문자열: " + jsonWrapped);
-
-
 // RequestBody 생성 (text 아닌 application/json)
             RequestBody requestBody = RequestBody.create(
-                    jsonWrapped,
+                    base64Encoded,
                     MediaType.parse("application/json; charset=utf-8")
             );
 
@@ -124,35 +119,27 @@ public class RecruitmentApplyListActivity extends AppCompatActivity {
 
 
 
-            recruitmentAPI.getRecruitmentApplyList(base64Encoded).enqueue(new Callback<String>() {
+            recruitmentAPI.getRecruitmentApplyList(requestBody).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("AES_DEBUG", "여기는 오면 안되는데");
-                    Log.d("AES_DEBUG", String.valueOf(response.body()));
-                    Log.d("AES_DEBUG", String.valueOf(response.isSuccessful()));
 
                     if (response.isSuccessful() && response.body() != null) {
-                        Log.d("AES_DEBUG", "여기는 오니ㅣㅣㅣㅣㅣㅣㅣㅣㅣ");
                         GetRecruitmentApplyListResponseDto responseDto = null;
                         try{
                             // 1. 응답 문자열 파싱
                             String responseBodyString = response.body();
                         Log.d("AES_DEBUG", "🔐 암호화된 평문 JSON: " + responseBodyString);
 
-                            // 2. data 필드 추출 (Base64 문자열)
-                            JsonObject root = JsonParser.parseString(responseBodyString).getAsJsonObject();
-                            String base64EncryptedData = root.get("data").getAsString();
-
-                            // 3. Base64 디코딩
-                            byte[] encryptedBytes = android.util.Base64.decode(base64EncryptedData, android.util.Base64.DEFAULT);
+                            // 2. Base64 디코딩
+                            byte[] encryptedBytes = android.util.Base64.decode(responseBodyString, android.util.Base64.DEFAULT);
                         Log.d("AES_DEBUG", "🔐 디코딩된 byte 길이: " + encryptedBytes.length);
 
-                            // 4. AES 복호화
+                            // 3. AES 복호화
                             aesUtil aesUtil = new aesUtil(fixedKey);
                             String decryptedJson = aesUtil.decrypt(encryptedBytes);
                         Log.d("AES_DEBUG", "✅ 복호화된 평문 JSON: " + decryptedJson);
 
-                            // 5. JSON → 객체 변환
+                            // 4. JSON → 객체 변환
                             responseDto = new Gson().fromJson(decryptedJson, GetRecruitmentApplyListResponseDto.class);
 
 

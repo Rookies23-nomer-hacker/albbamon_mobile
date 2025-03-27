@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.albbamon.MainActivity;
+import com.example.albbamon.R;
 import com.example.albbamon.aesbox.KeyInitializer;
 import com.example.albbamon.sign.SignInActivity;
 import com.example.albbamon.api.UserAPI;
